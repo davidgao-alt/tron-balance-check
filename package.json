@@ -5,9 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/index.js",
     "dev": "tsx watch src/server.ts",
-    "postbuild": "mkdir -p dist/public && cp -R src/public/* dist/public/"
+    "postbuild": "mkdir -p dist/public && (cp -R src/public/* dist/public/ 2>/dev/null || true)"
   },
   "keywords": [],
   "author": "",
