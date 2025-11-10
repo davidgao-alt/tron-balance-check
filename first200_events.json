@@ -1,0 +1,4901 @@
+[
+  {
+    "block_number": 74976814,
+    "block_timestamp": 1755589620000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 18,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "36",
+      "id": "36"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "0daac63db1386cbdff258b825713092fb8e6f4c580041cf8208a13d5d42f63e3"
+  },
+  {
+    "block_number": 74919111,
+    "block_timestamp": 1755416463000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 6,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "36",
+      "1": "1755589263",
+      "eta": "1755589263",
+      "id": "36"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "daf8a8db96ae2098bfb38d960273612a3ee09caf5ca354dd0ec168e30ef6cec2"
+  },
+  {
+    "block_number": 74889716,
+    "block_timestamp": 1755328254000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x85c5db5dece71344c672ee6cf96294df3704565e",
+      "1": "36",
+      "2": "0",
+      "3": "883360448000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "883360448000000000000000",
+      "voter": "0x85c5db5dece71344c672ee6cf96294df3704565e",
+      "support": "0",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "dbbb588d92ddac975a26a35a19251929fae2e13992ae693650b9926b8c472498"
+  },
+  {
+    "block_number": 74889716,
+    "block_timestamp": 1755328254000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "36",
+      "1": "700000001000000000000000000",
+      "2": "883360448000000000000000",
+      "3": "0",
+      "againstVotes": "883360448000000000000000",
+      "forVotes": "700000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "dbbb588d92ddac975a26a35a19251929fae2e13992ae693650b9926b8c472498"
+  },
+  {
+    "block_number": 74830877,
+    "block_timestamp": 1755151689000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "36",
+      "2": "1",
+      "3": "700000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "700000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "10b05c15fc3f2e56325a1a9d70ee2a0a0d898742a18af71ee994a565bd4a58db"
+  },
+  {
+    "block_number": 74830877,
+    "block_timestamp": 1755151689000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "36",
+      "1": "700000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "700000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "10b05c15fc3f2e56325a1a9d70ee2a0a0d898742a18af71ee994a565bd4a58db"
+  },
+  {
+    "block_number": 74830848,
+    "block_timestamp": 1755151602000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "36",
+      "2": "1",
+      "3": "100000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "29fe37f10911de8fc4a91a09a5992d9d3fb1d14f6b38bbd9f566e65778c40768"
+  },
+  {
+    "block_number": 74830848,
+    "block_timestamp": 1755151602000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "36",
+      "1": "100000000000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "100000000000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "29fe37f10911de8fc4a91a09a5992d9d3fb1d14f6b38bbd9f566e65778c40768"
+  },
+  {
+    "block_number": 74830800,
+    "block_timestamp": 1755151458000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xb295ef435406571422acc1780794324997a7e1f1",
+      "1": "36",
+      "2": "1",
+      "3": "0",
+      "4": "",
+      "reason": "",
+      "votes": "0",
+      "voter": "0xb295ef435406571422acc1780794324997a7e1f1",
+      "support": "1",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "2979e850557016ce7dbe6dd564e80349d911f6990de36e93ed2a228c80ef9dbc"
+  },
+  {
+    "block_number": 74830800,
+    "block_timestamp": 1755151458000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "36",
+      "1": "0",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "0",
+      "abstainVotes": "0",
+      "proposalId": "36"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "2979e850557016ce7dbe6dd564e80349d911f6990de36e93ed2a228c80ef9dbc"
+  },
+  {
+    "block_number": 74830766,
+    "block_timestamp": 1755151356000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "36",
+      "1": "0x742455f561d01fc43e421e151ec26215ca7c137b",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x91bed8e784249c91611e61c4585c40e21fd0ace2\n0x0dd3f1b2e5781688d5cf8c350050c5c236535642\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0\n0\n0\n0\n0",
+      "4": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)\n_setMarketBorrowCaps(address[],uint256[])",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x742455f561d01fc43e421e151ec26215ca7c137b",
+      "values": "0\n0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x91bed8e784249c91611e61c4585c40e21fd0ace2\n0x0dd3f1b2e5781688d5cf8c350050c5c236535642\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)\n_setMarketBorrowCaps(address[],uint256[])",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "36"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "9519c5365f34e704a9760f953250ecbf4d5129229ee6e73b3aa3af53d01413d1"
+  },
+  {
+    "block_number": 73934075,
+    "block_timestamp": 1752460533000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 7,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "35",
+      "id": "35"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "dee145433dc3abeb9190a96f54a9fff16701fbe275d82dcf17e186a10625aa61"
+  },
+  {
+    "block_number": 73855794,
+    "block_timestamp": 1752225624000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "35",
+      "1": "1752398424",
+      "eta": "1752398424",
+      "id": "35"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "b6d1c17cffef2f6c95c4f1b5c7e4ee89838def78566e1fd043bf6d759e526098"
+  },
+  {
+    "block_number": 73846712,
+    "block_timestamp": 1752198372000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x1f960e7e84aaa63ef073b52568cf77a7d5262043",
+      "1": "35",
+      "2": "0",
+      "3": "100000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000",
+      "voter": "0x1f960e7e84aaa63ef073b52568cf77a7d5262043",
+      "support": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "f827b0efa58a23dfc2f07123fda4a5b0299a149248ccc034fe4baaa01fbf8a7f"
+  },
+  {
+    "block_number": 73846712,
+    "block_timestamp": 1752198372000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "35",
+      "1": "600000001000000000000000000",
+      "2": "300000000000000000",
+      "3": "0",
+      "againstVotes": "300000000000000000",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "f827b0efa58a23dfc2f07123fda4a5b0299a149248ccc034fe4baaa01fbf8a7f"
+  },
+  {
+    "block_number": 73826588,
+    "block_timestamp": 1752137982000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x4453cc8c79374903cffa052f411d424c071da02c",
+      "1": "35",
+      "2": "0",
+      "3": "200000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "200000000000000000",
+      "voter": "0x4453cc8c79374903cffa052f411d424c071da02c",
+      "support": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "65b0c66f16868a56aa32c9d71e7a77a82a5f9fbf3bfc1b632eb0a40cb387ad89"
+  },
+  {
+    "block_number": 73826588,
+    "block_timestamp": 1752137982000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "35",
+      "1": "600000001000000000000000000",
+      "2": "200000000000000000",
+      "3": "0",
+      "againstVotes": "200000000000000000",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "65b0c66f16868a56aa32c9d71e7a77a82a5f9fbf3bfc1b632eb0a40cb387ad89"
+  },
+  {
+    "block_number": 73826580,
+    "block_timestamp": 1752137958000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x4453cc8c79374903cffa052f411d424c071da02c",
+      "1": "35",
+      "2": "0",
+      "3": "100000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000",
+      "voter": "0x4453cc8c79374903cffa052f411d424c071da02c",
+      "support": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "2c52c92df9bf25676b8d6b5f092e569ca2395ff89d8b0a030639f0a76178e080"
+  },
+  {
+    "block_number": 73826580,
+    "block_timestamp": 1752137958000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "35",
+      "1": "600000001000000000000000000",
+      "2": "100000000000000000",
+      "3": "0",
+      "againstVotes": "100000000000000000",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "2c52c92df9bf25676b8d6b5f092e569ca2395ff89d8b0a030639f0a76178e080"
+  },
+  {
+    "block_number": 73769211,
+    "block_timestamp": 1751965803000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "35",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "709c31215b39f134f4731a883894d5a5a15ba9f50c9bdc34020a51874d45c2a3"
+  },
+  {
+    "block_number": 73769211,
+    "block_timestamp": 1751965803000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "35",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "35"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "709c31215b39f134f4731a883894d5a5a15ba9f50c9bdc34020a51874d45c2a3"
+  },
+  {
+    "block_number": 73769174,
+    "block_timestamp": 1751965692000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "35",
+      "1": "0x62a3952886fa48e319f8d63085bffef92ae197a4",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xe7f8a90ede3d84c7c0166bd84a4635e4675accfc",
+      "3": "0\n0\n0",
+      "4": "_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)\n_setReserveFactor(uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x62a3952886fa48e319f8d63085bffef92ae197a4",
+      "values": "0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xe7f8a90ede3d84c7c0166bd84a4635e4675accfc",
+      "signatures": "_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)\n_setReserveFactor(uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "35"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "9b9c171ecc310d3c91b3b5fec4eed702167db8abacb8622cd7f299bfef2cff54"
+  },
+  {
+    "block_number": 73503653,
+    "block_timestamp": 1751168907000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 5,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "34",
+      "id": "34"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "4bbea7725f1a09b1a0722bbc3691ba22b657326e48215e11b3da23b8f661546f"
+  },
+  {
+    "block_number": 73445837,
+    "block_timestamp": 1750995411000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "34",
+      "1": "1751168211",
+      "eta": "1751168211",
+      "id": "34"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "a9f0b9c632d26cdd5c78246396a683aabd3fd71b7ea753134baaa4460e491adc"
+  },
+  {
+    "block_number": 73347250,
+    "block_timestamp": 1750698441000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "34",
+      "2": "1",
+      "3": "700000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "700000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "34"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "527e22c387e5788a694745aa71ff9f597f6b0086b911e45506c77b8f5b3d6a1b"
+  },
+  {
+    "block_number": 73347250,
+    "block_timestamp": 1750698441000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "34",
+      "1": "700000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "700000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "34"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "527e22c387e5788a694745aa71ff9f597f6b0086b911e45506c77b8f5b3d6a1b"
+  },
+  {
+    "block_number": 73347184,
+    "block_timestamp": 1750698243000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "34",
+      "1": "0x55a22a12f5fd99fa1e22edf5895ff46c10feead4",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x6ef7c4870977c6a2543b0e8cf4f659af883c96dc",
+      "3": "0\n0",
+      "4": "_setCollateralFactor(address,uint256)\n_setReserveFactor(uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x55a22a12f5fd99fa1e22edf5895ff46c10feead4",
+      "values": "0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x6ef7c4870977c6a2543b0e8cf4f659af883c96dc",
+      "signatures": "_setCollateralFactor(address,uint256)\n_setReserveFactor(uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "34"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "e41507783eb1cc79cda26f4e4d1c5b82407c09a25901166e81827f29d6909054"
+  },
+  {
+    "block_number": 72235085,
+    "block_timestamp": 1747360923000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "33",
+      "id": "33"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "33ad1693a5119f96f29c767b79c5c050eeb6c80cb4f3bf117da5eb32f01b14ef"
+  },
+  {
+    "block_number": 72166574,
+    "block_timestamp": 1747155306000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "33",
+      "1": "1747328106",
+      "eta": "1747328106",
+      "id": "33"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "fa6a6da8cdd2485b7ef11da537e555760743c7a31b642ad1128a4c1c91b8aedb"
+  },
+  {
+    "block_number": 72165941,
+    "block_timestamp": 1747153395000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x8624fa019b595feddde75fca59bd4e6a97efab38",
+      "1": "33",
+      "2": "1",
+      "3": "714740000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "714740000000000000000",
+      "voter": "0x8624fa019b595feddde75fca59bd4e6a97efab38",
+      "support": "1",
+      "proposalId": "33"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "debe88d9941550abd5e7121ed4e0da79d32bb4c5a912cb63686a835a4a9dd8b4"
+  },
+  {
+    "block_number": 72165941,
+    "block_timestamp": 1747153395000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "33",
+      "1": "600000715740000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000715740000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "33"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "debe88d9941550abd5e7121ed4e0da79d32bb4c5a912cb63686a835a4a9dd8b4"
+  },
+  {
+    "block_number": 72079971,
+    "block_timestamp": 1746895410000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "33",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "33"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "7184391a65751488f378777b4d60a5911a3e533c136946b196026ebb94199a61"
+  },
+  {
+    "block_number": 72079971,
+    "block_timestamp": 1746895410000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "33",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "33"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "7184391a65751488f378777b4d60a5911a3e533c136946b196026ebb94199a61"
+  },
+  {
+    "block_number": 72079948,
+    "block_timestamp": 1746895341000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "33",
+      "1": "0xea3ed0caa76ce7fc3b2895423ca68376d2f89f06",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0",
+      "4": "_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xea3ed0caa76ce7fc3b2895423ca68376d2f89f06",
+      "values": "0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "33"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "25466f6504f31c0290f96f12cea92ae3ba1ff573c5544b7544cbe595337bf140"
+  },
+  {
+    "block_number": 69826589,
+    "block_timestamp": 1740132132000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "32",
+      "id": "32"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "a95eb3ca5bbdd17147e459373028955ee876bcdb6d696db865b1d3d7c3e9be23"
+  },
+  {
+    "block_number": 69768662,
+    "block_timestamp": 1739958303000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "32",
+      "1": "1740131103",
+      "eta": "1740131103",
+      "id": "32"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "5540beeba812c963752908726cd0d1b22cad66d618949d98c908c71204790039"
+  },
+  {
+    "block_number": 69682354,
+    "block_timestamp": 1739699187000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "32",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "32"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "fdc8a5d4dbc798871b2c0b20f7de7898ae07b61bc396fabe62ba3f98578d1125"
+  },
+  {
+    "block_number": 69682354,
+    "block_timestamp": 1739699187000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "32",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "32"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "fdc8a5d4dbc798871b2c0b20f7de7898ae07b61bc396fabe62ba3f98578d1125"
+  },
+  {
+    "block_number": 69682200,
+    "block_timestamp": 1739698725000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "32",
+      "1": "0xcaf7d1535097982a1f3dbd57ce67625142ed2d4e",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0",
+      "4": "_setPriceOracle(address)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xcaf7d1535097982a1f3dbd57ce67625142ed2d4e",
+      "values": "0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setPriceOracle(address)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "32"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "f1923705114c1f6ad9e37a6156c50560227c28055c7f7cfaf14383858d643949"
+  },
+  {
+    "block_number": 69198878,
+    "block_timestamp": 1738248357000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 15,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "31",
+      "id": "31"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "94bccc83e179139bcc01f224d99abbfaa087c14e21f9e2764c3982fc5c41f1cc"
+  },
+  {
+    "block_number": 69140628,
+    "block_timestamp": 1738073559000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 5,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "31",
+      "1": "1738246359",
+      "eta": "1738246359",
+      "id": "31"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "e61fc1a52e75862019108473ce72ad717f5eb8ca056dc8161d2643220d0671f0"
+  },
+  {
+    "block_number": 69136257,
+    "block_timestamp": 1738060440000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "31",
+      "2": "1",
+      "3": "700000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "700000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "61694a8b69c7a5d35538629cce2fe371c4e373dbed0787a230befb17fe2a6ab0"
+  },
+  {
+    "block_number": 69136257,
+    "block_timestamp": 1738060440000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "31",
+      "1": "700001534770000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "700001534770000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "61694a8b69c7a5d35538629cce2fe371c4e373dbed0787a230befb17fe2a6ab0"
+  },
+  {
+    "block_number": 69080942,
+    "block_timestamp": 1737894453000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xcb595e684c61a56b2fb79b518d2d29683efb1b2a",
+      "1": "31",
+      "2": "1",
+      "3": "6030000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "6030000000000000000",
+      "voter": "0xcb595e684c61a56b2fb79b518d2d29683efb1b2a",
+      "support": "1",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "451b52ed68dfedb6cecb5159d6ed391e8d43e55f4edecde29f8342978afb1f7f"
+  },
+  {
+    "block_number": 69080942,
+    "block_timestamp": 1737894453000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "31",
+      "1": "100001533770000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "100001533770000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "451b52ed68dfedb6cecb5159d6ed391e8d43e55f4edecde29f8342978afb1f7f"
+  },
+  {
+    "block_number": 69077247,
+    "block_timestamp": 1737883362000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x4a5ab9d0a0cadc7f56fd10ec9be69497e5b9e719",
+      "1": "31",
+      "2": "1",
+      "3": "1445512000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "1445512000000000000000",
+      "voter": "0x4a5ab9d0a0cadc7f56fd10ec9be69497e5b9e719",
+      "support": "1",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "df29e96f6edb9d9c937d342dacf866d2e60604cd1e1d7f886213787265c7e362"
+  },
+  {
+    "block_number": 69077247,
+    "block_timestamp": 1737883362000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "31",
+      "1": "100001527740000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "100001527740000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "df29e96f6edb9d9c937d342dacf866d2e60604cd1e1d7f886213787265c7e362"
+  },
+  {
+    "block_number": 69073949,
+    "block_timestamp": 1737873468000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xfea09ccb7d878c9ac0764bbcf81ff9b29d208437",
+      "1": "31",
+      "2": "1",
+      "3": "82228000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "82228000000000000000",
+      "voter": "0xfea09ccb7d878c9ac0764bbcf81ff9b29d208437",
+      "support": "1",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "f35b57aabf3c408a07211f26118cd3c5ef3057ed310411997a87db46b32622a4"
+  },
+  {
+    "block_number": 69073949,
+    "block_timestamp": 1737873468000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "31",
+      "1": "100000082228000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "100000082228000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "f35b57aabf3c408a07211f26118cd3c5ef3057ed310411997a87db46b32622a4"
+  },
+  {
+    "block_number": 69054323,
+    "block_timestamp": 1737814572000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "31",
+      "2": "1",
+      "3": "100000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "8bdf0010a5565f1332e4e78cda4891d79c463408002d58b6d3e188e96983d3e5"
+  },
+  {
+    "block_number": 69054323,
+    "block_timestamp": 1737814572000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "31",
+      "1": "100000000000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "100000000000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "31"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "8bdf0010a5565f1332e4e78cda4891d79c463408002d58b6d3e188e96983d3e5"
+  },
+  {
+    "block_number": 69054206,
+    "block_timestamp": 1737814221000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "31",
+      "1": "0x9e7812b7a82ff36dfe93294fc9d2d8f65494831f",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xe91a7411e56ce79e83570570f49b9fc35b7727c5\n0x65c9fede72ba73cd1b0dca2a974c070153dc6fcb\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0\n0\n0\n0",
+      "4": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x9e7812b7a82ff36dfe93294fc9d2d8f65494831f",
+      "values": "0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xe91a7411e56ce79e83570570f49b9fc35b7727c5\n0x65c9fede72ba73cd1b0dca2a974c070153dc6fcb\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "31"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "5d9a586dc7454747c397d90e7c1e0f16784a1725edc05fdad0fce2efbf720648"
+  },
+  {
+    "block_number": 68414215,
+    "block_timestamp": 1735893711000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "30",
+      "id": "30"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "2851ec6a754ee7a12567169a29196011396b26ec840ec7f7e2c61efb26c5a8a4"
+  },
+  {
+    "block_number": 68356604,
+    "block_timestamp": 1735720830000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "30",
+      "1": "1735893630",
+      "eta": "1735893630",
+      "id": "30"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "a6755069f0c3cdf1b43f8a032cd9758a41ad3b6e37b1901e8e227430c549cf16"
+  },
+  {
+    "block_number": 68247820,
+    "block_timestamp": 1735394388000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "30",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "30"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "9b6403dbb018c9b43cbef0502d3eaf966d81307870abc0ec71408e3668976de8"
+  },
+  {
+    "block_number": 68247820,
+    "block_timestamp": 1735394388000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "30",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "30"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "9b6403dbb018c9b43cbef0502d3eaf966d81307870abc0ec71408e3668976de8"
+  },
+  {
+    "block_number": 68247793,
+    "block_timestamp": 1735394307000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "30",
+      "1": "0xa46776561ab26a192a1fb9f8aa1aeea53c90762b",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0",
+      "4": "_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xa46776561ab26a192a1fb9f8aa1aeea53c90762b",
+      "values": "0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "30"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "3d3daa60e19c19d37674e205246e4cccf7d4b3195f07af48363c66175c4fef39"
+  },
+  {
+    "block_number": 67083602,
+    "block_timestamp": 1731900567000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 21,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "29",
+      "id": "29"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "470a5c0f035c9f8ffada207f7f71b59096263755ef92d08edfdffe4eebb0ee29"
+  },
+  {
+    "block_number": 66973526,
+    "block_timestamp": 1731570249000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 10,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "29",
+      "1": "1731743049",
+      "eta": "1731743049",
+      "id": "29"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "0b9bc34277714e69ef45c75a1f96257395290be549760df1f46e119953a77f10"
+  },
+  {
+    "block_number": 66870990,
+    "block_timestamp": 1731262557000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "29",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "29"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "a182e986b767b2801114495cc17b411466f44f750f63bf7736718ef0d7f4b840"
+  },
+  {
+    "block_number": 66870990,
+    "block_timestamp": 1731262557000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "29",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "29"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "a182e986b767b2801114495cc17b411466f44f750f63bf7736718ef0d7f4b840"
+  },
+  {
+    "block_number": 66870943,
+    "block_timestamp": 1731262416000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "29",
+      "1": "0xb8f81157bd79f9f2b275859aa012c62974bb0020",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xa60befaf69b18090b762a83177f09831773967ea\n0xcc1d948f9397db4c047de179eb74ca013529022a\n0x40262ab2a177fb3fc6d2709a816db3b1a10bc78e\n0xe03473f8720297d9bf887f2d7e4ec2efc70c3460\n0xac456571ac5a383b77c65d9fdcd66d8ac2ed62bb\n0x6ef7c4870977c6a2543b0e8cf4f659af883c96dc\n0x88bb336c70a33fe2506240a19826c2ad487ae6d8\n0xb5b1a24c3067f985ac2da2f6bce0fa685bf8ec06\n0x7513102bc947f138b88f4bcc6acf73acb8d4d087",
+      "3": "0\n0\n0\n0\n0\n0\n0\n0\n0\n0",
+      "4": "_setCollateralFactor(address,uint256)\n_setReserveFactor(uint256)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xb8f81157bd79f9f2b275859aa012c62974bb0020",
+      "values": "0\n0\n0\n0\n0\n0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xa60befaf69b18090b762a83177f09831773967ea\n0xcc1d948f9397db4c047de179eb74ca013529022a\n0x40262ab2a177fb3fc6d2709a816db3b1a10bc78e\n0xe03473f8720297d9bf887f2d7e4ec2efc70c3460\n0xac456571ac5a383b77c65d9fdcd66d8ac2ed62bb\n0x6ef7c4870977c6a2543b0e8cf4f659af883c96dc\n0x88bb336c70a33fe2506240a19826c2ad487ae6d8\n0xb5b1a24c3067f985ac2da2f6bce0fa685bf8ec06\n0x7513102bc947f138b88f4bcc6acf73acb8d4d087",
+      "signatures": "_setCollateralFactor(address,uint256)\n_setReserveFactor(uint256)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "29"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "7e7378052ae49cd9e11fce5d67db3dbd2426116d02016313d8be17874ccaa4e3"
+  },
+  {
+    "block_number": 66392884,
+    "block_timestamp": 1729827780000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 5,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "28",
+      "id": "28"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "e3e4d8acb41350dd302d25a4433eccc38062b07ecfc652a19ecb72eb9fd2e066"
+  },
+  {
+    "block_number": 66392873,
+    "block_timestamp": 1729827747000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "27",
+      "id": "27"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "fa4d37d3113ad43948d1cf9706325deb344c3a7f787327188f994a9f6c1242f4"
+  },
+  {
+    "block_number": 66318182,
+    "block_timestamp": 1729603614000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "28",
+      "1": "1729776414",
+      "eta": "1729776414",
+      "id": "28"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "b04c563c5b0443c9a98af32177eaf6d49047d682aef76a831e81f3d7ff6aecbe"
+  },
+  {
+    "block_number": 66318115,
+    "block_timestamp": 1729603413000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "27",
+      "1": "1729776213",
+      "eta": "1729776213",
+      "id": "27"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "d92be8a5cb76dc70711202365eaec3075a140da7cc5b9704efd0d9f13096ad22"
+  },
+  {
+    "block_number": 66318023,
+    "block_timestamp": 1729603137000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xf818c5d9c8ab236f57f8232835760f05541b3ab6",
+      "1": "28",
+      "2": "1",
+      "3": "100000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000",
+      "voter": "0xf818c5d9c8ab236f57f8232835760f05541b3ab6",
+      "support": "1",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "fddc01ac50642913e106e51b5e501397571e853c1acdaf50ce3a774fc54b7269"
+  },
+  {
+    "block_number": 66318023,
+    "block_timestamp": 1729603137000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "28",
+      "1": "600000219000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000219000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "fddc01ac50642913e106e51b5e501397571e853c1acdaf50ce3a774fc54b7269"
+  },
+  {
+    "block_number": 66314467,
+    "block_timestamp": 1729592463000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xdc9dae188a5197d8e974ba031852f6a3a7d783d5",
+      "1": "28",
+      "2": "1",
+      "3": "10000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "10000000000000000000",
+      "voter": "0xdc9dae188a5197d8e974ba031852f6a3a7d783d5",
+      "support": "1",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "ffdcd96fc33cbbec67129f9fe78b733bfc68f0e17b247e67bdea77d3e07e9aca"
+  },
+  {
+    "block_number": 66314467,
+    "block_timestamp": 1729592463000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "28",
+      "1": "600000119000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000119000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "ffdcd96fc33cbbec67129f9fe78b733bfc68f0e17b247e67bdea77d3e07e9aca"
+  },
+  {
+    "block_number": 66307019,
+    "block_timestamp": 1729570113000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x0f7c5246054d579426e4c4eb9bd934ef490b99ea",
+      "1": "27",
+      "2": "1",
+      "3": "5360000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "5360000000000000000",
+      "voter": "0x0f7c5246054d579426e4c4eb9bd934ef490b99ea",
+      "support": "1",
+      "proposalId": "27"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "0819bceecef062f46688632ed6bacfef04db506753f68a135bb8c37e3085d082"
+  },
+  {
+    "block_number": 66307019,
+    "block_timestamp": 1729570113000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "27",
+      "1": "600000106360000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000106360000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "27"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "0819bceecef062f46688632ed6bacfef04db506753f68a135bb8c37e3085d082"
+  },
+  {
+    "block_number": 66236885,
+    "block_timestamp": 1729359651000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x2ad61be1a6cabe6176e5a11eb45ccd1b281ae8e9",
+      "1": "28",
+      "2": "1",
+      "3": "100000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000",
+      "voter": "0x2ad61be1a6cabe6176e5a11eb45ccd1b281ae8e9",
+      "support": "1",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "622ab4045e4947d43f89f782b9330ae99f420c95319c1c606e2bd49a93baf61d"
+  },
+  {
+    "block_number": 66236885,
+    "block_timestamp": 1729359651000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "28",
+      "1": "600000109000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000109000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "622ab4045e4947d43f89f782b9330ae99f420c95319c1c606e2bd49a93baf61d"
+  },
+  {
+    "block_number": 66236859,
+    "block_timestamp": 1729359573000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x2ad61be1a6cabe6176e5a11eb45ccd1b281ae8e9",
+      "1": "27",
+      "2": "1",
+      "3": "100000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000",
+      "voter": "0x2ad61be1a6cabe6176e5a11eb45ccd1b281ae8e9",
+      "support": "1",
+      "proposalId": "27"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "9fc4b574dfc78dd0cef4117d1dabad83dd16e110d7409dd30404a42d46ccd6bb"
+  },
+  {
+    "block_number": 66236859,
+    "block_timestamp": 1729359573000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "27",
+      "1": "600000101000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000101000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "27"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "9fc4b574dfc78dd0cef4117d1dabad83dd16e110d7409dd30404a42d46ccd6bb"
+  },
+  {
+    "block_number": 66231901,
+    "block_timestamp": 1729344699000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "28",
+      "2": "1",
+      "3": "500000009000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "500000009000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "92e99d2a8e6b0618c019523f1148ab2d4056c10478d972712b626a976d0b06e4"
+  },
+  {
+    "block_number": 66231901,
+    "block_timestamp": 1729344699000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "28",
+      "1": "600000009000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000009000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "92e99d2a8e6b0618c019523f1148ab2d4056c10478d972712b626a976d0b06e4"
+  },
+  {
+    "block_number": 66231864,
+    "block_timestamp": 1729344588000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "28",
+      "2": "1",
+      "3": "100000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "a9c7f5dfa6a815cbc4c88259c302094674c0f9a29589345e441b6e3c801577cc"
+  },
+  {
+    "block_number": 66231864,
+    "block_timestamp": 1729344588000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "28",
+      "1": "100000000000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "100000000000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "a9c7f5dfa6a815cbc4c88259c302094674c0f9a29589345e441b6e3c801577cc"
+  },
+  {
+    "block_number": 66231780,
+    "block_timestamp": 1729344336000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xb295ef435406571422acc1780794324997a7e1f1",
+      "1": "28",
+      "2": "1",
+      "3": "0",
+      "4": "",
+      "reason": "",
+      "votes": "0",
+      "voter": "0xb295ef435406571422acc1780794324997a7e1f1",
+      "support": "1",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "256ec0220f6f627170ae87a2ff56b5cbcc26bedcb3b42fb3a75bd6bb7dc6ae73"
+  },
+  {
+    "block_number": 66231780,
+    "block_timestamp": 1729344336000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "28",
+      "1": "0",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "0",
+      "abstainVotes": "0",
+      "proposalId": "28"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "256ec0220f6f627170ae87a2ff56b5cbcc26bedcb3b42fb3a75bd6bb7dc6ae73"
+  },
+  {
+    "block_number": 66231770,
+    "block_timestamp": 1729344306000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "28",
+      "1": "0x71fb757e7ce073783c17606fa8f6de95dab62bb9",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x88bb336c70a33fe2506240a19826c2ad487ae6d8",
+      "3": "0\n0",
+      "4": "_setCollateralFactor(address,uint256)\n_setReserveFactor(uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x71fb757e7ce073783c17606fa8f6de95dab62bb9",
+      "values": "0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x88bb336c70a33fe2506240a19826c2ad487ae6d8",
+      "signatures": "_setCollateralFactor(address,uint256)\n_setReserveFactor(uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "28"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "5e234c4debb9f8f3afb6bc4ba2dba659e448977ccc0ab94aba8815434b0f812f"
+  },
+  {
+    "block_number": 66231744,
+    "block_timestamp": 1729344228000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "27",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "27"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "b62c55513563b152a40027cca981acb9adecf3f93b6590ff27487ce733da4311"
+  },
+  {
+    "block_number": 66231744,
+    "block_timestamp": 1729344228000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "27",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "27"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "b62c55513563b152a40027cca981acb9adecf3f93b6590ff27487ce733da4311"
+  },
+  {
+    "block_number": 66231705,
+    "block_timestamp": 1729344111000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "27",
+      "1": "0x87483d39a33af9181856abec3ef36825738b1055",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0",
+      "4": "_setCollateralFactor(address,uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x87483d39a33af9181856abec3ef36825738b1055",
+      "values": "0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setCollateralFactor(address,uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "27"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "e14350177d706a87e9cf957feb5309832c5f4caf1d29a0b04278183821997be6"
+  },
+  {
+    "block_number": 63002328,
+    "block_timestamp": 1719651690000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 22,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "26",
+      "id": "26"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "ca6ff3841fc4ed3c20a737bb4f1c3b4134c0d934f7becadee1b6347298014a12"
+  },
+  {
+    "block_number": 63002321,
+    "block_timestamp": 1719651669000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "25",
+      "id": "25"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "7aecb18029a892b6a0696a8344336bbe77b26f2ce1e040b6ae323e41fc458462"
+  },
+  {
+    "block_number": 62944365,
+    "block_timestamp": 1719477753000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 10,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "26",
+      "1": "1719650553",
+      "eta": "1719650553",
+      "id": "26"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "f7e4425badd587ff6d7a083dcbd2dfae0da432b96712b9fc48248d5cfad64945"
+  },
+  {
+    "block_number": 62944360,
+    "block_timestamp": 1719477738000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "25",
+      "1": "1719650538",
+      "eta": "1719650538",
+      "id": "25"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "d5af1f83fce31c1e50524ffbad4d885f0b611fc164ebbba1ccc14bca959a6efa"
+  },
+  {
+    "block_number": 62857496,
+    "block_timestamp": 1719217074000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "26",
+      "2": "1",
+      "3": "100000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "26"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "71f01575c8b966b3ec82292b5c913a0e468ed12082534b7e44b6e765d0ff414f"
+  },
+  {
+    "block_number": 62857496,
+    "block_timestamp": 1719217074000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "26",
+      "1": "600000009000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000009000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "26"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "71f01575c8b966b3ec82292b5c913a0e468ed12082534b7e44b6e765d0ff414f"
+  },
+  {
+    "block_number": 62857476,
+    "block_timestamp": 1719217014000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "26",
+      "2": "1",
+      "3": "500000009000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "500000009000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "26"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "c99ceb9d6225f70bc17edb314a09049e73142c77697d7c6c5b417eb948786150"
+  },
+  {
+    "block_number": 62857476,
+    "block_timestamp": 1719217014000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "26",
+      "1": "500000009000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "500000009000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "26"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "c99ceb9d6225f70bc17edb314a09049e73142c77697d7c6c5b417eb948786150"
+  },
+  {
+    "block_number": 62857384,
+    "block_timestamp": 1719216738000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "26",
+      "1": "0xb3ccbdfd991043639645a42c7ddd8988e9c25a7c",
+      "2": "0xea09611b57e89d67fbb33a516eb90508ca95a3e5\n0xc1fb63d49b539dcff1c243db500b1863dda022e3\n0x22163f4926c1b7e1d22dbbc76fbef7f54d364d87\n0x98142b3dc46eaf464686e969415148f7bea17a20\n0x2c7c9963111905d29eb8da37d28b0f53a7bb5c28\n0xe7f8a90ede3d84c7c0166bd84a4635e4675accfc\n0xea09611b57e89d67fbb33a516eb90508ca95a3e5\n0x22163f4926c1b7e1d22dbbc76fbef7f54d364d87\n0x5c78c77bbad44c3ebd2088e6b7b5d5f01bb0a8f5\n0x94a7a1e585a77e2edfd834005be9f545fe1f3c97",
+      "3": "0\n0\n0\n0\n0\n0\n0\n0\n0\n0",
+      "4": "_setReserveFactor(uint256)\nupdateJumpRateModel(uint256,uint256,uint256,uint256)\n_setReserveFactor(uint256)\nupdateJumpRateModel(uint256,uint256,uint256,uint256)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xb3ccbdfd991043639645a42c7ddd8988e9c25a7c",
+      "values": "0\n0\n0\n0\n0\n0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0xea09611b57e89d67fbb33a516eb90508ca95a3e5\n0xc1fb63d49b539dcff1c243db500b1863dda022e3\n0x22163f4926c1b7e1d22dbbc76fbef7f54d364d87\n0x98142b3dc46eaf464686e969415148f7bea17a20\n0x2c7c9963111905d29eb8da37d28b0f53a7bb5c28\n0xe7f8a90ede3d84c7c0166bd84a4635e4675accfc\n0xea09611b57e89d67fbb33a516eb90508ca95a3e5\n0x22163f4926c1b7e1d22dbbc76fbef7f54d364d87\n0x5c78c77bbad44c3ebd2088e6b7b5d5f01bb0a8f5\n0x94a7a1e585a77e2edfd834005be9f545fe1f3c97",
+      "signatures": "_setReserveFactor(uint256)\nupdateJumpRateModel(uint256,uint256,uint256,uint256)\n_setReserveFactor(uint256)\nupdateJumpRateModel(uint256,uint256,uint256,uint256)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "26"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "6417bc3ae1410f18d65cedcec821e7ce1acf41a74f7a517052aa2c80ce92b3f1"
+  },
+  {
+    "block_number": 62857199,
+    "block_timestamp": 1719216183000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "25",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "25"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "43ec9d51a33fe8233ec4be903e7b0e1bfd24424cf6c97667958e41d3477c18fd"
+  },
+  {
+    "block_number": 62857199,
+    "block_timestamp": 1719216183000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "25",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "25"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "43ec9d51a33fe8233ec4be903e7b0e1bfd24424cf6c97667958e41d3477c18fd"
+  },
+  {
+    "block_number": 62857075,
+    "block_timestamp": 1719215811000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "25",
+      "1": "0x1cd8edc149cc88083ca1c6996f68111993246de4",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0",
+      "4": "_setCollateralFactor(address,uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x1cd8edc149cc88083ca1c6996f68111993246de4",
+      "values": "0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setCollateralFactor(address,uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "25"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "1a00b66a1e190877365507f594159e491c9cd13d897455efa13da54af1f77148"
+  },
+  {
+    "block_number": 60332459,
+    "block_timestamp": 1711638564000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 17,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "24",
+      "id": "24"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "050175839c6d38153d2135431c3bdf18e42abb91da6699ff97a9f82c72718212"
+  },
+  {
+    "block_number": 60332439,
+    "block_timestamp": 1711638504000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "23",
+      "id": "23"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "f430515875c79f545c1a8cf043c3624e6366032b473364c1e2f07519ff0768d4"
+  },
+  {
+    "block_number": 60274747,
+    "block_timestamp": 1711465380000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 8,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "24",
+      "1": "1711638180",
+      "eta": "1711638180",
+      "id": "24"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "c0354fe34eda473e67f248d1291169b9784489551e37fafa47056efa3a2ac90e"
+  },
+  {
+    "block_number": 60274742,
+    "block_timestamp": 1711465365000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "23",
+      "1": "1711638165",
+      "eta": "1711638165",
+      "id": "23"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "cc004810860cd7f7a0e4937432add7fe0f9c7b33f04822efc794fbf185c04205"
+  },
+  {
+    "block_number": 60238007,
+    "block_timestamp": 1711355112000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x31f0d7772c45afd269bf4c69a1683cb6d2dac6be",
+      "1": "23",
+      "2": "0",
+      "3": "2500000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "2500000000000000000",
+      "voter": "0x31f0d7772c45afd269bf4c69a1683cb6d2dac6be",
+      "support": "0",
+      "proposalId": "23"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "145c0baa42d772d6e66a60559580c8256f99e8992bc4b9b7c27374570c7e2b73"
+  },
+  {
+    "block_number": 60238007,
+    "block_timestamp": 1711355112000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "23",
+      "1": "600000001000000000000000000",
+      "2": "2500000000000000000",
+      "3": "0",
+      "againstVotes": "2500000000000000000",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "23"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "145c0baa42d772d6e66a60559580c8256f99e8992bc4b9b7c27374570c7e2b73"
+  },
+  {
+    "block_number": 60237978,
+    "block_timestamp": 1711355025000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x31f0d7772c45afd269bf4c69a1683cb6d2dac6be",
+      "1": "24",
+      "2": "0",
+      "3": "1000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "1000000000000000000",
+      "voter": "0x31f0d7772c45afd269bf4c69a1683cb6d2dac6be",
+      "support": "0",
+      "proposalId": "24"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "50d744807f1e40fb57e71b18a2510ca9e81ac9297fc5d554deb1fa686e23330d"
+  },
+  {
+    "block_number": 60237978,
+    "block_timestamp": 1711355025000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "24",
+      "1": "600000009000000000000000000",
+      "2": "1000000000000000000",
+      "3": "0",
+      "againstVotes": "1000000000000000000",
+      "forVotes": "600000009000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "24"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "50d744807f1e40fb57e71b18a2510ca9e81ac9297fc5d554deb1fa686e23330d"
+  },
+  {
+    "block_number": 60158466,
+    "block_timestamp": 1711116357000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "24",
+      "2": "1",
+      "3": "100000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "100000000000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "24"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "6f9e53bf70d5912677d04892bf474fbbef491a9ae6e05a1a3ff7fd8d3c50b54b"
+  },
+  {
+    "block_number": 60158466,
+    "block_timestamp": 1711116357000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "24",
+      "1": "600000009000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000009000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "24"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "6f9e53bf70d5912677d04892bf474fbbef491a9ae6e05a1a3ff7fd8d3c50b54b"
+  },
+  {
+    "block_number": 60158322,
+    "block_timestamp": 1711115925000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "24",
+      "2": "1",
+      "3": "500000009000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "500000009000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "24"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "7f066b7a8d778b96553f33b0c16e90bf7fc352cc3afd68bbf8d020e5d1009686"
+  },
+  {
+    "block_number": 60158322,
+    "block_timestamp": 1711115925000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "24",
+      "1": "500000009000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "500000009000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "24"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "7f066b7a8d778b96553f33b0c16e90bf7fc352cc3afd68bbf8d020e5d1009686"
+  },
+  {
+    "block_number": 60158259,
+    "block_timestamp": 1711115736000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "23",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "23"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "cbbde715af98cac44fa73884fdcc273bac773a4e4730a39d6e1b89e5d80d7d0e"
+  },
+  {
+    "block_number": 60158259,
+    "block_timestamp": 1711115736000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "23",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "23"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "cbbde715af98cac44fa73884fdcc273bac773a4e4730a39d6e1b89e5d80d7d0e"
+  },
+  {
+    "block_number": 60158210,
+    "block_timestamp": 1711115589000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "24",
+      "1": "0xa893f6cbc26d513625951a07c205ecadbfe08765",
+      "2": "0x88bb336c70a33fe2506240a19826c2ad487ae6d8\n0x23bdf8188e17487015dc10fe7739b4261701727c\n0xddcbbcb2f17db034fc970fbd87ffa7da51bebbfc\n0xcba95c5726a36046503570496e2c5a457ed7c008\n0x71169cc742905196d4ae1b6330e5366b5459a3dc\n0x4434beca3ac7d96e2b4eef1974cf9bddcb7a328b\n0xa60befaf69b18090b762a83177f09831773967ea\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0\n0\n0\n0\n0\n0\n0",
+      "4": "_setReserveFactor(uint256)\nupdateJumpRateModel(uint256,uint256,uint256,uint256)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setCollateralFactor(address,uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xa893f6cbc26d513625951a07c205ecadbfe08765",
+      "values": "0\n0\n0\n0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x88bb336c70a33fe2506240a19826c2ad487ae6d8\n0x23bdf8188e17487015dc10fe7739b4261701727c\n0xddcbbcb2f17db034fc970fbd87ffa7da51bebbfc\n0xcba95c5726a36046503570496e2c5a457ed7c008\n0x71169cc742905196d4ae1b6330e5366b5459a3dc\n0x4434beca3ac7d96e2b4eef1974cf9bddcb7a328b\n0xa60befaf69b18090b762a83177f09831773967ea\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setReserveFactor(uint256)\nupdateJumpRateModel(uint256,uint256,uint256,uint256)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setReserveAdmin(address)\n_setCollateralFactor(address,uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "24"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "f6b7335cbcd95ab04a5a9a4d1421f0265864ce3109b16e0ecbf33daa3a5df049"
+  },
+  {
+    "block_number": 60158204,
+    "block_timestamp": 1711115571000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "23",
+      "1": "0xb5a5f59e97538268fcca8c49305f5570397228af",
+      "2": "0xcba95c5726a36046503570496e2c5a457ed7c008",
+      "3": "0",
+      "4": "_setReserveFactor(uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xb5a5f59e97538268fcca8c49305f5570397228af",
+      "values": "0",
+      "description": "",
+      "targets": "0xcba95c5726a36046503570496e2c5a457ed7c008",
+      "signatures": "_setReserveFactor(uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "23"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "490a5fcfd809830197d15540baea25e63d475e2d811af13074bf3f54382ca429"
+  },
+  {
+    "block_number": 57902194,
+    "block_timestamp": 1704340281000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "22",
+      "id": "22"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "efdb85a1469d70e655230c565493a2dbbaec25ca36a1b7747286ea983ec94927"
+  },
+  {
+    "block_number": 57843589,
+    "block_timestamp": 1704164415000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "22",
+      "1": "1704337215",
+      "eta": "1704337215",
+      "id": "22"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "6fd136a9cc6ac8421db6b24175ad5edbd50d20430e0fe1d3f98cb2c8ef198a89"
+  },
+  {
+    "block_number": 57803134,
+    "block_timestamp": 1704043014000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "1": "22",
+      "2": "1",
+      "3": "700000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "700000000000000000000000000",
+      "voter": "0xbb1712d44d09feee51d071219b4c5d9792b76b29",
+      "support": "1",
+      "proposalId": "22"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "f6655a46085455b88d8be19fc2d7f556127a168e5f5d4c28447085fdc555f96f"
+  },
+  {
+    "block_number": 57803134,
+    "block_timestamp": 1704043014000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "22",
+      "1": "700000000000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "700000000000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "22"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "f6655a46085455b88d8be19fc2d7f556127a168e5f5d4c28447085fdc555f96f"
+  },
+  {
+    "block_number": 57737970,
+    "block_timestamp": 1703847468000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "22",
+      "1": "0x3dd3e97fb130f0807b24632e5aa0fa8af62a368b",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0",
+      "4": "_setCollateralFactor(address,uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x3dd3e97fb130f0807b24632e5aa0fa8af62a368b",
+      "values": "0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setCollateralFactor(address,uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "22"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "38f2b42bb56b1143a5ecee7c9c0f72316abafaff3a0dd28f87f83d22959289b6"
+  },
+  {
+    "block_number": 56710452,
+    "block_timestamp": 1700763921000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 5,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "21",
+      "id": "21"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "c0fb7903631656709b26e15d5ed9b4c3fcdfdec5492d7ac5ca9b9c3a266a7fac"
+  },
+  {
+    "block_number": 56645233,
+    "block_timestamp": 1700568201000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "21",
+      "1": "1700741001",
+      "eta": "1700741001",
+      "id": "21"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "30647645cb8b7c6215171b3eeb89487b38c48b1e23442b99d354231013c55a33"
+  },
+  {
+    "block_number": 56558376,
+    "block_timestamp": 1700307507000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "21",
+      "2": "1",
+      "3": "612000000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "612000000000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "21"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "0b031b2ea2b46ae1cda25485e2679342ace31d3deb3072f98030e5af9e739c41"
+  },
+  {
+    "block_number": 56558376,
+    "block_timestamp": 1700307507000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "21",
+      "1": "612000000000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "612000000000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "21"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "0b031b2ea2b46ae1cda25485e2679342ace31d3deb3072f98030e5af9e739c41"
+  },
+  {
+    "block_number": 56558346,
+    "block_timestamp": 1700307417000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "21",
+      "1": "0x77aa8e33375765eb7a6404e21f55f50efeae40cc",
+      "2": "0x96e14260b42e05225180c6a1b0bc496a2319bd44",
+      "3": "0",
+      "4": "createVault(address,address,address)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x77aa8e33375765eb7a6404e21f55f50efeae40cc",
+      "values": "0",
+      "description": "",
+      "targets": "0x96e14260b42e05225180c6a1b0bc496a2319bd44",
+      "signatures": "createVault(address,address,address)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "21"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "3d47a5ba0bdaaa2bc95b795c1b63e26f84dc637604890ec280f738070cbfb43d"
+  },
+  {
+    "block_number": 53941403,
+    "block_timestamp": 1692446964000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 16,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "20",
+      "id": "20"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "f5d2b21d359709546201d98355340a7149116c5b75d6893a0313e105f54da50c"
+  },
+  {
+    "block_number": 53883541,
+    "block_timestamp": 1692273321000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 5,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "20",
+      "1": "1692446121",
+      "eta": "1692446121",
+      "id": "20"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "7bb66bdfdf3d8f60ea85e53c3e49505ff78d33633a503e54a9a8d2c8ce2f52fa"
+  },
+  {
+    "block_number": 53830427,
+    "block_timestamp": 1692113937000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x0565de8c97ecfeb2d5a1f1bd833d898a7aa37387",
+      "1": "20",
+      "2": "1",
+      "3": "231711000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "231711000000000000000",
+      "voter": "0x0565de8c97ecfeb2d5a1f1bd833d898a7aa37387",
+      "support": "1",
+      "proposalId": "20"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "4416b94a6bf1aa9337a35c0e6f89bd37903eb5329fd155899eb67e61068139c9"
+  },
+  {
+    "block_number": 53830427,
+    "block_timestamp": 1692113937000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "20",
+      "1": "603637745159000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "603637745159000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "20"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "4416b94a6bf1aa9337a35c0e6f89bd37903eb5329fd155899eb67e61068139c9"
+  },
+  {
+    "block_number": 53793142,
+    "block_timestamp": 1692002049000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "20",
+      "2": "1",
+      "3": "603637513448000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "603637513448000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "20"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "4bb18a7d01c882880999af5ea0c225ebc9ddf0d5951b48f2f1bf32baef08800e"
+  },
+  {
+    "block_number": 53793142,
+    "block_timestamp": 1692002049000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "20",
+      "1": "603637513448000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "603637513448000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "20"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "4bb18a7d01c882880999af5ea0c225ebc9ddf0d5951b48f2f1bf32baef08800e"
+  },
+  {
+    "block_number": 53793116,
+    "block_timestamp": 1692001971000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "20",
+      "1": "0xd86bb68ed23bc0af345bbdfe11b256aefc61d051",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a7832a4c51dfbc423cf562cfcd534b88ffd4624\n0x22163f4926c1b7e1d22dbbc76fbef7f54d364d87\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0\n0\n0\n0",
+      "4": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xd86bb68ed23bc0af345bbdfe11b256aefc61d051",
+      "values": "0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a7832a4c51dfbc423cf562cfcd534b88ffd4624\n0x22163f4926c1b7e1d22dbbc76fbef7f54d364d87\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "20"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "5a5c90060cf09a57c9cc4e7939e3b4938892e7db4828a05a7e16c022aefb40ac"
+  },
+  {
+    "block_number": 52901143,
+    "block_timestamp": 1689325257000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 23,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "19",
+      "id": "19"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "372f117a3806a1f99796831f4a309284abd20e4f8d15f796dbd784503e148e93"
+  },
+  {
+    "block_number": 52843465,
+    "block_timestamp": 1689152160000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 8,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "19",
+      "1": "1689324960",
+      "eta": "1689324960",
+      "id": "19"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "32660ac30da84e62844a538a332cdab9a18ca0127ea379c9c73a80ab0943b63e"
+  },
+  {
+    "block_number": 52756969,
+    "block_timestamp": 1688892600000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "19",
+      "2": "1",
+      "3": "656742132000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "656742132000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "19"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "7c3b312890ef649c78c73832b5d2679e2b8d86f671e729179a49e13a06a4d5c1"
+  },
+  {
+    "block_number": 52756969,
+    "block_timestamp": 1688892600000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "19",
+      "1": "656742132000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "656742132000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "19"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "7c3b312890ef649c78c73832b5d2679e2b8d86f671e729179a49e13a06a4d5c1"
+  },
+  {
+    "block_number": 52756926,
+    "block_timestamp": 1688892471000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "19",
+      "1": "0xc6352fc138bae54f7b29caa83c8293be5d75544a",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xa7a572f6d8b4ca291b9353cf26580abed74f3e31\n0xddcbbcb2f17db034fc970fbd87ffa7da51bebbfc\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xa60befaf69b18090b762a83177f09831773967ea",
+      "3": "0\n0\n0\n0\n0\n0\n0\n0",
+      "4": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)\n_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)\n_setReserveFactor(uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xc6352fc138bae54f7b29caa83c8293be5d75544a",
+      "values": "0\n0\n0\n0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xa7a572f6d8b4ca291b9353cf26580abed74f3e31\n0xddcbbcb2f17db034fc970fbd87ffa7da51bebbfc\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xa60befaf69b18090b762a83177f09831773967ea",
+      "signatures": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)\n_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)\n_setReserveFactor(uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "19"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "dea0189385c0b4dc480a09d518816ff54edc7cf6c64323cee38290091d21b8b0"
+  },
+  {
+    "block_number": 52587462,
+    "block_timestamp": 1688383827000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "18",
+      "id": "18"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "913463968d0bf74f2850e9f2421e09deb1b5e11c16ba8a52507ade31923b668e"
+  },
+  {
+    "block_number": 52528276,
+    "block_timestamp": 1688206200000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "18",
+      "1": "1688379000",
+      "eta": "1688379000",
+      "id": "18"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "4b8963005db3d7d5f5f8939bf7649ab4a25c47088376e0f8dd4f61b2ca254e6e"
+  },
+  {
+    "block_number": 52507205,
+    "block_timestamp": 1688142969000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "18",
+      "2": "1",
+      "3": "650912318000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "650912318000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "18"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "6ae572a53335c828121a7f8ad5c28f79cd2d067a6916234363877f52a1799d8d"
+  },
+  {
+    "block_number": 52507205,
+    "block_timestamp": 1688142969000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "18",
+      "1": "650912320678000000000000000",
+      "2": "3000000000000000000000",
+      "3": "0",
+      "againstVotes": "3000000000000000000000",
+      "forVotes": "650912320678000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "18"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "6ae572a53335c828121a7f8ad5c28f79cd2d067a6916234363877f52a1799d8d"
+  },
+  {
+    "block_number": 52479124,
+    "block_timestamp": 1688058702000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xa87bc00c03f92e6e8b8754a7855fe9d576d7922b",
+      "1": "18",
+      "2": "0",
+      "3": "3000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "3000000000000000000000",
+      "voter": "0xa87bc00c03f92e6e8b8754a7855fe9d576d7922b",
+      "support": "0",
+      "proposalId": "18"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "59f9493ac261f925c8df2bef4bba4b906305cefb45c24b852d2f5519a78419b8"
+  },
+  {
+    "block_number": 52479124,
+    "block_timestamp": 1688058702000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "18",
+      "1": "2678000000000000000",
+      "2": "3000000000000000000000",
+      "3": "0",
+      "againstVotes": "3000000000000000000000",
+      "forVotes": "2678000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "18"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "59f9493ac261f925c8df2bef4bba4b906305cefb45c24b852d2f5519a78419b8"
+  },
+  {
+    "block_number": 52442593,
+    "block_timestamp": 1687949073000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x0a6de75ed7dd8032c5f1e4a14ca826169287d0a9",
+      "1": "18",
+      "2": "1",
+      "3": "2678000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "2678000000000000000",
+      "voter": "0x0a6de75ed7dd8032c5f1e4a14ca826169287d0a9",
+      "support": "1",
+      "proposalId": "18"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "97284ecd61976778db795f3e82fa00020243667073733b5b1f1a6e9e29a37353"
+  },
+  {
+    "block_number": 52442593,
+    "block_timestamp": 1687949073000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "18",
+      "1": "2678000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "2678000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "18"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "97284ecd61976778db795f3e82fa00020243667073733b5b1f1a6e9e29a37353"
+  },
+  {
+    "block_number": 52441788,
+    "block_timestamp": 1687946658000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "18",
+      "1": "0x83e55827140eaf1a520edbb7b7da703a9bcf84f7",
+      "2": "0xe226f4c67e45058243d9093daf3e71ff3b62caf9",
+      "3": "0",
+      "4": "start()",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x83e55827140eaf1a520edbb7b7da703a9bcf84f7",
+      "values": "0",
+      "description": "",
+      "targets": "0xe226f4c67e45058243d9093daf3e71ff3b62caf9",
+      "signatures": "start()",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "18"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "48986723ac0143c46c0def8a24c49afa41dc82faa6fbb9df18ce9c0e82a5ed47"
+  },
+  {
+    "block_number": 52386839,
+    "block_timestamp": 1687781757000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 16,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "17",
+      "id": "17"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "8452a2d561009190a2134017dbc85a5b504f797b234273040d017b15dd07386b"
+  },
+  {
+    "block_number": 52329250,
+    "block_timestamp": 1687608942000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 5,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "17",
+      "1": "1687781742",
+      "eta": "1687781742",
+      "id": "17"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "785ed826f3d73c114ecb81aa12361bb5b0ce1ff0d84fec0596cbd1c0c19f9ce1"
+  },
+  {
+    "block_number": 52272006,
+    "block_timestamp": 1687437162000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "17",
+      "2": "1",
+      "3": "612984774000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "612984774000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "17"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "300ebb41ec64eb11f83707981d176e47f150ce10abd6597ce4b983263a5d5001"
+  },
+  {
+    "block_number": 52272006,
+    "block_timestamp": 1687437162000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "17",
+      "1": "612984774000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "612984774000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "17"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "300ebb41ec64eb11f83707981d176e47f150ce10abd6597ce4b983263a5d5001"
+  },
+  {
+    "block_number": 52242801,
+    "block_timestamp": 1687349520000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "17",
+      "1": "0x69456b76071a673706ebc707aa3c4c96d7f60a43",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xc64e69acde1c7b16c2a3efcdbbdaa96c3644c2b3\n0x5c78c77bbad44c3ebd2088e6b7b5d5f01bb0a8f5\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0\n0\n0\n0",
+      "4": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x69456b76071a673706ebc707aa3c4c96d7f60a43",
+      "values": "0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0xc64e69acde1c7b16c2a3efcdbbdaa96c3644c2b3\n0x5c78c77bbad44c3ebd2088e6b7b5d5f01bb0a8f5\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "17"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "f6f712ee6408a8c802e89b58149af2ec67fa69f0b9c3613a8eae2ccebd288b7e"
+  },
+  {
+    "block_number": 49647899,
+    "block_timestamp": 1679555718000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 7,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "16",
+      "id": "16"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "ebaed7de7825b79066c2064d49a638b7a60d2e380299dc59917ce8c648ddb754"
+  },
+  {
+    "block_number": 49590306,
+    "block_timestamp": 1679382888000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "16",
+      "1": "1679555688",
+      "eta": "1679555688",
+      "id": "16"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "8873cf29af3bef53fa02d8b6e638bdf7f4141bd9b11dc3d7302281fe832c74d5"
+  },
+  {
+    "block_number": 49578215,
+    "block_timestamp": 1679346603000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x81666846f679066f81dce9c84a103d83d3bc8e60",
+      "1": "16",
+      "2": "1",
+      "3": "111000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "111000000000000000000",
+      "voter": "0x81666846f679066f81dce9c84a103d83d3bc8e60",
+      "support": "1",
+      "proposalId": "16"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "5b36330a0e9feee47969eb492119ca234058a52794fcf71b6df04ba6ccb7c6f5"
+  },
+  {
+    "block_number": 49578215,
+    "block_timestamp": 1679346603000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "16",
+      "1": "600000112000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000112000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "16"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "5b36330a0e9feee47969eb492119ca234058a52794fcf71b6df04ba6ccb7c6f5"
+  },
+  {
+    "block_number": 49503986,
+    "block_timestamp": 1679123847000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "16",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "16"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "50ef5fd2bb891010575f32641fbdf524767582b0fc124674c370a17dc4c46000"
+  },
+  {
+    "block_number": 49503986,
+    "block_timestamp": 1679123847000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "16",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "16"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "50ef5fd2bb891010575f32641fbdf524767582b0fc124674c370a17dc4c46000"
+  },
+  {
+    "block_number": 49503898,
+    "block_timestamp": 1679123583000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "16",
+      "1": "0xec9dd7339f5149df295c154e6a565868a8cc0781",
+      "2": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x71169cc742905196d4ae1b6330e5366b5459a3dc",
+      "3": "0\n0\n0",
+      "4": "_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)\n_setReserveFactor(uint256)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0xec9dd7339f5149df295c154e6a565868a8cc0781",
+      "values": "0\n0\n0",
+      "description": "",
+      "targets": "0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x71169cc742905196d4ae1b6330e5366b5459a3dc",
+      "signatures": "_setMintPaused(address,bool)\n_setBorrowPaused(address,bool)\n_setReserveFactor(uint256)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "16"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "0b4078293ff0ac8eafb899c8f356806a95993aa1dbc64f58ff698d43843e6de3"
+  },
+  {
+    "block_number": 47820478,
+    "block_timestamp": 1674060099000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 25,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "15",
+      "id": "15"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "d8fbed2c49ef47dad3dc3c7b36c52b42457073224f707eedddb2e9e43bd8f3c0"
+  },
+  {
+    "block_number": 47820478,
+    "block_timestamp": 1674060099000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 0,
+    "event_name": "NewImplementation",
+    "result": {
+      "0": "0x1e1bb45c692a6aff872decabd6bd6e3559aa4b81",
+      "1": "0xccda938a49c9ab6b0c302d4f7e42126e4821bfad",
+      "newImplementation": "0xccda938a49c9ab6b0c302d4f7e42126e4821bfad",
+      "oldImplementation": "0x1e1bb45c692a6aff872decabd6bd6e3559aa4b81"
+    },
+    "result_type": {
+      "newImplementation": "address",
+      "oldImplementation": "address"
+    },
+    "event": "NewImplementation(address oldImplementation, address newImplementation)",
+    "transaction_id": "d8fbed2c49ef47dad3dc3c7b36c52b42457073224f707eedddb2e9e43bd8f3c0"
+  },
+  {
+    "block_number": 47762917,
+    "block_timestamp": 1673887290000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 9,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "15",
+      "1": "1674060090",
+      "eta": "1674060090",
+      "id": "15"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "10e35e73650d7f61408c6c989b786695b9694c80e15b671177fbc40caa985728"
+  },
+  {
+    "block_number": 47755622,
+    "block_timestamp": 1673865375000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xd5d730740a063466ecf6b64627a1c9ae5852c81a",
+      "1": "15",
+      "2": "1",
+      "3": "150000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "150000000000000000000",
+      "voter": "0xd5d730740a063466ecf6b64627a1c9ae5852c81a",
+      "support": "1",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "3be9384578c85586641c042dad60dc5abb340c2d39e8f92ec5c364a6b478158d"
+  },
+  {
+    "block_number": 47755622,
+    "block_timestamp": 1673865375000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "15",
+      "1": "600001151000000000000000000",
+      "2": "2643000000000000000",
+      "3": "0",
+      "againstVotes": "2643000000000000000",
+      "forVotes": "600001151000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "3be9384578c85586641c042dad60dc5abb340c2d39e8f92ec5c364a6b478158d"
+  },
+  {
+    "block_number": 47715426,
+    "block_timestamp": 1673744742000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xdaf3ca6048983765a6cab6173731c1d9df2d99a0",
+      "1": "15",
+      "2": "0",
+      "3": "2643000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "2643000000000000000",
+      "voter": "0xdaf3ca6048983765a6cab6173731c1d9df2d99a0",
+      "support": "0",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "5ee4485580deb4128d2b05a1b61c0a0798614f2ad5ced88925b543aba3067a06"
+  },
+  {
+    "block_number": 47715426,
+    "block_timestamp": 1673744742000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "15",
+      "1": "600001001000000000000000000",
+      "2": "2643000000000000000",
+      "3": "0",
+      "againstVotes": "2643000000000000000",
+      "forVotes": "600001001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "5ee4485580deb4128d2b05a1b61c0a0798614f2ad5ced88925b543aba3067a06"
+  },
+  {
+    "block_number": 47699822,
+    "block_timestamp": 1673697909000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xaf4871929ad7b7930db27667ed4238542101b100",
+      "1": "15",
+      "2": "1",
+      "3": "1000000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "1000000000000000000000",
+      "voter": "0xaf4871929ad7b7930db27667ed4238542101b100",
+      "support": "1",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "844a44eeeee869e07dd132b5bb1cab035df7d0413fd2e83ad28cdc1b7e6d9863"
+  },
+  {
+    "block_number": 47699822,
+    "block_timestamp": 1673697909000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "15",
+      "1": "600001001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600001001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "844a44eeeee869e07dd132b5bb1cab035df7d0413fd2e83ad28cdc1b7e6d9863"
+  },
+  {
+    "block_number": 47676556,
+    "block_timestamp": 1673628081000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "15",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "693c73bb8f215c68aff8d70686d05150f5bcabec02dfa36b09574d4de9d11776"
+  },
+  {
+    "block_number": 47676556,
+    "block_timestamp": 1673628081000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "15",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "15"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "693c73bb8f215c68aff8d70686d05150f5bcabec02dfa36b09574d4de9d11776"
+  },
+  {
+    "block_number": 47676489,
+    "block_timestamp": 1673627880000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "15",
+      "1": "0x48791485d2dad4f52cc7f1ef7d46d8c1b4ded0fa",
+      "2": "0x356db5ff7599825aff31a25f8177f390304c93b8\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x201c6c23426f8c1e62fde0c78af9328d62f29628\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x83c91bfde3e6d130e286a3722f171ae49fb25047\n0x71169cc742905196d4ae1b6330e5366b5459a3dc\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "3": "0\n0\n0\n0\n0\n0\n0\n0\n0",
+      "4": "_setImplementation(address)\n_setPendingImplementation(address)\n_become(address)\n_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardian(address)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x48791485d2dad4f52cc7f1ef7d46d8c1b4ded0fa",
+      "values": "0\n0\n0\n0\n0\n0\n0\n0\n0",
+      "description": "",
+      "targets": "0x356db5ff7599825aff31a25f8177f390304c93b8\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x201c6c23426f8c1e62fde0c78af9328d62f29628\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x83c91bfde3e6d130e286a3722f171ae49fb25047\n0x71169cc742905196d4ae1b6330e5366b5459a3dc\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4\n0x4a33bf2666f2e75f3d6ad3b9ad316685d5c668d4",
+      "signatures": "_setImplementation(address)\n_setPendingImplementation(address)\n_become(address)\n_supportMarket(address)\n_setCollateralFactor(address,uint256)\napprove(address,uint256)\nmint(uint256)\n_setCollateralFactorGuardian(address)\n_setCollateralFactorGuardianStateForMarket(address,bool)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "15"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "46a03ef3f6bbe8aef31854b3379f12621453e93b55b119c281e4bdbdcb592b16"
+  },
+  {
+    "block_number": 45261934,
+    "block_timestamp": 1666366815000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalExecuted",
+    "result": {
+      "0": "14",
+      "id": "14"
+    },
+    "result_type": {
+      "id": "uint256"
+    },
+    "event": "ProposalExecuted(uint256 id)",
+    "transaction_id": "7e55e23d13bd3341bad3183b51cf8cf2b8a7632a48a54b040204de56c88b8061"
+  },
+  {
+    "block_number": 45261934,
+    "block_timestamp": 1666366815000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 0,
+    "event_name": "NewImplementation",
+    "result": {
+      "0": "0x0c1bf4d57b0e5848c89812fdba7761a34f34d112",
+      "1": "0x1e1bb45c692a6aff872decabd6bd6e3559aa4b81",
+      "newImplementation": "0x1e1bb45c692a6aff872decabd6bd6e3559aa4b81",
+      "oldImplementation": "0x0c1bf4d57b0e5848c89812fdba7761a34f34d112"
+    },
+    "result_type": {
+      "newImplementation": "address",
+      "oldImplementation": "address"
+    },
+    "event": "NewImplementation(address oldImplementation, address newImplementation)",
+    "transaction_id": "7e55e23d13bd3341bad3183b51cf8cf2b8a7632a48a54b040204de56c88b8061"
+  },
+  {
+    "block_number": 45204321,
+    "block_timestamp": 1666193832000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 1,
+    "event_name": "ProposalQueued",
+    "result": {
+      "0": "14",
+      "1": "1666366632",
+      "eta": "1666366632",
+      "id": "14"
+    },
+    "result_type": {
+      "eta": "uint256",
+      "id": "uint256"
+    },
+    "event": "ProposalQueued(uint256 id, uint256 eta)",
+    "transaction_id": "d6e33660f069cc23b789a08a9c5ffebbe98e01755bef2b0edeaa29dd3be27145"
+  },
+  {
+    "block_number": 45160445,
+    "block_timestamp": 1666062096000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x31f0d7772c45afd269bf4c69a1683cb6d2dac6be",
+      "1": "14",
+      "2": "0",
+      "3": "4000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "4000000000000000000",
+      "voter": "0x31f0d7772c45afd269bf4c69a1683cb6d2dac6be",
+      "support": "0",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "621b268b85f6bbf438f571743185061b84dee344be3a660634956731eaa08747"
+  },
+  {
+    "block_number": 45160445,
+    "block_timestamp": 1666062096000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "14",
+      "1": "600002090000000000000000000",
+      "2": "49840000000000000000",
+      "3": "0",
+      "againstVotes": "49840000000000000000",
+      "forVotes": "600002090000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "621b268b85f6bbf438f571743185061b84dee344be3a660634956731eaa08747"
+  },
+  {
+    "block_number": 45151234,
+    "block_timestamp": 1666034451000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0xf3aca13bf2a61cdb197853980a6f4885fce58595",
+      "1": "14",
+      "2": "0",
+      "3": "45840000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "45840000000000000000",
+      "voter": "0xf3aca13bf2a61cdb197853980a6f4885fce58595",
+      "support": "0",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "a57e03581be8cde166eba73b944e846d8dd9aefd3d3b6e9b3a45e9baa337ac9e"
+  },
+  {
+    "block_number": 45151234,
+    "block_timestamp": 1666034451000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "14",
+      "1": "600002090000000000000000000",
+      "2": "45840000000000000000",
+      "3": "0",
+      "againstVotes": "45840000000000000000",
+      "forVotes": "600002090000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "a57e03581be8cde166eba73b944e846d8dd9aefd3d3b6e9b3a45e9baa337ac9e"
+  },
+  {
+    "block_number": 45134194,
+    "block_timestamp": 1665983295000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99e680c266bc43fdf08c9553e7015e083cb931f9",
+      "1": "14",
+      "2": "1",
+      "3": "2089000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "2089000000000000000000",
+      "voter": "0x99e680c266bc43fdf08c9553e7015e083cb931f9",
+      "support": "1",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "9a6a3c2817c453d0321debb4f220ef5f779c12913774dcc675f9ad2c6619ab5f"
+  },
+  {
+    "block_number": 45134194,
+    "block_timestamp": 1665983295000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "14",
+      "1": "600002090000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600002090000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "9a6a3c2817c453d0321debb4f220ef5f779c12913774dcc675f9ad2c6619ab5f"
+  },
+  {
+    "block_number": 45117964,
+    "block_timestamp": 1665934584000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 3,
+    "event_name": "VoteCast",
+    "result": {
+      "0": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "1": "14",
+      "2": "1",
+      "3": "600000001000000000000000000",
+      "4": "",
+      "reason": "",
+      "votes": "600000001000000000000000000",
+      "voter": "0x99ab9df0bab6385c5ecade8b0f7a7e914502f6fc",
+      "support": "1",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "reason": "string",
+      "votes": "uint256",
+      "voter": "address",
+      "support": "uint8",
+      "proposalId": "uint256"
+    },
+    "event": "VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 votes, string reason)",
+    "transaction_id": "e6f69e1f588ba8394c929b7a2eed21b45bd1244713dcc157a790f6c95b4c6707"
+  },
+  {
+    "block_number": 45117964,
+    "block_timestamp": 1665934584000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "ProposalSnapshotBravo",
+    "result": {
+      "0": "14",
+      "1": "600000001000000000000000000",
+      "2": "0",
+      "3": "0",
+      "againstVotes": "0",
+      "forVotes": "600000001000000000000000000",
+      "abstainVotes": "0",
+      "proposalId": "14"
+    },
+    "result_type": {
+      "againstVotes": "uint256",
+      "forVotes": "uint256",
+      "abstainVotes": "uint256",
+      "proposalId": "uint256"
+    },
+    "event": "ProposalSnapshotBravo(uint256 proposalId, uint256 forVotes, uint256 againstVotes, uint256 abstainVotes)",
+    "transaction_id": "e6f69e1f588ba8394c929b7a2eed21b45bd1244713dcc157a790f6c95b4c6707"
+  },
+  {
+    "block_number": 45117918,
+    "block_timestamp": 1665934446000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 4,
+    "event_name": "ProposalCreated",
+    "result": {
+      "0": "14",
+      "1": "0x9e21ad8286f31a61f541fefaf8fca63cb78a020c",
+      "2": "0x356db5ff7599825aff31a25f8177f390304c93b8",
+      "3": "0",
+      "4": "_setImplementation(address)",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "proposer": "0x9e21ad8286f31a61f541fefaf8fca63cb78a020c",
+      "values": "0",
+      "description": "",
+      "targets": "0x356db5ff7599825aff31a25f8177f390304c93b8",
+      "signatures": "_setImplementation(address)",
+      "calldatas": "",
+      "endBlock": "",
+      "startBlock": "",
+      "id": "14"
+    },
+    "result_type": {
+      "startBlock": "uint256",
+      "proposer": "address",
+      "values": "uint256[]",
+      "description": "string",
+      "id": "uint256",
+      "targets": "address[]",
+      "signatures": "string[]",
+      "calldatas": "bytes[]",
+      "endBlock": "uint256"
+    },
+    "event": "ProposalCreated(uint256 id, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 startBlock, uint256 endBlock, string description)",
+    "transaction_id": "7fbbce6438f84719f8cc8ae9b543373de56174d6ce70953b6d1ea44549ed37e9"
+  },
+  {
+    "block_number": 44305025,
+    "block_timestamp": 1663494453000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 2,
+    "event_name": "WhitelistGuardianSet",
+    "result": {
+      "0": "0x0000000000000000000000000000000000000000",
+      "1": "0x0000000000000000000000000000000000000000",
+      "oldGuardian": "0x0000000000000000000000000000000000000000",
+      "newGuardian": "0x0000000000000000000000000000000000000000"
+    },
+    "result_type": {
+      "oldGuardian": "address",
+      "newGuardian": "address"
+    },
+    "event": "WhitelistGuardianSet(address oldGuardian, address newGuardian)",
+    "transaction_id": "91901e88cbd70de6baf9fa5c8d1bef3feca672d08eabcb292fd16c5caf2533bf"
+  },
+  {
+    "block_number": 44122826,
+    "block_timestamp": 1662947613000,
+    "caller_contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "contract_address": "TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD",
+    "event_index": 0,
+    "event_name": "NewImplementation",
+    "result": {
+      "0": "0x0000000000000000000000000000000000000000",
+      "1": "0x0c1bf4d57b0e5848c89812fdba7761a34f34d112",
+      "newImplementation": "0x0c1bf4d57b0e5848c89812fdba7761a34f34d112",
+      "oldImplementation": "0x0000000000000000000000000000000000000000"
+    },
+    "result_type": {
+      "newImplementation": "address",
+      "oldImplementation": "address"
+    },
+    "event": "NewImplementation(address oldImplementation, address newImplementation)",
+    "transaction_id": "cfd684edc93c70e0d5f703443914db7eaca207644443eda5d7bbeed291b16b28"
+  }
+]
