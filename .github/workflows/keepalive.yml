@@ -1,0 +1,14 @@
+name: Keep Render Awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # 每 10 分钟
+  workflow_dispatch: {}     # 手动执行
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl Render URL
+        run: |
+          curl -fsS https://tron-strx-tx-check.onrender.com/health || exit 1
