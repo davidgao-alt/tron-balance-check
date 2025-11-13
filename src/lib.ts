@@ -82,19 +82,26 @@ export async function fetchDWBefore(_tronWeb: any, targetMs: number, lookbackHou
     };
     if (fingerprint) params.fingerprint = fingerprint;
 
-    const res = await httpGet(`/v1/contracts/${CONTRACT}/events`, params);
+    // 关键改动：先拿 raw，再强制成 any
+    const raw = await httpGet(`/v1/contracts/${CONTRACT}/events`, params);
+    const res: any = raw;
+
     const arr: any[] = res?.data || [];
 
     for (const e of arr) {
       const ts = Number(e.block_timestamp ?? e.timestamp);
-      if ((e.event_name === "Deposit" || e.event_name === "Withdraw") && Number.isFinite(ts) && ts <= targetMs) {
+      if (
+        (e.event_name === "Deposit" || e.event_name === "Withdraw") &&
+        Number.isFinite(ts) &&
+        ts <= targetMs
+      ) {
         out.push(e);
       }
     }
 
     if (out.length >= 5) break;
 
-    const next = res?.meta?.fingerprint;
+    const next: string | undefined = res?.meta?.fingerprint;
     if (!next) break;
     fingerprint = next;
   }
