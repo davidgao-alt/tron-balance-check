@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TRON sTRX Tools</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Arial, sans-serif;
+      margin: 24px;
+      max-width: 1000px;
+      line-height: 1.5;
+    }
+    h1 {
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      color: #555;
+      font-size: 13px;
+      margin-top: 0;
+    }
+    .tabs {
+      margin: 16px 0;
+      display: flex;
+      gap: 8px;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid #ccc;
+      background: #f5f5f5;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab-btn.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+      font-weight: 600;
+    }
+    .panel {
+      display: none;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #eee;
+    }
+    .panel.active {
+      display: block;
+    }
+    input {
+      margin: 0 8px 0 4px;
+    }
+    button {
+      padding: 8px 16px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 12px;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px 8px;
+      font-size: 13px;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+    pre {
+      background: #f6f8fa;
+      padding: 12px;
+      overflow: auto;
+      white-space: pre-wrap;
+      border-radius: 6px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>TRON sTRX Tools</h1>
+  <p class="subtitle">
+    Tab 1: Parse on-chain sTRX Deposit / Withdraw activity (Top 5) before a given UTC date.<br/>
+    Tab 2: Run read-only SQL queries on wallet snapshots and download results as CSV.
+  </p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-target="panel-top5">On-chain sTRX Activity</button>
+    <button class="tab-btn" data-target="panel-sql">Wallet Snapshots (SQL / CSV)</button>
+  </div>
+
+  <!-- ============ Panel 1: sTRX Top5 ============ -->
+  <div id="panel-top5" class="panel active">
+    <h2>On-chain sTRX Deposit / Withdraw (Top 5)</h2>
+    <p class="subtitle">
+      Query the last 5 Deposit/Withdraw events before <strong>00:00 UTC</strong> of a given date.
+    </p>
+
+    <form id="form-top5">
+      <label>Date (UTC cut-off):
+        <input id="date" placeholder="2025-11-08" required />
+      </label>
+      <label>Lookback (hours):
+        <input id="lookback" type="number" min="1" max="168" value="48" />
+      </label>
+      <button type="submit">Run</button>
+    </form>
+
+    <div id="msg-top5" style="margin-top:8px;"></div>
+
+    <table id="tbl-top5" style="display:none">
+      <thead>
+        <tr>
+          <th>Time (UTC)</th>
+          <th>Type</th>
+          <th>TxID</th>
+          <th>TRX</th>
+          <th>sTRX</th>
+          <th>Ratio (TRX / sTRX)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h3>Raw JSON</h3>
+    <pre id="raw-top5" style="display:none"></pre>
+  </div>
+
+  <!-- ============ Panel 2: SQL Query + CSV ============ -->
+  <div id="panel-sql" class="panel">
+    <h2>Wallet Snapshots – SQL Query (Read-Only)</h2>
+    <p class="subtitle">
+      Only <code>SELECT</code> statements are allowed. Example:<br/>
+      <code>SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</code>
+    </p>
+
+    <textarea id="sqlBox">SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</textarea>
+    <br/><br/>
+
+    <button onclick="runQuery()">Run Query</button>
+    <button onclick="downloadCSV()">Download CSV</button>
+
+    <h3>Table Preview</h3>
+    <div id="tableContainer">Run a query to see results…</div>
+
+    <h3>Raw Result (JSON)</h3>
+    <pre id="jsonOutput">{}</pre>
+  </div>
+
+  <script>
+    // -------- Tabs --------
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".panel");
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.getAttribute("data-target");
+        tabButtons.forEach(b => b.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+
+        btn.classList.add("active");
+        document.getElementById(target).classList.add("active");
+      });
+    });
+
+    // -------- Panel 1: sTRX Top5 logic --------
+    const fTop5 = document.getElementById('form-top5');
+    const msgTop5 = document.getElementById('msg-top5');
+    const tblTop5 = document.getElementById('tbl-top5');
+    const tbodyTop5 = tblTop5.querySelector('tbody');
+    const rawTop5 = document.getElementById('raw-top5');
+
+    fTop5.addEventListener('submit', async e => {
+      e.preventDefault();
+      msgTop5.textContent = 'Loading...';
+      tblTop5.style.display = 'none';
+      rawTop5.style.display = 'none';
+      tbodyTop5.innerHTML = '';
+
+      const date = document.getElementById('date').value.trim();
+      const lookback = document.getElementById('lookback').value.trim();
+
+      const r = await fetch(`/api/top5?date=${encodeURIComponent(date)}&lookback=${encodeURIComponent(lookback)}`);
+      const j = await r.json();
+
+      if (!r.ok) {
+        msgTop5.textContent = 'Error: ' + (j.error || r.status);
+        return;
+      }
+
+      msgTop5.textContent = `date=${j.date}, lookback=${j.lookback}h, count=${j.count}`;
+      j.data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.time_utc}</td>
+          <td>${row.type}</td>
+          <td>
+            <a href="https://tronscan.org/#/transaction/${row.txid}"
+               target="_blank" rel="noreferrer">
+              ${row.txid.slice(0, 12)}…
+            </a>
+          </td>
+          <td>${row.TRX}</td>
+          <td>${row.sTRX}</td>
+          <td>${row.ratio}</td>
+        `;
+        tbodyTop5.appendChild(tr);
+      });
+      tblTop5.style.display = 'table';
+      rawTop5.textContent = JSON.stringify(j, null, 2);
+      rawTop5.style.display = 'block';
+    });
+
+    // -------- Panel 2: SQL Query logic --------
+    async function runQuery() {
+      const sql = document.getElementById("sqlBox").value;
+
+      const res = await fetch("/api/sql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sql }),
+      });
+
+      const data = await res.json();
+      document.getElementById("jsonOutput").textContent =
+        JSON.stringify(data, null, 2);
+
+      renderTable(data.rows || []);
+    }
+
+    function renderTable(rows) {
+      const container = document.getElementById("tableContainer");
+      if (!rows.length) {
+        container.innerHTML = "<p>No rows returned.</p>";
+        return;
+      }
+
+      let html = "<table><thead><tr>";
+      const keys = Object.keys(rows[0]);
+
+      for (const k of keys) html += `<th>${k}</th>`;
+      html += "</tr></thead><tbody>";
+
+      for (const row of rows) {
+        html += "<tr>";
+        for (const k of keys) html += `<td>${row[k]}</td>`;
+        html += "</tr>";
+      }
+
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    function downloadCSV() {
+      const sql = document.getElementById("sqlBox").value;
+      window.location = "/api/sql-csv?sql=" + encodeURIComponent(sql);
+    }
+  </script>
+</body>
+</html>
