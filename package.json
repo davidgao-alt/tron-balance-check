@@ -1,18 +1,14 @@
 {
   "name": "tron-balance-check",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "tsx watch src/server.ts",
+    "start-dev": "ts-node src/server.ts",
+    "insert-mstr": "ts-node src/insert-mstr-sharplink.ts",
     "postbuild": "mkdir -p dist/public && (cp -R src/public/* dist/public/ 2>/dev/null || true) && ls -R dist"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "axios": "^1.13.2",
     "cors": "^2.8.5",

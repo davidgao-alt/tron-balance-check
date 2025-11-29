@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MSTR & Sharplink Snapshots Viewer</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      padding: 24px;
+      background: #f5f5f7;
+      color: #111827;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .controls {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: white;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    button:hover {
+      background: #f3f4f6;
+    }
+
+    .status {
+      margin-left: 4px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .section {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      background: white;
+      border-radius: 8px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      width: 220px;
+    }
+
+    .empty {
+      font-size: 13px;
+      color: #9ca3af;
+      font-style: italic;
+    }
+
+    .json-block {
+      margin-top: 10px;
+      background: #111827;
+      color: #e5e7eb;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      max-height: 260px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .query-block {
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+
+    .query-actions {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    .query-actions .status {
+      margin-left: 8px;
+    }
+
+    .row-title {
+      font-weight: 600;
+      margin-top: 16px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>MSTR & Sharplink Snapshots</h1>
+
+  <div class="controls">
+    <button id="refresh-btn">Refresh (insert + fetch)</button>
+    <span class="status" id="status-text">Idle</span>
+  </div>
+
+  <div class="section">
+    <h2>MSTR snapshot (latest)</h2>
+    <div id="mstr-table"></div>
+  </div>
+
+  <div class="section">
+    <h2>Sharplink snapshot (latest)</h2>
+    <div id="sharplink-table"></div>
+  </div>
+
+  <!-- ======== 历史查询（SQL） ======== -->
+  <div class="section">
+    <div class="query-block">
+      <h2>MSTR snapshots (historical)</h2>
+      <textarea id="mstr-sql"></textarea>
+      <div class="query-actions">
+        <button id="run-mstr-sql-btn">Run</button>
+        <span class="status" id="mstr-sql-status"></span>
+      </div>
+      <div id="mstr-sql-result"></div>
+    </div>
+
+    <div class="query-block">
+      <h2>Sharplink snapshots (historical)</h2>
+      <textarea id="sharplink-sql"></textarea>
+      <div class="query-actions">
+        <button id="run-sharplink-sql-btn">Run</button>
+        <span class="status" id="sharplink-sql-status"></span>
+      </div>
+      <div id="sharplink-sql-result"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Raw JSON (debug)</h2>
+    <pre class="json-block" id="json-raw">{}</pre>
+  </div>
+
+  <script>
+    // ============ 通用格式化函数 ============
+    const fmtUSD2 = (v) =>
+      v == null
+        ? ""
+        : "$" +
+          Number(v).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+
+    const fmtUSD0 = (v) =>
+      v == null ? "" : "$" + Math.round(Number(v)).toLocaleString("en-US");
+
+    const fmtUSD_M = (v) =>
+      v == null ? "" : "$" + Number(v).toLocaleString("en-US");
+
+    const fmtBTC = (v) =>
+      v == null ? "" : "₿" + Number(v).toLocaleString("en-US");
+
+    const fmtMnav = (v) =>
+      v == null ? "" : Number(v).toFixed(2);
+
+    const fmtMnavWithX = (v) =>
+      v == null ? "" : Number(v).toFixed(2) + "x";
+
+    const fmtNumber0 = (v) =>
+      v == null ? "" : Number(v).toLocaleString("en-US");
+
+    const fmtUsdBillion = (v) => {
+      if (v == null) return "";
+      const b = Number(v) / 1e9;
+      return "$" + b.toFixed(2) + "B";
+    };
+
+    // 把 UTC ISO 字符串转换成 HKT 显示
+    function formatHktFromUtc(utcStr) {
+      if (!utcStr) return "";
+      const d = new Date(utcStr);
+      if (isNaN(d.getTime())) return "";
+      const hkt = new Date(d.getTime() + 8 * 60 * 60 * 1000);
+      const pad = (n) => String(n).padStart(2, "0");
+      const y = hkt.getUTCFullYear();
+      const m = pad(hkt.getUTCMonth() + 1);
+      const day = pad(hkt.getUTCDate());
+      const hh = pad(hkt.getUTCHours());
+      const mm = pad(hkt.getUTCMinutes());
+      const ss = pad(hkt.getUTCSeconds());
+      return `${y}-${m}-${day} ${hh}:${mm}:${ss}`;
+    }
+
+    // ============ MSTR 字段配置（latest & historical 共用） ============
+    const MSTR_FIELDS = [
+      { key: "id", label: "ID", fmt: (v) => v },
+      { key: "timestamp_utc", label: "Timestamp (UTC)", fmt: (v) => v },
+      { key: "mstr_price", label: "MSTR Price", fmt: fmtUSD2 },
+      { key: "market_cap_million", label: "Market Cap ($M)", fmt: fmtUSD_M },
+      {
+        key: "enterprise_value_million",
+        label: "Enterprise Value ($M)",
+        fmt: fmtUSD_M,
+      },
+      { key: "debt_million", label: "Debt ($M)", fmt: fmtUSD_M },
+      { key: "pref_million", label: "Preferred ($M)", fmt: fmtUSD_M },
+      { key: "btc_price", label: "BTC Price", fmt: fmtUSD2 },
+      { key: "btc_holdings", label: "BTC Holdings", fmt: fmtBTC },
+      { key: "btc_nav_million", label: "BTC NAV ($M)", fmt: fmtUSD_M },
+      {
+        key: "btc_nav_number_million",
+        label: "BTC NAV Number ($M)",
+        fmt: fmtUSD_M,
+      },
+      { key: "mnav", label: "mNAV", fmt: fmtMnav },
+    ];
+
+    // ============ Sharplink 字段配置 ============
+    const SHARPLINK_FIELDS = [
+      { key: "id", label: "ID", fmt: (v) => v },
+      { key: "timestamp_utc", label: "Timestamp (UTC)", fmt: (v) => v },
+      { key: "sharplink_last_price", label: "SBET Price", fmt: fmtUSD2 },
+      { key: "eth_last_price", label: "ETH Price", fmt: fmtUSD0 },
+      {
+        key: "impact3_market_cap",
+        label: "Market Cap",
+        fmt: fmtUSD0,
+      },
+      {
+        key: "impact3_total_eth_holdings",
+        label: "Total ETH Holdings",
+        fmt: fmtNumber0,
+      },
+      {
+        key: "impact3_eth_nav",
+        label: "ETH NAV",
+        fmt: fmtUsdBillion,
+      },
+      {
+        key: "impact3_basic_mnav",
+        label: "Basic mNAV",
+        fmt: fmtMnavWithX,
+      },
+      {
+        key: "impact3_fully_diluted_mnav",
+        label: "Fully Diluted mNAV",
+        fmt: fmtMnavWithX,
+      },
+      {
+        key: "impact3_enterprise_value",
+        label: "Enterprise Value",
+        fmt: fmtUSD0,
+      },
+    ];
+
+    // ============ 最新 snapshot 加载 ============
+
+    async function loadLatestOnly() {
+      const statusEl = document.getElementById("status-text");
+      const mstrEl = document.getElementById("mstr-table");
+      const sharplinkEl = document.getElementById("sharplink-table");
+      const jsonRawEl = document.getElementById("json-raw");
+
+      statusEl.textContent = "Loading latest from DB...";
+      mstrEl.innerHTML = "";
+      sharplinkEl.innerHTML = "";
+
+      try {
+        const res = await fetch("/api/mstr-sharplink/latest");
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+        const data = await res.json();
+
+        jsonRawEl.textContent = JSON.stringify(data, null, 2);
+
+        renderMstrLatest(mstrEl, data.mstr, "No MSTR snapshot found");
+        renderSharplinkLatest(
+          sharplinkEl,
+          data.sharplink,
+          "No Sharplink snapshot found"
+        );
+
+        statusEl.textContent =
+          "Loaded latest at " + new Date().toLocaleTimeString();
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent =
+          "Error: " + (err && err.message ? err.message : err);
+        jsonRawEl.textContent =
+          "Error while calling /api/mstr-sharplink/latest:\n" + String(err);
+      }
+    }
+
+    async function refreshAndInsert() {
+      const statusEl = document.getElementById("status-text");
+      const mstrEl = document.getElementById("mstr-table");
+      const sharplinkEl = document.getElementById("sharplink-table");
+      const jsonRawEl = document.getElementById("json-raw");
+
+      statusEl.textContent = "Refreshing (insert + fetch)...";
+      mstrEl.innerHTML = "";
+      sharplinkEl.innerHTML = "";
+
+      try {
+        const res = await fetch("/api/mstr-sharplink/refresh", {
+          method: "POST",
+        });
+
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+
+        const data = await res.json();
+        jsonRawEl.textContent = JSON.stringify(data, null, 2);
+
+        renderMstrLatest(mstrEl, data.mstr, "No MSTR snapshot found");
+        renderSharplinkLatest(
+          sharplinkEl,
+          data.sharplink,
+          "No Sharplink snapshot found"
+        );
+
+        const idInfo = data.inserted
+          ? ` (MSTR id ${data.inserted.mstrId}, SBET id ${data.inserted.sharplinkId})`
+          : "";
+
+        statusEl.textContent =
+          "Refreshed at " + new Date().toLocaleTimeString() + idInfo;
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent =
+          "Error: " + (err && err.message ? err.message : err);
+        jsonRawEl.textContent =
+          "Error while calling /api/mstr-sharplink/refresh:\n" + String(err);
+      }
+    }
+
+    // 最新 MSTR
+    function renderMstrLatest(container, obj, emptyText) {
+      if (!obj) {
+        container.innerHTML = '<div class="empty">' + emptyText + "</div>";
+        return;
+      }
+
+      let html =
+        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+      for (const field of MSTR_FIELDS) {
+        const value = obj[field.key];
+        html +=
+          "<tr><th>" +
+          escapeHtml(field.label) +
+          "</th><td>" +
+          escapeHtml(field.fmt(value)) +
+          "</td></tr>";
+      }
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    // 最新 Sharplink
+    function renderSharplinkLatest(container, obj, emptyText) {
+      if (!obj) {
+        container.innerHTML = '<div class="empty">' + emptyText + "</div>";
+        return;
+      }
+
+      let html =
+        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+      for (const field of SHARPLINK_FIELDS) {
+        const value = obj[field.key];
+        html +=
+          "<tr><th>" +
+          escapeHtml(field.label) +
+          "</th><td>" +
+          escapeHtml(field.fmt(value)) +
+          "</td></tr>";
+      }
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    // ============ 历史查询：默认 SQL ============
+
+    function getTodayHkt0730WindowUtcIso() {
+      // 现在时间（UTC）
+      const now = new Date();
+      const utcMs = now.getTime();
+
+      // 转成 HKT（UTC+8）来取“今天”的日期
+      const hktMs = utcMs + 8 * 60 * 60 * 1000;
+      const hktNow = new Date(hktMs);
+
+      const y = hktNow.getUTCFullYear();
+      const m = hktNow.getUTCMonth(); // 0-based
+      const d = hktNow.getUTCDate();
+
+      // HKT 07:30 => UTC  -1:30
+      const startUtc = new Date(Date.UTC(y, m, d, -1, 30, 0));
+      // HKT 08:00 => UTC  0:00
+      const endUtc = new Date(Date.UTC(y, m, d, 0, 0, 0));
+
+      return {
+        startIso: startUtc.toISOString(),
+        endIso: endUtc.toISOString(),
+      };
+    }
+
+    function initDefaultSqlForQueries() {
+      const mstrSql = document.getElementById("mstr-sql");
+      const sharplinkSql = document.getElementById("sharplink-sql");
+
+      const { startIso, endIso } = getTodayHkt0730WindowUtcIso();
+
+      const whereBlock =
+        `WHERE timestamp_utc >= '${startIso}'\n` +
+        `  AND timestamp_utc < '${endIso}'`;
+
+      mstrSql.value =
+        `SELECT *\n` +
+        `FROM mstr_snapshots\n` +
+        `${whereBlock}\n` +
+        `ORDER BY timestamp_utc ASC\n` +
+        `LIMIT 1;`;
+
+      sharplinkSql.value =
+        `SELECT *\n` +
+        `FROM sharplink_snapshots\n` +
+        `${whereBlock}\n` +
+        `ORDER BY timestamp_utc ASC\n` +
+        `LIMIT 1;`;
+    }
+
+    // ============ 历史查询：运行 SQL ============
+
+    async function runSqlQuery(sql, targetEl, statusEl, type) {
+      if (!sql.trim()) {
+        statusEl.textContent = "Please enter a SQL query.";
+        targetEl.innerHTML = "";
+        return;
+      }
+
+      statusEl.textContent = "Running...";
+      targetEl.innerHTML = "";
+
+      try {
+        const res = await fetch("/api/sql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sql }),
+        });
+
+        if (!res.ok) {
+          const errJson = await res.json().catch(() => ({}));
+          const msg = errJson.error || `HTTP ${res.status}`;
+          throw new Error(msg);
+        }
+
+        const data = await res.json();
+        const rows = data.rows || [];
+        const rowCount = data.rowCount ?? rows.length;
+
+        statusEl.textContent = `Returned ${rowCount} row(s).`;
+
+        if (type === "mstr") {
+          renderMstrQueryResult(targetEl, rows);
+        } else if (type === "sharplink") {
+          renderSharplinkQueryResult(targetEl, rows);
+        } else {
+          renderGenericRows(targetEl, rows);
+        }
+      } catch (e) {
+        console.error(e);
+        statusEl.textContent = "Error: " + (e && e.message ? e.message : e);
+        targetEl.innerHTML =
+          '<div class="empty">Query failed: ' +
+          escapeHtml(e && e.message ? e.message : String(e)) +
+          "</div>";
+      }
+    }
+
+    // 历史查询：MSTR
+    function renderMstrQueryResult(container, rows) {
+      if (!rows || rows.length === 0) {
+        container.innerHTML = '<div class="empty">No result found</div>';
+        return;
+      }
+
+      const row = rows[0];
+      const ts = row.timestamp_utc || "N/A";
+      const hktStr = formatHktFromUtc(ts);
+      const title =
+        hktStr && hktStr.length > 0
+          ? `MSTR snapshot – ${ts} (HKT ${hktStr})`
+          : `MSTR snapshot – ${ts}`;
+
+      let html =
+        `<h2 style="text-align:center;margin-top:8px;margin-bottom:12px;">${escapeHtml(
+          title
+        )}</h2>`;
+
+      html +=
+        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+
+      for (const field of MSTR_FIELDS) {
+        const value = row[field.key];
+        html +=
+          "<tr><th>" +
+          escapeHtml(field.label) +
+          "</th><td>" +
+          escapeHtml(field.fmt(value)) +
+          "</td></tr>";
+      }
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    // 历史查询：Sharplink
+    function renderSharplinkQueryResult(container, rows) {
+      if (!rows || rows.length === 0) {
+        container.innerHTML = '<div class="empty">No result found</div>';
+        return;
+      }
+
+      const row = rows[0];
+      const ts = row.timestamp_utc || "N/A";
+      const hktStr = formatHktFromUtc(ts);
+      const title =
+        hktStr && hktStr.length > 0
+          ? `Sharplink snapshot – ${ts} (HKT ${hktStr})`
+          : `Sharplink snapshot – ${ts}`;
+
+      let html =
+        `<h2 style="text-align:center;margin-top:8px;margin-bottom:12px;">${escapeHtml(
+          title
+        )}</h2>`;
+
+      html +=
+        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+
+      for (const field of SHARPLINK_FIELDS) {
+        const value = row[field.key];
+        html +=
+          "<tr><th>" +
+          escapeHtml(field.label) +
+          "</th><td>" +
+          escapeHtml(field.fmt(value)) +
+          "</td></tr>";
+      }
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    function renderGenericRows(container, rows) {
+      if (!rows || rows.length === 0) {
+        container.innerHTML = '<div class="empty">No result found</div>';
+        return;
+      }
+
+      const row = rows[0];
+      let html =
+        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+      for (const [key, value] of Object.entries(row)) {
+        html +=
+          "<tr><th>" +
+          escapeHtml(key) +
+          "</th><td>" +
+          escapeHtml(formatValue(value)) +
+          "</td></tr>";
+      }
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    // ============ 通用工具 ============
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatValue(v) {
+      if (v === null || v === undefined) return "";
+      if (typeof v === "object") return JSON.stringify(v);
+      return String(v);
+    }
+
+    // ============ 事件绑定 & 初始化 ============
+    document
+      .getElementById("refresh-btn")
+      .addEventListener("click", refreshAndInsert);
+
+    document
+      .getElementById("run-mstr-sql-btn")
+      .addEventListener("click", () => {
+        const sql = document.getElementById("mstr-sql").value;
+        const statusEl = document.getElementById("mstr-sql-status");
+        const resultEl = document.getElementById("mstr-sql-result");
+        runSqlQuery(sql, resultEl, statusEl, "mstr");
+      });
+
+    document
+      .getElementById("run-sharplink-sql-btn")
+      .addEventListener("click", () => {
+        const sql = document.getElementById("sharplink-sql").value;
+        const statusEl = document.getElementById("sharplink-sql-status");
+        const resultEl = document.getElementById("sharplink-sql-result");
+        runSqlQuery(sql, resultEl, statusEl, "sharplink");
+      });
+
+    initDefaultSqlForQueries();
+    loadLatestOnly();
+  </script>
+</body>
+</html>

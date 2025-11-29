@@ -1,3 +1,4 @@
+
 // src/server.ts
 import express, { Request, Response } from "express";
 import cors from "cors";
@@ -14,6 +15,8 @@ import {
   trimZeros,
 } from "./lib";
 
+import { insertMstrSharplinkToDB } from "./insert-mstr-sharplink";
+
 const app = express();
 
 // ----------------- Postgres 连接池 -----------------
@@ -28,7 +31,7 @@ if (DB_URL) {
   });
   console.log("Postgres pool created");
 } else {
-  console.warn("⚠️ DATABASE_URL not set, DB features will not work");
+  console.warn(" DATABASE_URL not set, DB features will not work");
 }
 
 // ----------------- 中间件 -----------------
@@ -42,8 +45,8 @@ app.use(
   })
 );
 
-// 静态文件（build 之后的前端放在 dist/public）
-app.use(express.static(path.join(process.cwd(), "dist/public")));
+// 静态文件（你现在的 html 在 src/public 下面）
+app.use(express.static(path.join(process.cwd(), "src/public")));
 
 // =============== SQL 工具相关 ===============
 
@@ -189,10 +192,6 @@ app.get("/api/top5", async (req: Request, res: Response) => {
 
 // =============== ② /api/wallet/latest ===============
 
-/**
- * 返回最新一条钱包 snapshot + token 明细
- * GET /api/wallet/latest
- */
 app.get("/api/wallet/latest", async (_req: Request, res: Response) => {
   try {
     if (!pool) {
@@ -242,6 +241,76 @@ app.get("/api/wallet/latest", async (_req: Request, res: Response) => {
   } catch (err: any) {
     console.error(err);
     return res.status(500).json({ error: err?.message || "Internal server error" });
+  }
+});
+
+
+app.get("/api/mstr-sharplink/latest", async (_req: Request, res: Response) => {
+  try {
+    if (!pool) {
+      return res.status(500).json({ error: "DATABASE_URL not configured" });
+    }
+
+    const [mstrRes, sharplinkRes] = await Promise.all([
+      pool.query(
+        `SELECT *
+           FROM mstr_snapshots
+          ORDER BY timestamp_utc DESC
+          LIMIT 1`
+      ),
+      pool.query(
+        `SELECT *
+           FROM sharplink_snapshots
+          ORDER BY timestamp_utc DESC
+          LIMIT 1`
+      ),
+    ]);
+
+    return res.json({
+      mstr: mstrRes.rows[0] ?? null,
+      sharplink: sharplinkRes.rows[0] ?? null,
+    });
+  } catch (e: any) {
+    console.error("mstr-sharplink latest error", e);
+    return res.status(500).json({ error: e.message || "internal error" });
+  }
+});
+
+
+app.post("/api/mstr-sharplink/refresh", async (_req: Request, res: Response) => {
+  try {
+    if (!pool) {
+      return res.status(500).json({ ok: false, error: "DATABASE_URL not configured" });
+    }
+
+    // 1. 调用共用的插入逻辑（内部自己新建 client）
+    const ids = await insertMstrSharplinkToDB();
+
+    // 2. 再查一次最新的 snapshot（和 /latest 保持一致）
+    const [mstrRes, sharplinkRes] = await Promise.all([
+      pool.query(
+        `SELECT *
+           FROM mstr_snapshots
+          ORDER BY timestamp_utc DESC
+          LIMIT 1`
+      ),
+      pool.query(
+        `SELECT *
+           FROM sharplink_snapshots
+          ORDER BY timestamp_utc DESC
+          LIMIT 1`
+      ),
+    ]);
+
+    return res.json({
+      ok: true,
+      inserted: ids,
+      mstr: mstrRes.rows[0] ?? null,
+      sharplink: sharplinkRes.rows[0] ?? null,
+    });
+  } catch (e: any) {
+    console.error("mstr-sharplink refresh error", e);
+    return res.status(500).json({ ok: false, error: e.message || "internal error" });
   }
 });
 
