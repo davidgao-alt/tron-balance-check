@@ -314,6 +314,31 @@ app.post("/api/mstr-sharplink/refresh", async (_req: Request, res: Response) => 
   }
 });
 
+// =============== SR SNAPSHOT API ===============
+app.get("/api/sr/latest", async (_req: Request, res: Response) => {
+  try {
+    if (!pool) {
+      return res.status(500).json({ error: "DATABASE_URL not configured" });
+    }
+
+    const result = await pool.query(`
+      SELECT 
+        id,
+        timestamputc,
+        reward,
+        reward - LAG(reward) OVER (ORDER BY id) AS delta
+      FROM sr_snapshots
+      ORDER BY id DESC
+      LIMIT 50
+    `);
+
+    return res.json(result.rows);
+  } catch (e: any) {
+    console.error("sr latest error", e);
+    return res.status(500).json({ error: e.message || "internal error" });
+  }
+});
+
 // ----------------- health -----------------
 app.get("/health", (_req: Request, res: Response) => {
   return res.send("ok");

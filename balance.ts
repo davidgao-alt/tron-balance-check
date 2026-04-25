@@ -6,7 +6,7 @@ function sunToTRX(n: number) { return Number(tronWeb.fromSun(n || 0)); }
 
 (async () => {
   // your address here
-  const address = "TXCu9ivZfybabh7r3aSmDPfLH6YybLjuvX";
+  const address = "TKRVSSF5LicLNBTwcoyxYxNFXmjDw7uHRu";
   const acc = await tronWeb.trx.getAccount(address);
 
   // Available
