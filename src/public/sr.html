@@ -1,117 +1,138 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<title>TRONScan SR/SRP Metrics</title>
+<meta charset="UTF-8">
+<title>TRONScan SR / SRP Metrics</title>
 
 <style>
 body {
   font-family: -apple-system;
-  background: #f8fafc;
-  color: #0f172a;
-  padding: 40px;
-  max-width: 1100px;
+  background: #f6f8fb;
+  padding: 30px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
   margin: auto;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.box {
+.card {
   background: white;
-  border: 1px solid #e2e8f0;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 18px;
   margin-bottom: 20px;
+  border-radius: 8px;
 }
 
-input, textarea {
+input {
   padding: 6px;
-  border: 1px solid #cbd5e1;
   margin-right: 10px;
+}
+
+button {
+  padding: 6px 12px;
+  background: #3b6ef5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 textarea {
   width: 100%;
-  height: 70px;
+  height: 110px;
   font-family: monospace;
+  padding: 10px;
 }
 
-button {
-  padding: 6px 14px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-right: 10px;
+.table-wrap {
+  overflow-x: auto;
 }
 
 table {
-  width: 100%;
   border-collapse: collapse;
-  background: white;
+  font-size: 13px;
+  min-width: 900px;
 }
 
 th, td {
   padding: 8px;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 13px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+}
+
+th {
+  background: #fafafa;
 }
 </style>
 </head>
 
 <body>
 
-<h2>TRONScan SR Metrics</h2>
+<div class="container">
 
-<!-- 日期筛选（HKT） -->
-<div class="box">
-  <b>Filter (HKT)</b><br><br>
+<h1>TRONScan SR / SRP Metrics</h1>
 
-  From:
-  <input type="date" id="fromDate">
+<!-- ✅ FILTER 保留 -->
+<div class="card">
+<h3>Filter (HKT)</h3>
 
-  To:
-  <input type="date" id="toDate">
+From:
+<input type="date" id="from">
 
-  <button onclick="loadByDate()">Load</button>
+To:
+<input type="date" id="to">
+
+<button onclick="load()">Load</button>
 </div>
 
-<!-- SQL -->
-<div class="box">
-  <b>Custom SQL</b><br><br>
+<div class="card">
+<h3>Custom SQL</h3>
 
-  <textarea id="sqlBox">
+<textarea id="sql">
 SELECT id, timestamputc, timestamphkt, address, name,
 realtimevotes, brokerage, annualizedrate, votespercentage, claimable_trx
 FROM sr_snapshots
 ORDER BY id DESC
 LIMIT 20
-  </textarea>
+</textarea>
 
-  <br>
-
-  <button onclick="runSQL()">Run</button>
-  <button onclick="downloadCSV()">Download CSV</button>
+<button onclick="run()">Run</button>
+<button onclick="download()">Download CSV</button>
 </div>
 
-<!-- 表格 -->
-<div id="table"></div>
+<div class="card">
+<div class="table-wrap">
+<table id="table"></table>
+</div>
+</div>
+
+</div>
 
 <script>
 
-let currentSQL = "";
+function formatField(name) {
+  const map = {
+    timestamputc: "timestampUTC",
+    timestamphkt: "timestampHKT",
+    realtimevotes: "realTimeVotes",
+    brokerage: "brokerage",
+    annualizedrate: "annualizedRate",
+    votespercentage: "votesPercentage",
+    claimable_trx: "claimableTrx",
+    address: "address",
+    name: "name",
+    id: "id"
+  };
 
-// 默认加载
-window.onload = () => {
-  runSQL();
-};
+  return map[name] || name;
+}
 
-async function runSQL() {
-  const sql = document.getElementById("sqlBox").value;
-  currentSQL = sql;
+async function run() {
+  const sql = document.getElementById("sql").value;
 
   const res = await fetch("/api/sql", {
     method: "POST",
@@ -119,83 +140,65 @@ async function runSQL() {
     body: JSON.stringify({ sql })
   });
 
-  const result = await res.json();
-
-  if (result.error) {
-    alert(result.error);
-    return;
-  }
-
-  render(result.rows, result.fields);
+  const data = await res.json();
+  render(data);
 }
 
-async function loadByDate() {
-  const from = document.getElementById("fromDate").value;
-  const to = document.getElementById("toDate").value;
+function render(data) {
+  const table = document.getElementById("table");
 
-  if (!from || !to) {
-    alert("Please select date range");
-    return;
-  }
+  let html = "<tr>";
 
-  // 自动补 HKT 时间
-  const fromTS = from + " 00:00:00";
-  const toTS = to + " 23:59:59";
-
-  const sql = `
-SELECT id, timestamputc, timestamphkt, address, name,
-realtimevotes, brokerage, annualizedrate, votespercentage, claimable_trx
-FROM sr_snapshots
-WHERE timestamphkt BETWEEN '${fromTS}' AND '${toTS}'
-ORDER BY id DESC
-LIMIT 50
-  `;
-
-  document.getElementById("sqlBox").value = sql;
-  currentSQL = sql;
-
-  runSQL();
-}
-
-function render(rows, fields) {
-  const container = document.getElementById("table");
-
-  if (!rows.length) {
-    container.innerHTML = "<p>No data</p>";
-    return;
-  }
-
-  let html = "<table><tr>";
-
-  fields.forEach(f => {
-    html += `<th>${f}</th>`;
+  data.fields.forEach(f => {
+    html += `<th>${formatField(f)}</th>`;
   });
 
   html += "</tr>";
 
-  rows.forEach(r => {
+  data.rows.forEach(r => {
     html += "<tr>";
-
-    fields.forEach(f => {
+    data.fields.forEach(f => {
       html += `<td>${r[f] ?? ""}</td>`;
     });
-
     html += "</tr>";
   });
 
-  html += "</table>";
-
-  container.innerHTML = html;
+  table.innerHTML = html;
 }
 
-function downloadCSV() {
-  if (!currentSQL) {
-    alert("Run query first");
-    return;
+function download() {
+  const sql = encodeURIComponent(document.getElementById("sql").value);
+  window.location = "/api/sql-csv?sql=" + sql;
+}
+
+function load() {
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+
+  let sql = `
+SELECT id, timestamputc, timestamphkt, address, name,
+realtimevotes, brokerage, annualizedrate, votespercentage, claimable_trx
+FROM sr_snapshots
+WHERE 1=1
+`;
+
+  if (from) {
+    sql += ` AND timestamphkt >= '${from} 00:00:00'`;
   }
 
-  window.location = "/api/sql-csv?sql=" + encodeURIComponent(currentSQL);
+  if (to) {
+    sql += ` AND timestamphkt <= '${to} 23:59:59'`;
+  }
+
+  sql += " ORDER BY id DESC LIMIT 20";
+
+  document.getElementById("sql").value = sql;
+
+  run();
 }
+
+// 初始加载
+run();
 
 </script>
 
