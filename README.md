@@ -12,4 +12,4 @@ UI: https://troninc-wallet-event-query.onrender.com/query.html (Tab 2)
 UI: https://mstr-sharplink-snapshot.onrender.com/mstr-sharplink-view.html
 
     4.	TRON Super Representative metrics monitoring (reward, votes & brokerage tracking)
-UI: https://tronscan-sr-metrics.onrender.com/sr.html
+UI: https://tronscan-sr-metrics.onrender.com/sr.html 
