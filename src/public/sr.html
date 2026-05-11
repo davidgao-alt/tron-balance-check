@@ -247,12 +247,13 @@ SELECT
   name,
   realtimevotes,
   brokerage,
+  voterbrokerage,
   annualizedrate,
   votespercentage,
   claimable_trx
 FROM sr_snapshots
 ORDER BY id DESC
-LIMIT 20
+LIMIT 28
 </textarea>
 
 <div class="button-row">
@@ -487,6 +488,7 @@ SELECT
   name,
   realtimevotes,
   brokerage,
+  voterbrokerage,
   annualizedrate,
   votespercentage,
   claimable_trx
@@ -508,7 +510,7 @@ AND timestamphkt <= '${to} 23:59:59'
 
   sql += `
 ORDER BY id DESC
-LIMIT 20
+LIMIT 28
 `;
 
   document.getElementById("sr-sql").value = sql;
