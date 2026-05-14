@@ -46,6 +46,27 @@ body{
     0 1px 3px rgba(15,23,42,0.08);
 }
 
+.row{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+label{
+  font-size:14px;
+  font-weight:700;
+}
+
+input{
+  padding:11px 14px;
+  border-radius:12px;
+  border:1px solid #dbe2ea;
+  background:#f8fafc;
+  font-size:14px;
+}
+
 textarea{
   width:100%;
   min-height:180px;
@@ -142,6 +163,44 @@ button:hover{
 
 <div class="title">
 Kelp rsETH Dashboard
+</div>
+
+<!-- ====================================================== -->
+<!-- DATE FILTER -->
+<!-- ====================================================== -->
+
+<div class="card">
+
+<div class="section-title">
+UTC Time Filter
+</div>
+
+<div class="row">
+
+<label>
+From UTC
+</label>
+
+<input
+  type="date"
+  id="from-date"
+/>
+
+<label>
+To UTC
+</label>
+
+<input
+  type="date"
+  id="to-date"
+/>
+
+<button onclick="loadData()">
+Load Data
+</button>
+
+</div>
+
 </div>
 
 <!-- ====================================================== -->
@@ -275,6 +334,55 @@ function downloadCSV(){
 
   window.location =
     "/api/sql-csv?sql=" + sql;
+}
+
+function loadData(){
+
+  const from =
+    document.getElementById(
+      "from-date"
+    ).value;
+
+  const to =
+    document.getElementById(
+      "to-date"
+    ).value;
+
+  let sql = `
+SELECT
+  id,
+  timestamp_hkt AS timestamp_utc,
+  chain,
+  total_supply,
+  status
+FROM kelp_rseth_supply_snapshots
+WHERE 1=1
+`;
+
+  if(from){
+
+    sql += `
+AND timestamp_hkt >= '${from} 00:00:00'
+`;
+  }
+
+  if(to){
+
+    sql += `
+AND timestamp_hkt <= '${to} 23:59:59'
+`;
+  }
+
+  sql += `
+ORDER BY id DESC
+LIMIT 200
+`;
+
+  document.getElementById(
+    "sql-box"
+  ).value = sql;
+
+  runSQL();
 }
 
 runSQL();
