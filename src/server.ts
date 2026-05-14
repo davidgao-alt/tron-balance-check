@@ -339,6 +339,48 @@ app.get("/api/sr/latest", async (_req: Request, res: Response) => {
   }
 });
 
+// =============== KELP rsETH API ===============
+
+app.get("/api/kelp-rseth/latest", async (_req: Request, res: Response) => {
+
+  try {
+
+    if (!pool) {
+      return res.status(500).json({
+        error: "DATABASE_URL not configured"
+      });
+    }
+
+    const result = await pool.query(`
+      SELECT
+        id,
+        timestamp_hkt,
+        chain,
+        rpc,
+        address,
+        raw_supply,
+        total_supply,
+        status
+      FROM kelp_rseth_supply_snapshots
+      ORDER BY id DESC
+      LIMIT 100
+    `);
+
+    return res.json(result.rows);
+
+  } catch (e: any) {
+
+    console.error(
+      "kelp rsETH latest error",
+      e
+    );
+
+    return res.status(500).json({
+      error: e.message || "internal error"
+    });
+  }
+});
+
 // ----------------- health -----------------
 app.get("/health", (_req: Request, res: Response) => {
   return res.send("ok");
