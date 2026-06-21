@@ -1,6 +1,9 @@
 import axios from "axios";
 import TronWeb from "tronweb";
 
+const ADDRESS =
+  "TCEo1hMAdaJrQmvnGTCcGT2LqrGU4N7Jqf";
+
 type WitnessData = {
   lastRanking?: number;
   realTimeRanking?: number;
@@ -29,9 +32,26 @@ type WitnessData = {
   version: number;
 };
 
+const TRONGRID_API_KEY =
+  process.env.TRONGRID_API_KEY || "";
+
 const tronWeb = new TronWeb.TronWeb({
   fullHost: "https://api.trongrid.io",
 });
+
+// ======================================================
+// set TronGrid API key
+// ======================================================
+
+if (TRONGRID_API_KEY) {
+  tronWeb.setHeader({
+    "TRON-PRO-API-KEY": TRONGRID_API_KEY,
+  });
+} else {
+  console.warn(
+    "Warning: TRONGRID_API_KEY is not set. TronGrid may rate limit requests."
+  );
+}
 
 // ======================================================
 // sleep
@@ -45,28 +65,36 @@ function sleep(ms: number) {
 // get reward safely
 // ======================================================
 
-async function getRewardSafe(address: string): Promise<number | null> {
+async function getRewardSafe(address: string): Promise<number> {
+
   const maxRetries = 5;
 
   for (let i = 0; i < maxRetries; i++) {
+
     try {
 
-      await sleep(5000);
+      // 每个地址之间停 3 秒
+      await sleep(3000);
 
       const reward =
         await tronWeb.trx.getReward(address);
 
-      return reward;
+      return Number(reward);
 
     } catch (err: any) {
-      const status = err?.response?.status;
+
+      const status =
+        err?.response?.status;
+
       const msg =
         err?.response?.data?.Error ||
         err?.response?.data ||
         err?.message;
 
       if (status === 429) {
-        const waitMs = 8000 + i * 5000;
+
+        const waitMs =
+          10000 + i * 5000;
 
         console.log(
           `429 rate limit for ${address}, wait ${waitMs / 1000}s then retry...`
@@ -81,15 +109,13 @@ async function getRewardSafe(address: string): Promise<number | null> {
         msg
       );
 
-      return null;
+      throw err;
     }
   }
 
-  console.error(
+  throw new Error(
     `getReward failed after retries: ${address}`
   );
-
-  return null;
 }
 
 // ======================================================
@@ -99,16 +125,14 @@ async function getRewardSafe(address: string): Promise<number | null> {
 async function buildRow(d: WitnessData) {
 
   console.log(
-    `Fetching: ${d.ranking ?? d.realTimeRanking ?? d.lastRanking} - ${d.name}`
+    `Fetching: ${d.ranking ?? d.realTimeRanking ?? d.lastRanking ?? "-"} - ${d.name}`
   );
 
   const reward =
     await getRewardSafe(d.address);
 
   const claimableTRX =
-    reward == null
-      ? null
-      : reward / 1e6;
+    reward / 1e6;
 
   const timestampUTC =
     new Date().toISOString();
@@ -131,11 +155,13 @@ async function buildRow(d: WitnessData) {
 
     lastRanking:
       d.lastRanking ??
-      d.ranking,
+      d.ranking ??
+      null,
 
     realTimeRanking:
       d.realTimeRanking ??
-      d.ranking,
+      d.ranking ??
+      null,
 
     address:
       d.address,
@@ -162,22 +188,26 @@ async function buildRow(d: WitnessData) {
       d.votesPercentage,
 
     lastCycleVotesPercentage:
-      d.lastCycleVotesPercentage,
+      d.lastCycleVotesPercentage ??
+      null,
 
     witnessType:
       d.witnessType,
 
     annualizedRate:
-      d.annualizedRate,
+      d.annualizedRate ??
+      "0",
 
     producedTotal:
       d.producedTotal,
 
     producedEfficiency:
-      d.producedEfficiency,
+      d.producedEfficiency ??
+      null,
 
     blockReward:
-      d.blockReward,
+      d.blockReward ??
+      null,
 
     version:
       d.version,
@@ -199,6 +229,43 @@ export async function fetchSrSnapshot() {
 
     const output = [];
 
+    // ==================================================
+    // 1. fetch tracked address
+    // ==================================================
+
+    const singleUrl =
+      `https://apilist.tronscan.org/api/vote/witness?address=${ADDRESS}`;
+
+    const singleRes: any =
+      await axios.get(
+        singleUrl,
+        {
+          timeout: 30000
+        }
+      );
+
+    const mainWitness =
+      singleRes.data.data;
+
+    if (!mainWitness) {
+      throw new Error(
+        `No witness data found for tracked address: ${ADDRESS}`
+      );
+    }
+
+    console.log(
+      `Fetched tracked address: ${mainWitness.name}`
+    );
+
+    const mainRow =
+      await buildRow(mainWitness);
+
+    output.push(mainRow);
+
+    // ==================================================
+    // 2. fetch top 27 SR
+    // ==================================================
+
     const srRes: any =
       await axios.get(
         "https://apilist.tronscan.org/api/pagewitness",
@@ -206,7 +273,8 @@ export async function fetchSrSnapshot() {
           params: {
             limit: 50,
             start: 0
-          }
+          },
+          timeout: 30000
         }
       );
 
@@ -222,6 +290,10 @@ export async function fetchSrSnapshot() {
       `Fetched top SR count = ${srList.length}`
     );
 
+    // ==================================================
+    // 3. append top 27 SR rows
+    // ==================================================
+
     for (const sr of srList) {
 
       const row =
@@ -229,6 +301,10 @@ export async function fetchSrSnapshot() {
 
       output.push(row);
     }
+
+    console.log(
+      `Total rows = ${output.length}`
+    );
 
     return output;
 
