@@ -1,90 +1,5 @@
-// import axios from "axios";
-// import TronWeb from "tronweb";
-
-// const ADDRESS = "TCEo1hMAdaJrQmvnGTCcGT2LqrGU4N7Jqf";
-
-// type TronscanResponse = {
-//   data: {
-//     lastRanking: number;
-//     realTimeRanking: number;
-//     address: string;
-//     name: string;
-//     lastCycleVotes: number;
-//     realTimeVotes: number;
-//     changeVotes: number;
-//     brokerage: number;
-//     voterBrokerage: number;
-//     votesPercentage: number;
-//     lastCycleVotesPercentage: number;
-//     witnessType: number;
-//     annualizedRate: string;
-//     producedTotal: number;
-//     producedEfficiency: number;
-//     blockReward: number;
-//     version: number;
-//   };
-// };
-
-// const tronWeb = new TronWeb.TronWeb({
-//   fullHost: "https://api.trongrid.io",
-// });
-
-// export async function fetchSrSnapshot() {
-//   const url = `https://apilist.tronscan.org/api/vote/witness?address=${ADDRESS}`;
-
-//   try {
-//     const res = await axios.get<TronscanResponse>(url);
-//     const d = res.data.data;
-
-//     const reward = await tronWeb.trx.getReward(ADDRESS);
-//     const claimableTRX = reward / 1e6;
-
-//     const timestampUTC = new Date().toISOString();
-//     const timestampHKT = new Date()
-//       .toLocaleString("sv-SE", { timeZone: "Asia/Hong_Kong" })
-//       .replace(" ", "T");
-
-//     return {
-//       timestampUTC,
-//       timestampHKT,
-//       lastRanking: d.lastRanking,
-//       realTimeRanking: d.realTimeRanking,
-//       address: d.address,
-//       name: d.name,
-//       lastCycleVotes: d.lastCycleVotes,
-//       realTimeVotes: d.realTimeVotes,
-//       changeVotes: d.changeVotes,
-//       brokerage: d.brokerage,
-//       voterBrokerage: d.voterBrokerage,
-//       votesPercentage: d.votesPercentage,
-//       lastCycleVotesPercentage: d.lastCycleVotesPercentage,
-//       witnessType: d.witnessType,
-//       annualizedRate: d.annualizedRate,
-//       producedTotal: d.producedTotal,
-//       producedEfficiency: d.producedEfficiency,
-//       blockReward: d.blockReward,
-//       version: d.version,
-//       reward,
-//       "Claimable Voter/SR Rewards": claimableTRX
-//     };
-
-//   } catch (err) {
-//     console.error("fetch error:", err);
-//     throw err;
-//   }
-// }
-
-// if (require.main === module) {
-//   fetchSrSnapshot()
-//     .then((out) => console.log(JSON.stringify(out, null, 2)))
-//     .catch(console.error);
-// }
-
 import axios from "axios";
 import TronWeb from "tronweb";
-
-const ADDRESS =
-  "TCEo1hMAdaJrQmvnGTCcGT2LqrGU4N7Jqf";
 
 type WitnessData = {
   lastRanking?: number;
@@ -127,25 +42,73 @@ function sleep(ms: number) {
 }
 
 // ======================================================
+// get reward safely
+// ======================================================
+
+async function getRewardSafe(address: string): Promise<number | null> {
+  const maxRetries = 5;
+
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+
+      await sleep(5000);
+
+      const reward =
+        await tronWeb.trx.getReward(address);
+
+      return reward;
+
+    } catch (err: any) {
+      const status = err?.response?.status;
+      const msg =
+        err?.response?.data?.Error ||
+        err?.response?.data ||
+        err?.message;
+
+      if (status === 429) {
+        const waitMs = 8000 + i * 5000;
+
+        console.log(
+          `429 rate limit for ${address}, wait ${waitMs / 1000}s then retry...`
+        );
+
+        await sleep(waitMs);
+        continue;
+      }
+
+      console.error(
+        `getReward failed for ${address}:`,
+        msg
+      );
+
+      return null;
+    }
+  }
+
+  console.error(
+    `getReward failed after retries: ${address}`
+  );
+
+  return null;
+}
+
+// ======================================================
 // build row
 // ======================================================
 
 async function buildRow(d: WitnessData) {
 
   console.log(
-    `Fetching: ${d.name}`
+    `Fetching: ${d.ranking ?? d.realTimeRanking ?? d.lastRanking} - ${d.name}`
   );
 
-  // avoid timeout / rate limit
-  await sleep(1000);
-
   const reward =
-    await tronWeb.trx.getReward(
-      d.address
-    );
+    await getRewardSafe(d.address);
 
   const claimableTRX =
-    reward / 1e6;
+    reward == null
+      ? null
+      : reward / 1e6;
 
   const timestampUTC =
     new Date().toISOString();
@@ -227,7 +190,7 @@ async function buildRow(d: WitnessData) {
 }
 
 // ======================================================
-// main
+// main fetch
 // ======================================================
 
 export async function fetchSrSnapshot() {
@@ -235,28 +198,6 @@ export async function fetchSrSnapshot() {
   try {
 
     const output = [];
-
-    // ==================================================
-    // 1. fetch original address
-    // ==================================================
-
-    const singleUrl =
-      `https://apilist.tronscan.org/api/vote/witness?address=${ADDRESS}`;
-
-    const singleRes: any =
-      await axios.get(singleUrl);
-
-    const mainWitness =
-      singleRes.data.data;
-
-    const mainRow =
-      await buildRow(mainWitness);
-
-    output.push(mainRow);
-
-    // ==================================================
-    // 2. fetch top 27 SR
-    // ==================================================
 
     const srRes: any =
       await axios.get(
@@ -277,9 +218,9 @@ export async function fetchSrSnapshot() {
         )
         .slice(0, 27);
 
-    // ==================================================
-    // 3. append SR rows
-    // ==================================================
+    console.log(
+      `Fetched top SR count = ${srList.length}`
+    );
 
     for (const sr of srList) {
 
