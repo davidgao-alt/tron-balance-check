@@ -1,7 +1,9 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>TRON SR Dashboard</title>
 
 <style>
@@ -55,9 +57,17 @@ body {
 }
 
 .tab.active {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
   color: white;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+
+  box-shadow:
+    0 8px 20px
+    rgba(37, 99, 235, 0.22);
 }
 
 .section-title {
@@ -73,6 +83,7 @@ body {
   border-radius: 18px;
   padding: 30px;
   margin-bottom: 28px;
+
   box-shadow:
     0 4px 14px rgba(15, 23, 42, 0.05),
     0 1px 3px rgba(15, 23, 42, 0.08);
@@ -109,14 +120,20 @@ input[type="date"] {
 textarea {
   width: 100%;
   min-height: 180px;
+
   border-radius: 14px;
   border: 1px solid #dbe2ea;
+
   padding: 18px;
+
   font-family: monospace;
   font-size: 14px;
   line-height: 1.5;
+
   background: #f8fafc;
+
   resize: vertical;
+
   margin-bottom: 22px;
 }
 
@@ -128,14 +145,24 @@ textarea {
 }
 
 button {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
   color: white;
+
   border: none;
   border-radius: 10px;
+
   padding: 11px 22px;
+
   cursor: pointer;
+
   font-weight: 700;
   font-size: 14px;
+
   transition: 0.18s ease;
 }
 
@@ -143,6 +170,11 @@ button:hover {
   transform: translateY(-1px);
   opacity: 0.96;
 }
+
+
+/* ======================================================
+   NORMAL HORIZONTAL TABLE
+   ====================================================== */
 
 .table-wrap {
   overflow-x: auto;
@@ -158,23 +190,119 @@ table {
 
 th {
   background: #f1f5f9;
+
   text-align: left;
+
   padding: 14px 12px;
-  border-bottom: 1px solid #e2e8f0;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
   font-size: 13px;
   font-weight: 800;
+
   color: #334155;
+
   position: sticky;
   top: 0;
 }
 
 td {
   padding: 13px 12px;
-  border-bottom: 1px solid #f1f5f9;
+
+  border-bottom:
+    1px solid #f1f5f9;
+
   white-space: nowrap;
 }
 
 tr:hover td {
+  background: #f8fbff;
+}
+
+
+/* ======================================================
+   SINGLE RECORD VERTICAL TABLE
+   ====================================================== */
+
+.table-wrap.vertical-mode {
+  max-width: 900px;
+  margin: 0 auto;
+  overflow-x: visible;
+
+  border:
+    1px solid #e2e8f0;
+
+  border-radius: 14px;
+}
+
+.table-wrap.vertical-mode table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-wrap.vertical-mode th {
+  position: static;
+}
+
+.vertical-header {
+  background: #e9eff7 !important;
+  color: #0f172a !important;
+  font-size: 14px !important;
+  padding: 15px 18px !important;
+}
+
+.metric-name {
+  width: 42%;
+
+  background:
+    #f1f5f9 !important;
+
+  color:
+    #334155 !important;
+
+  font-weight: 800;
+
+  padding:
+    14px 18px !important;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+  vertical-align: top;
+}
+
+.metric-value {
+  width: 58%;
+
+  padding:
+    14px 18px !important;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+  white-space: normal !important;
+
+  word-break: break-word;
+
+  font-family: monospace;
+
+  color: #111827;
+}
+
+.table-wrap.vertical-mode
+tr:last-child
+.metric-name,
+
+.table-wrap.vertical-mode
+tr:last-child
+.metric-value {
+  border-bottom: none;
+}
+
+.table-wrap.vertical-mode
+tr:hover
+.metric-value {
   background: #f8fbff;
 }
 
@@ -185,58 +313,81 @@ tr:hover td {
 </style>
 </head>
 
+
 <body>
 
 <div class="container">
 
 <div class="main-title">
-TRON SR Dashboard
+  TRON SR Dashboard
 </div>
+
 
 <div class="tabs">
 
-  <div class="tab active" onclick="switchTab('sr')">
+  <div
+    class="tab active"
+    onclick="switchTab('sr')"
+  >
     SR Metrics
   </div>
 
-  <div class="tab" onclick="switchTab('he')">
+  <div
+    class="tab"
+    onclick="switchTab('he')"
+  >
     HE Vote Snapshot
   </div>
 
 </div>
 
-<!-- ===================================================== -->
-<!-- SR TAB -->
-<!-- ===================================================== -->
+
+<!-- =====================================================
+     SR TAB
+     ===================================================== -->
 
 <div id="sr-tab">
 
 <div class="section-title">
-SR Metrics
+  SR Metrics
 </div>
+
 
 <div class="card">
 
 <div class="filter-row">
 
-<label>From (HKT)</label>
-<input type="date" id="sr-from">
+<label>
+  From (HKT)
+</label>
 
-<label>To (HKT)</label>
-<input type="date" id="sr-to">
+<input
+  type="date"
+  id="sr-from"
+>
+
+<label>
+  To (HKT)
+</label>
+
+<input
+  type="date"
+  id="sr-to"
+>
 
 <button onclick="loadSR()">
-Load
+  Load
 </button>
 
 </div>
 
 </div>
 
+
 <div class="card">
 
 <div class="sql-title">
-Custom SQL
+  Custom SQL
 </div>
 
 <textarea id="sr-sql">
@@ -256,61 +407,86 @@ ORDER BY id DESC
 LIMIT 28
 </textarea>
 
+
 <div class="button-row">
 
 <button onclick="runSR()">
-Run
+  Run
 </button>
 
 <button onclick="downloadSR()">
-Download CSV
+  Download CSV
 </button>
 
 </div>
 
 </div>
 
+
 <div class="card">
+
 <div class="table-wrap">
+
 <table id="sr-table"></table>
+
 </div>
+
 </div>
 
 </div>
 
-<!-- ===================================================== -->
-<!-- HE TAB -->
-<!-- ===================================================== -->
 
-<div id="he-tab" class="hidden">
+<!-- =====================================================
+     HE TAB
+     ===================================================== -->
+
+<div
+  id="he-tab"
+  class="hidden"
+>
 
 <div class="section-title">
-HE Vote Snapshot
+  HE Vote Snapshot
 </div>
+
 
 <div class="card">
 
 <div class="filter-row">
 
-<label>From (UTC)</label>
-<input type="date" id="he-from">
+<label>
+  From (UTC)
+</label>
 
-<label>To (UTC)</label>
-<input type="date" id="he-to">
+<input
+  type="date"
+  id="he-from"
+>
+
+<label>
+  To (UTC)
+</label>
+
+<input
+  type="date"
+  id="he-to"
+>
 
 <button onclick="loadHE()">
-Load
+  Load
 </button>
 
 </div>
 
 </div>
 
+
 <div class="card">
 
 <div class="sql-title">
-Custom SQL
+  Custom SQL
 </div>
+
 
 <textarea id="he-sql">
 SELECT
@@ -326,31 +502,42 @@ ORDER BY id DESC
 LIMIT 26
 </textarea>
 
+
 <div class="button-row">
 
 <button onclick="runHE()">
-Run
+  Run
 </button>
 
 <button onclick="downloadHE()">
-Download CSV
+  Download CSV
 </button>
 
 </div>
 
 </div>
 
+
 <div class="card">
+
 <div class="table-wrap">
+
 <table id="he-table"></table>
+
 </div>
+
 </div>
 
 </div>
 
 </div>
+
 
 <script>
+
+/* ======================================================
+   TAB SWITCH
+   ====================================================== */
 
 function switchTab(tab) {
 
@@ -362,9 +549,16 @@ function switchTab(tab) {
     .getElementById("he-tab")
     .classList.add("hidden");
 
+
   document
     .querySelectorAll(".tab")
-    .forEach(t => t.classList.remove("active"));
+    .forEach(
+      t =>
+        t.classList.remove(
+          "active"
+        )
+    );
+
 
   if (tab === "sr") {
 
@@ -385,102 +579,424 @@ function switchTab(tab) {
     document
       .querySelectorAll(".tab")[1]
       .classList.add("active");
+
   }
+
 }
+
+
+/* ======================================================
+   SQL API
+   ====================================================== */
 
 async function query(sql) {
 
-  const res = await fetch("/api/sql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ sql })
-  });
+  const res =
+    await fetch(
+      "/api/sql",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            sql
+          })
+      }
+    );
+
 
   return await res.json();
+
 }
 
-function render(tableId, data) {
+
+/* ======================================================
+   ESCAPE HTML
+   ====================================================== */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ======================================================
+   RESULT RENDERER
+   ====================================================== */
+
+function render(
+  tableId,
+  data
+) {
 
   const table =
-    document.getElementById(tableId);
+    document.getElementById(
+      tableId
+    );
 
-  let html = "<tr>";
+  const wrap =
+    table.closest(
+      ".table-wrap"
+    );
 
-  data.fields.forEach(f => {
-    html += `<th>${f}</th>`;
-  });
 
-  html += "</tr>";
+  /* -----------------------------------------------
+     Invalid API response / SQL error
+     ----------------------------------------------- */
 
-  data.rows.forEach(r => {
+  if (
+    !data ||
+    !Array.isArray(data.fields) ||
+    !Array.isArray(data.rows)
+  ) {
 
-    html += "<tr>";
+    wrap
+      .classList
+      .remove(
+        "vertical-mode"
+      );
 
-    data.fields.forEach(f => {
 
-      html += `<td>${r[f] ?? ""}</td>`;
+    table.innerHTML = `
+      <tr>
+        <td>
+          ${escapeHtml(
+            data?.error ||
+            "Invalid response"
+          )}
+        </td>
+      </tr>
+    `;
 
-    });
+    return;
+  }
 
-    html += "</tr>";
-  });
 
-  table.innerHTML = html;
+  /* -----------------------------------------------
+     No results
+     ----------------------------------------------- */
+
+  if (
+    data.rows.length === 0
+  ) {
+
+    wrap
+      .classList
+      .remove(
+        "vertical-mode"
+      );
+
+
+    table.innerHTML = `
+      <tr>
+        <td>
+          No records found
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+
+  /* ==================================================
+     ONE RECORD
+     → VERTICAL METRIC / VALUE TABLE
+     ================================================== */
+
+  if (
+    data.rows.length === 1
+  ) {
+
+    wrap
+      .classList
+      .add(
+        "vertical-mode"
+      );
+
+
+    const row =
+      data.rows[0];
+
+
+    let html = `
+
+      <tr>
+
+        <th class="vertical-header">
+          Metric
+        </th>
+
+        <th class="vertical-header">
+          Value
+        </th>
+
+      </tr>
+
+    `;
+
+
+    data.fields.forEach(
+      field => {
+
+        const value =
+          row[field] ??
+          "";
+
+
+        html += `
+
+          <tr>
+
+            <th class="metric-name">
+              ${escapeHtml(
+                field
+              )}
+            </th>
+
+            <td class="metric-value">
+              ${escapeHtml(
+                value
+              )}
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    table.innerHTML =
+      html;
+
+
+    return;
+
+  }
+
+
+  /* ==================================================
+     MULTIPLE RECORDS
+     → NORMAL HORIZONTAL TABLE
+     ================================================== */
+
+  wrap
+    .classList
+    .remove(
+      "vertical-mode"
+    );
+
+
+  let html =
+    "<tr>";
+
+
+  data.fields.forEach(
+    field => {
+
+      html += `
+        <th>
+          ${escapeHtml(
+            field
+          )}
+        </th>
+      `;
+
+    }
+  );
+
+
+  html +=
+    "</tr>";
+
+
+  data.rows.forEach(
+    row => {
+
+      html +=
+        "<tr>";
+
+
+      data.fields.forEach(
+        field => {
+
+          html += `
+            <td>
+              ${escapeHtml(
+                row[field] ??
+                ""
+              )}
+            </td>
+          `;
+
+        }
+      );
+
+
+      html +=
+        "</tr>";
+
+    }
+  );
+
+
+  table.innerHTML =
+    html;
+
 }
+
+
+/* ======================================================
+   RUN SR SQL
+   ====================================================== */
 
 async function runSR() {
 
   const sql =
-    document.getElementById("sr-sql").value;
+    document
+      .getElementById(
+        "sr-sql"
+      )
+      .value;
+
 
   const data =
     await query(sql);
 
-  render("sr-table", data);
+
+  render(
+    "sr-table",
+    data
+  );
+
 }
+
+
+/* ======================================================
+   RUN HE SQL
+   ====================================================== */
 
 async function runHE() {
 
   const sql =
-    document.getElementById("he-sql").value;
+    document
+      .getElementById(
+        "he-sql"
+      )
+      .value;
+
 
   const data =
     await query(sql);
 
-  render("he-table", data);
+
+  render(
+    "he-table",
+    data
+  );
+
 }
+
+
+/* ======================================================
+   CSV DOWNLOAD
+   ====================================================== */
 
 function downloadSR() {
 
-  const sql = encodeURIComponent(
-    document.getElementById("sr-sql").value
-  );
+  const sql =
+    encodeURIComponent(
+      document
+        .getElementById(
+          "sr-sql"
+        )
+        .value
+    );
+
 
   window.location =
-    "/api/sql-csv?sql=" + sql;
+    "/api/sql-csv?sql=" +
+    sql;
+
 }
+
 
 function downloadHE() {
 
-  const sql = encodeURIComponent(
-    document.getElementById("he-sql").value
-  );
+  const sql =
+    encodeURIComponent(
+      document
+        .getElementById(
+          "he-sql"
+        )
+        .value
+    );
+
 
   window.location =
-    "/api/sql-csv?sql=" + sql;
+    "/api/sql-csv?sql=" +
+    sql;
+
 }
+
+
+/* ======================================================
+   SR DATE FILTER
+   ====================================================== */
 
 function loadSR() {
 
   const from =
-    document.getElementById("sr-from").value;
+    document
+      .getElementById(
+        "sr-from"
+      )
+      .value;
+
 
   const to =
-    document.getElementById("sr-to").value;
+    document
+      .getElementById(
+        "sr-to"
+      )
+      .value;
+
 
   let sql = `
+
 SELECT
   id,
   timestamputc,
@@ -494,39 +1010,79 @@ SELECT
   claimable_trx
 FROM sr_snapshots
 WHERE 1=1
+
 `;
+
 
   if (from) {
+
     sql += `
-AND timestamphkt >= '${from} 00:00:00'
+
+AND timestamphkt >=
+'${from} 00:00:00'
+
 `;
+
   }
+
 
   if (to) {
+
     sql += `
-AND timestamphkt <= '${to} 23:59:59'
+
+AND timestamphkt <=
+'${to} 23:59:59'
+
 `;
+
   }
 
+
   sql += `
+
 ORDER BY id DESC
 LIMIT 28
+
 `;
 
-  document.getElementById("sr-sql").value = sql;
+
+  document
+    .getElementById(
+      "sr-sql"
+    )
+    .value =
+      sql;
+
 
   runSR();
+
 }
+
+
+/* ======================================================
+   HE DATE FILTER
+   ====================================================== */
 
 function loadHE() {
 
   const from =
-    document.getElementById("he-from").value;
+    document
+      .getElementById(
+        "he-from"
+      )
+      .value;
+
 
   const to =
-    document.getElementById("he-to").value;
+    document
+      .getElementById(
+        "he-to"
+      )
+      .value;
+
 
   let sql = `
+
 SELECT
   id,
   snapshot_time_utc,
@@ -537,29 +1093,58 @@ SELECT
   pct
 FROM he_vote_snapshots
 WHERE 1=1
+
 `;
+
 
   if (from) {
+
     sql += `
-AND snapshot_time_utc >= '${from} 00:00:00'
+
+AND snapshot_time_utc >=
+'${from} 00:00:00'
+
 `;
+
   }
+
 
   if (to) {
+
     sql += `
-AND snapshot_time_utc <= '${to} 23:59:59'
+
+AND snapshot_time_utc <=
+'${to} 23:59:59'
+
 `;
+
   }
 
+
   sql += `
+
 ORDER BY id DESC
 LIMIT 26
+
 `;
 
-  document.getElementById("he-sql").value = sql;
+
+  document
+    .getElementById(
+      "he-sql"
+    )
+    .value =
+      sql;
+
 
   runHE();
+
 }
+
+
+/* ======================================================
+   INITIAL LOAD
+   ====================================================== */
 
 runSR();
 runHE();
