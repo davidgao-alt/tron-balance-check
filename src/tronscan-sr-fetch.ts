@@ -75,6 +75,75 @@ function sleep(ms: number) {
 }
 
 // ======================================================
+// get full Tronscan witness detail safely
+// ======================================================
+
+async function getWitnessDetailSafe(
+  address: string
+): Promise<any> {
+  const maxRetries = 5;
+
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      // Tronscan 请求之间稍微停一下
+      await sleep(1000);
+
+      const url =
+        `https://apilist.tronscan.org/api/vote/witness?address=${address}`;
+
+      const res: any =
+        await axios.get(
+          url,
+          {
+            timeout: 30000,
+          }
+        );
+
+      const detail =
+        res.data?.data;
+
+      if (!detail) {
+        throw new Error(
+          `No witness detail found for ${address}`
+        );
+      }
+
+      return detail;
+    } catch (err: any) {
+      const status =
+        err?.response?.status;
+
+      const msg =
+        err?.response?.data ||
+        err?.message;
+
+      if (status === 429) {
+        const waitMs =
+          10000 + i * 5000;
+
+        console.log(
+          `429 Tronscan rate limit for ${address}, wait ${waitMs / 1000}s then retry...`
+        );
+
+        await sleep(waitMs);
+        continue;
+      }
+
+      console.error(
+        `getWitnessDetail failed for ${address}:`,
+        msg
+      );
+
+      throw err;
+    }
+  }
+
+  throw new Error(
+    `getWitnessDetail failed after retries: ${address}`
+  );
+}
+
+// ======================================================
 // get reward safely
 // ======================================================
 
@@ -137,14 +206,11 @@ async function getTrxBalanceSafe(
 
   for (let i = 0; i < maxRetries; i++) {
     try {
-      // 避免请求太密集
       await sleep(1000);
 
-      // TronWeb 返回单位为 SUN
       const balanceSun =
         await tronWeb.trx.getBalance(address);
 
-      // 1 TRX = 1,000,000 SUN
       return Number(balanceSun) / 1e6;
     } catch (err: any) {
       const status =
@@ -301,28 +367,11 @@ export async function fetchSrSnapshot() {
     const output = [];
 
     // ==================================================
-    // 1. fetch tracked address
+    // 1. fetch tracked address full detail
     // ==================================================
 
-    const singleUrl =
-      `https://apilist.tronscan.org/api/vote/witness?address=${ADDRESS}`;
-
-    const singleRes: any =
-      await axios.get(
-        singleUrl,
-        {
-          timeout: 30000,
-        }
-      );
-
     const mainWitness =
-      singleRes.data.data;
-
-    if (!mainWitness) {
-      throw new Error(
-        `No witness data found for tracked address: ${ADDRESS}`
-      );
-    }
+      await getWitnessDetailSafe(ADDRESS);
 
     console.log(
       `Fetched tracked address: ${mainWitness.name}`
@@ -334,7 +383,7 @@ export async function fetchSrSnapshot() {
     output.push(mainRow);
 
     // ==================================================
-    // 2. fetch top 27 SR
+    // 2. fetch top 27 SR list
     // ==================================================
 
     const srRes: any =
@@ -362,8 +411,8 @@ export async function fetchSrSnapshot() {
     );
 
     // ==================================================
-    // 3. append top 27 SR rows
-    //    skip tracked address to avoid duplicate snapshot
+    // 3. fetch full detail for every Top 27 SR
+    //    and skip tracked address if it enters Top 27
     // ==================================================
 
     for (const sr of srList) {
@@ -375,8 +424,32 @@ export async function fetchSrSnapshot() {
         continue;
       }
 
+      console.log(
+        `Fetching full witness detail: ${sr.ranking} - ${sr.name}`
+      );
+
+      const detail =
+        await getWitnessDetailSafe(
+          sr.address
+        );
+
+      // 防止 detail endpoint 偶尔不带 ranking，
+      // 用 pagewitness 的 ranking 作为 fallback
+      if (
+        detail.ranking == null &&
+        detail.realTimeRanking == null
+      ) {
+        detail.ranking =
+          sr.ranking;
+      }
+
+      if (!detail.name) {
+        detail.name =
+          sr.name;
+      }
+
       const row =
-        await buildRow(sr);
+        await buildRow(detail);
 
       output.push(row);
     }
