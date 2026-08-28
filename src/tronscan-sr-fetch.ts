@@ -1,8 +1,14 @@
+// src/tronscan-sr-fetch.ts
+
 import axios from "axios";
 import TronWeb from "tronweb";
 
+// ======================================================
+// tracked address
+// ======================================================
+
 const ADDRESS =
-  "TCEo1hMAdaJrQmvnGTCcGT2LqrGU4N7Jqf";
+  "TGydWLsWzUnYG6fPvrVeMSs1UJBTTFgXY3";
 
 type WitnessData = {
   lastRanking?: number;
@@ -29,8 +35,13 @@ type WitnessData = {
   producedEfficiency?: number;
 
   blockReward?: number;
+
   version: number;
 };
+
+// ======================================================
+// TronGrid
+// ======================================================
 
 const TRONGRID_API_KEY =
   process.env.TRONGRID_API_KEY || "";
@@ -58,21 +69,22 @@ if (TRONGRID_API_KEY) {
 // ======================================================
 
 function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) =>
+    setTimeout(resolve, ms)
+  );
 }
 
 // ======================================================
 // get reward safely
 // ======================================================
 
-async function getRewardSafe(address: string): Promise<number> {
-
+async function getRewardSafe(
+  address: string
+): Promise<number> {
   const maxRetries = 5;
 
   for (let i = 0; i < maxRetries; i++) {
-
     try {
-
       // 每个地址之间停 3 秒
       await sleep(3000);
 
@@ -80,9 +92,7 @@ async function getRewardSafe(address: string): Promise<number> {
         await tronWeb.trx.getReward(address);
 
       return Number(reward);
-
     } catch (err: any) {
-
       const status =
         err?.response?.status;
 
@@ -92,7 +102,6 @@ async function getRewardSafe(address: string): Promise<number> {
         err?.message;
 
       if (status === 429) {
-
         const waitMs =
           10000 + i * 5000;
 
@@ -101,6 +110,7 @@ async function getRewardSafe(address: string): Promise<number> {
         );
 
         await sleep(waitMs);
+
         continue;
       }
 
@@ -122,10 +132,16 @@ async function getRewardSafe(address: string): Promise<number> {
 // build row
 // ======================================================
 
-async function buildRow(d: WitnessData) {
-
+async function buildRow(
+  d: WitnessData
+) {
   console.log(
-    `Fetching: ${d.ranking ?? d.realTimeRanking ?? d.lastRanking ?? "-"} - ${d.name}`
+    `Fetching: ${
+      d.ranking ??
+      d.realTimeRanking ??
+      d.lastRanking ??
+      "-"
+    } - ${d.name}`
   );
 
   const reward =
@@ -143,13 +159,12 @@ async function buildRow(d: WitnessData) {
         "sv-SE",
         {
           timeZone:
-            "Asia/Hong_Kong"
+            "Asia/Hong_Kong",
         }
       )
       .replace(" ", "T");
 
   return {
-
     timestampUTC,
     timestampHKT,
 
@@ -215,7 +230,7 @@ async function buildRow(d: WitnessData) {
     reward,
 
     "Claimable Voter/SR Rewards":
-      claimableTRX
+      claimableTRX,
   };
 }
 
@@ -224,9 +239,7 @@ async function buildRow(d: WitnessData) {
 // ======================================================
 
 export async function fetchSrSnapshot() {
-
   try {
-
     const output = [];
 
     // ==================================================
@@ -240,7 +253,7 @@ export async function fetchSrSnapshot() {
       await axios.get(
         singleUrl,
         {
-          timeout: 30000
+          timeout: 30000,
         }
       );
 
@@ -272,9 +285,9 @@ export async function fetchSrSnapshot() {
         {
           params: {
             limit: 50,
-            start: 0
+            start: 0,
           },
-          timeout: 30000
+          timeout: 30000,
         }
       );
 
@@ -292,9 +305,19 @@ export async function fetchSrSnapshot() {
 
     // ==================================================
     // 3. append top 27 SR rows
+    //    skip tracked address to avoid duplicate snapshot
     // ==================================================
 
     for (const sr of srList) {
+      // 如果 tracked address 以后进入 Top 27，
+      // 它已经在上面单独 snapshot 过，这里直接跳过。
+      if (sr.address === ADDRESS) {
+        console.log(
+          `Skipping duplicate tracked address in Top 27: ${sr.name} (${sr.address})`
+        );
+
+        continue;
+      }
 
       const row =
         await buildRow(sr);
@@ -303,13 +326,11 @@ export async function fetchSrSnapshot() {
     }
 
     console.log(
-      `Total rows = ${output.length}`
+      `Total unique rows = ${output.length}`
     );
 
     return output;
-
   } catch (err) {
-
     console.error(
       "fetch error:",
       err
@@ -324,10 +345,8 @@ export async function fetchSrSnapshot() {
 // ======================================================
 
 if (require.main === module) {
-
   fetchSrSnapshot()
     .then((out) => {
-
       console.log(
         JSON.stringify(
           out,
@@ -339,7 +358,6 @@ if (require.main === module) {
       console.log(
         `rows = ${out.length}`
       );
-
     })
     .catch(console.error);
 }
