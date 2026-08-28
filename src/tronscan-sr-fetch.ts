@@ -85,7 +85,6 @@ async function getRewardSafe(
 
   for (let i = 0; i < maxRetries; i++) {
     try {
-      // 每个地址之间停 3 秒
       await sleep(3000);
 
       const reward =
@@ -106,11 +105,10 @@ async function getRewardSafe(
           10000 + i * 5000;
 
         console.log(
-          `429 rate limit for ${address}, wait ${waitMs / 1000}s then retry...`
+          `429 rate limit for reward ${address}, wait ${waitMs / 1000}s then retry...`
         );
 
         await sleep(waitMs);
-
         continue;
       }
 
@@ -125,6 +123,61 @@ async function getRewardSafe(
 
   throw new Error(
     `getReward failed after retries: ${address}`
+  );
+}
+
+// ======================================================
+// get TRX balance safely
+// ======================================================
+
+async function getTrxBalanceSafe(
+  address: string
+): Promise<number> {
+  const maxRetries = 5;
+
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      // 避免请求太密集
+      await sleep(1000);
+
+      // TronWeb 返回单位为 SUN
+      const balanceSun =
+        await tronWeb.trx.getBalance(address);
+
+      // 1 TRX = 1,000,000 SUN
+      return Number(balanceSun) / 1e6;
+    } catch (err: any) {
+      const status =
+        err?.response?.status;
+
+      const msg =
+        err?.response?.data?.Error ||
+        err?.response?.data ||
+        err?.message;
+
+      if (status === 429) {
+        const waitMs =
+          10000 + i * 5000;
+
+        console.log(
+          `429 rate limit for TRX balance ${address}, wait ${waitMs / 1000}s then retry...`
+        );
+
+        await sleep(waitMs);
+        continue;
+      }
+
+      console.error(
+        `getBalance failed for ${address}:`,
+        msg
+      );
+
+      throw err;
+    }
+  }
+
+  throw new Error(
+    `getBalance failed after retries: ${address}`
   );
 }
 
@@ -149,6 +202,9 @@ async function buildRow(
 
   const claimableTRX =
     reward / 1e6;
+
+  const trxBalance =
+    await getTrxBalanceSafe(d.address);
 
   const timestampUTC =
     new Date().toISOString();
@@ -231,6 +287,8 @@ async function buildRow(
 
     "Claimable Voter/SR Rewards":
       claimableTRX,
+
+    trxBalance,
   };
 }
 
@@ -309,8 +367,6 @@ export async function fetchSrSnapshot() {
     // ==================================================
 
     for (const sr of srList) {
-      // 如果 tracked address 以后进入 Top 27，
-      // 它已经在上面单独 snapshot 过，这里直接跳过。
       if (sr.address === ADDRESS) {
         console.log(
           `Skipping duplicate tracked address in Top 27: ${sr.name} (${sr.address})`

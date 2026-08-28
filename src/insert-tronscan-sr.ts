@@ -76,6 +76,8 @@
 
 // main();
 
+// src/insert-tronscan-sr.ts
+
 import { Pool } from "pg";
 import { fetchSrSnapshot } from "./tronscan-sr-fetch";
 
@@ -85,15 +87,12 @@ const pool = new Pool({
 });
 
 async function main() {
-
   try {
-
-    // 现在 fetch 返回 array
+    // fetch 返回 array
     const rows = await fetchSrSnapshot();
 
     // loop insert
     for (const data of rows) {
-
       const res = await pool.query(
         `
         INSERT INTO sr_snapshots (
@@ -116,12 +115,14 @@ async function main() {
           version,
           reward,
           claimable_trx,
+          trx_balance,
           timestamputc,
           timestamphkt
         )
         VALUES (
           $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
-          $11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21
+          $11,$12,$13,$14,$15,$16,$17,$18,$19,$20,
+          $21,$22
         )
         RETURNING id
         `,
@@ -145,6 +146,7 @@ async function main() {
           data.version,
           data.reward,
           data["Claimable Voter/SR Rewards"],
+          data.trxBalance,
           data.timestampUTC,
           data.timestampHKT,
         ]
@@ -153,21 +155,18 @@ async function main() {
       console.log(
         "insert success:",
         res.rows[0].id,
-        data.name
+        data.name,
+        "trx_balance:",
+        data.trxBalance
       );
     }
-
   } catch (err) {
-
     console.error(
       "insert error:",
       err
     );
-
   } finally {
-
     await pool.end();
-
   }
 }
 
