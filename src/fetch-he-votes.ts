@@ -37,7 +37,8 @@ const WATCHED_ADDRESSES = new Set([
   "TE9VGAC7Qce3Lm7emJK4WoM1xp43wT87qD",
   "TLZXe1w751dcmu2B4t3KhhRca27dJhema4",
   "TEE5qqdfejWCBKJ6P2eVEQ2AuN3R1tWmfs",
-  "TAMVp6dsw7P3R8zd3PhVowEhVLczRWwPQE"
+  "TAMVp6dsw7P3R8zd3PhVowEhVLczRWwPQE",
+  "TUgSgCQL6pMSy9zByn4sgxqrJa95sZExBG"
 ]);
 
 // ======================================================
