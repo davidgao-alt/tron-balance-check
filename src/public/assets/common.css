@@ -1,40 +1,207 @@
-/* Styles for the shared helpers in common.js. */
+/* Shared look for the dashboard pages (index, query, sr, mstr-sharplink-view)
+   and styles for the helpers in common.js. */
 
-.ui-status {
-  font-size: 13px;
-  color: #475569;
+:root {
+  --bg: #eef2f7;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --border: #e2e8f0;
+  --border-input: #7d8ca3;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-head: #334155;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success: #166534;
+  --danger: #b91c1c;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-.ui-status:empty {
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- page layout ---------- */
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.card-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.muted {
+  margin: 0 0 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.grid-2 > .card {
+  margin-bottom: 0;
+}
+
+.hidden {
   display: none;
 }
 
-.ui-status.ui-status--loading {
-  color: #1d4ed8;
+/* ---------- tabs (segmented control) ---------- */
+
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--border);
+  border-radius: 10px;
 }
 
-.ui-status.ui-status--success {
-  color: #166534;
+.tab {
+  padding: 6px 14px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-head);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
 }
 
-.ui-status.ui-status--error {
-  color: #b91c1c;
+.tab:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.tab.active {
+  background: var(--surface);
+  color: var(--primary-hover);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+/* ---------- forms and buttons ---------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
   font-weight: 600;
 }
 
-/* Wide tables scroll inside this box instead of widening the whole page. */
-.ui-scroll {
-  max-width: 100%;
-  overflow-x: auto;
+input,
+textarea {
+  padding: 7px 10px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--text);
+  font: inherit;
 }
 
-.vertical-mode .metric-name {
-  width: 40%;
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 160px;
+  margin-bottom: 12px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
 }
 
-.vertical-mode .metric-value {
-  white-space: normal;
-  overflow-wrap: anywhere;
+button {
+  padding: 7px 14px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f1f5f9;
+}
+
+button.primary {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+button.primary:hover {
+  border-color: var(--primary-hover);
+  background: var(--primary-hover);
+}
+
+/* Actions that write to the database. */
+button.write {
+  border-color: #fb923c;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+button.write:hover {
+  background: #ffedd5;
 }
 
 button:disabled {
@@ -44,4 +211,208 @@ button:disabled {
 
 button[aria-busy="true"] {
   cursor: progress;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+.tab:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ---------- collapsible sections ---------- */
+
+details.collapsible > summary {
+  width: fit-content;
+  color: var(--text-head);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+details.collapsible[open] > summary {
+  margin-bottom: 10px;
+}
+
+pre.json {
+  max-height: 360px;
+  margin: 0;
+  padding: 12px;
+  overflow: auto;
+  border-radius: var(--radius-sm);
+  background: var(--text);
+  color: var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* ---------- status line ---------- */
+
+.ui-status {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.ui-status:empty {
+  display: none;
+}
+
+.ui-status.ui-status--loading {
+  color: var(--primary-hover);
+}
+
+.ui-status.ui-status--success {
+  color: var(--success);
+}
+
+.ui-status.ui-status--error {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* ---------- tables ---------- */
+
+/* Wide tables scroll inside this box instead of widening the whole page. */
+.table-wrap,
+.ui-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.table-wrap:empty {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+
+th {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: #f1f5f9;
+  color: var(--text-head);
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+}
+
+td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+}
+
+tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+tbody tr:hover > td {
+  background: #f8fbff;
+}
+
+th.num,
+td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.copyable {
+  cursor: copy;
+}
+
+/* Long values (e.g. JSON) are cut off in tables; the full text is in the tooltip. */
+td.clip {
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vertical-mode td.clip {
+  max-width: none;
+}
+
+.copyable.copied::after {
+  content: "  ✓ copied";
+  color: var(--success);
+  font-family: var(--font);
+}
+
+a {
+  color: var(--primary-hover);
+}
+
+/* Single-row results: field / value pairs. */
+.vertical-mode table,
+table.kv {
+  table-layout: fixed;
+}
+
+.vertical-mode thead th:first-child,
+table.kv thead th:first-child {
+  width: 40%;
+}
+
+.vertical-mode th.metric-name,
+table.kv tbody th {
+  background: var(--surface-muted);
+  white-space: normal;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.vertical-mode td,
+table.kv td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+/* Long result tables keep their header in view while scrolling. */
+@media (min-width: 641px) {
+  .table-wrap:not(.vertical-mode) {
+    max-height: 75vh;
+  }
+
+  .table-wrap:not(.vertical-mode) thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 640px) {
+  body {
+    padding: 16px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .card {
+    padding: 14px;
+  }
 }

@@ -10,377 +10,23 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
-
-<style>
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #eef2f7;
-  margin: 0;
-  padding: 40px;
-  color: #111827;
-}
-
-.container {
-  max-width: 1500px;
-  margin: auto;
-}
-
-.main-title {
-  text-align: center;
-  font-size: 54px;
-  font-weight: 800;
-  margin-bottom: 45px;
-  color: #0f172a;
-  letter-spacing: -1px;
-}
-
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-.tab {
-  padding: 14px 28px;
-  border-radius: 12px;
-  background: #dbe2ea;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 17px;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.tab:hover {
-  transform: translateY(-1px);
-}
-
-.tab.active {
-  background: linear-gradient(
-    135deg,
-    #2563eb,
-    #1d4ed8
-  );
-
-  color: white;
-
-  box-shadow:
-    0 8px 20px
-    rgba(37, 99, 235, 0.22);
-}
-
-.section-title {
-  text-align: center;
-  font-size: 34px;
-  font-weight: 800;
-  margin-bottom: 30px;
-  color: #111827;
-}
-
-.card {
-  background: white;
-  border-radius: 18px;
-  padding: 30px;
-  margin-bottom: 28px;
-
-  box-shadow:
-    0 4px 14px rgba(15, 23, 42, 0.05),
-    0 1px 3px rgba(15, 23, 42, 0.08);
-}
-
-.filter-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-label {
-  font-weight: 700;
-  font-size: 15px;
-}
-
-input[type="date"] {
-  padding: 10px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #f8fafc;
-  font-size: 14px;
-}
-
-.sql-title {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 800;
-  margin-bottom: 24px;
-}
-
-textarea {
-  width: 100%;
-  min-height: 180px;
-
-  border-radius: 14px;
-  border: 1px solid #dbe2ea;
-
-  padding: 18px;
-
-  font-family: monospace;
-  font-size: 14px;
-  line-height: 1.5;
-
-  background: #f8fafc;
-
-  resize: vertical;
-
-  margin-bottom: 22px;
-}
-
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-button {
-  background: linear-gradient(
-    135deg,
-    #2563eb,
-    #1d4ed8
-  );
-
-  color: white;
-
-  border: none;
-  border-radius: 10px;
-
-  padding: 11px 22px;
-
-  cursor: pointer;
-
-  font-weight: 700;
-  font-size: 14px;
-
-  transition: 0.18s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  opacity: 0.96;
-}
-
-
-/* ======================================================
-   NORMAL HORIZONTAL TABLE
-   ====================================================== */
-
-.table-wrap {
-  overflow-x: auto;
-  border-radius: 14px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  background: white;
-}
-
-th {
-  background: #f1f5f9;
-
-  text-align: left;
-
-  padding: 14px 12px;
-
-  border-bottom:
-    1px solid #e2e8f0;
-
-  font-size: 13px;
-  font-weight: 800;
-
-  color: #334155;
-
-  position: sticky;
-  top: 0;
-}
-
-td {
-  padding: 13px 12px;
-
-  border-bottom:
-    1px solid #f1f5f9;
-
-  white-space: nowrap;
-}
-
-tr:hover td {
-  background: #f8fbff;
-}
-
-
-/* ======================================================
-   SINGLE RECORD VERTICAL TABLE
-   ====================================================== */
-
-.table-wrap.vertical-mode {
-  max-width: 900px;
-  margin: 0 auto;
-  overflow-x: visible;
-
-  border:
-    1px solid #e2e8f0;
-
-  border-radius: 14px;
-}
-
-.table-wrap.vertical-mode table {
-  width: 100%;
-  table-layout: fixed;
-}
-
-.table-wrap.vertical-mode th {
-  position: static;
-}
-
-.vertical-header {
-  background: #e9eff7 !important;
-  color: #0f172a !important;
-  font-size: 14px !important;
-  padding: 15px 18px !important;
-}
-
-.metric-name {
-  width: 42%;
-
-  background:
-    #f1f5f9 !important;
-
-  color:
-    #334155 !important;
-
-  font-weight: 800;
-
-  padding:
-    14px 18px !important;
-
-  border-bottom:
-    1px solid #e2e8f0;
-
-  vertical-align: top;
-}
-
-.metric-value {
-  width: 58%;
-
-  padding:
-    14px 18px !important;
-
-  border-bottom:
-    1px solid #e2e8f0;
-
-  white-space: normal !important;
-
-  word-break: break-word;
-
-  font-family: monospace;
-
-  color: #111827;
-}
-
-.table-wrap.vertical-mode
-tr:last-child
-.metric-name,
-
-.table-wrap.vertical-mode
-tr:last-child
-.metric-value {
-  border-bottom: none;
-}
-
-.table-wrap.vertical-mode
-tr:hover
-.metric-value {
-  background: #f8fbff;
-}
-
-.hidden {
-  display: none;
-}
-
-.result-status {
-  margin-bottom: 12px;
-}
-
-
-/* ======================================================
-   NARROW SCREENS
-   ====================================================== */
-
-@media (max-width: 640px) {
-
-  body {
-    padding: 16px;
-  }
-
-  .main-title {
-    font-size: 32px;
-    margin-bottom: 24px;
-  }
-
-  .tabs {
-    margin-bottom: 24px;
-  }
-
-  .section-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-
-  .card {
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-
-}
-
-</style>
 </head>
 
 
 <body>
 
-<div class="container">
+<div class="page">
 
-<div class="main-title">
-  TRON SR Dashboard
-</div>
+<header class="page-header">
 
+  <h1 class="page-title">TRON SR Dashboard</h1>
 
-<div class="tabs">
-
-  <div
-    class="tab active"
-    onclick="switchTab('sr')"
-  >
-    SR Metrics
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('sr')">SR Metrics</div>
+    <div class="tab" onclick="switchTab('he')">HE Vote Snapshot</div>
   </div>
 
-  <div
-    class="tab"
-    onclick="switchTab('he')"
-  >
-    HE Vote Snapshot
-  </div>
-
-</div>
+</header>
 
 
 <!-- =====================================================
@@ -389,47 +35,18 @@ tr:hover
 
 <div id="sr-tab">
 
-<div class="section-title">
-  SR Metrics
+<section class="card">
+
+<div class="toolbar">
+  <label class="field">From (HKT) <input type="date" id="sr-from"></label>
+  <label class="field">To (HKT) <input type="date" id="sr-to"></label>
+  <button class="primary" onclick="loadSR()">Load</button>
+  <span class="spacer"></span>
+  <button onclick="downloadSR()">Download CSV</button>
 </div>
 
-
-<div class="card">
-
-<div class="filter-row">
-
-<label>
-  From (HKT)
-</label>
-
-<input
-  type="date"
-  id="sr-from"
->
-
-<label>
-  To (HKT)
-</label>
-
-<input
-  type="date"
-  id="sr-to"
->
-
-<button onclick="loadSR()">
-  Load
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="sql-title">
-  Custom SQL
-</div>
+<details class="collapsible" data-remember="sr-sql" style="margin-top: 14px;">
+<summary>Custom SQL</summary>
 
 <textarea id="sr-sql">
 SELECT
@@ -448,35 +65,20 @@ ORDER BY id DESC
 LIMIT 28
 </textarea>
 
+<button class="primary" onclick="runSR()">Run</button>
 
-<div class="button-row">
+</details>
 
-<button onclick="runSR()">
-  Run
-</button>
-
-<button onclick="downloadSR()">
-  Download CSV
-</button>
-
-</div>
-
-</div>
+</section>
 
 
-<div class="card">
+<section class="card">
 
-<div
-  class="result-status"
-  id="sr-status"
-></div>
+<div id="sr-status"></div>
 
-<div
-  class="table-wrap"
-  id="sr-result"
-></div>
+<div class="table-wrap" id="sr-result"></div>
 
-</div>
+</section>
 
 </div>
 
@@ -485,53 +87,20 @@ LIMIT 28
      HE TAB
      ===================================================== -->
 
-<div
-  id="he-tab"
-  class="hidden"
->
+<div id="he-tab" class="hidden">
 
-<div class="section-title">
-  HE Vote Snapshot
+<section class="card">
+
+<div class="toolbar">
+  <label class="field">From (UTC) <input type="date" id="he-from"></label>
+  <label class="field">To (UTC) <input type="date" id="he-to"></label>
+  <button class="primary" onclick="loadHE()">Load</button>
+  <span class="spacer"></span>
+  <button onclick="downloadHE()">Download CSV</button>
 </div>
 
-
-<div class="card">
-
-<div class="filter-row">
-
-<label>
-  From (UTC)
-</label>
-
-<input
-  type="date"
-  id="he-from"
->
-
-<label>
-  To (UTC)
-</label>
-
-<input
-  type="date"
-  id="he-to"
->
-
-<button onclick="loadHE()">
-  Load
-</button>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="sql-title">
-  Custom SQL
-</div>
-
+<details class="collapsible" data-remember="he-sql" style="margin-top: 14px;">
+<summary>Custom SQL</summary>
 
 <textarea id="he-sql">
 SELECT
@@ -547,40 +116,24 @@ ORDER BY id DESC
 LIMIT 26
 </textarea>
 
+<button class="primary" onclick="runHE()">Run</button>
 
-<div class="button-row">
+</details>
 
-<button onclick="runHE()">
-  Run
-</button>
-
-<button onclick="downloadHE()">
-  Download CSV
-</button>
-
-</div>
-
-</div>
+</section>
 
 
-<div class="card">
+<section class="card">
 
-<div
-  class="result-status"
-  id="he-status"
-></div>
+<div id="he-status"></div>
 
-<div
-  class="table-wrap"
-  id="he-result"
-></div>
+<div class="table-wrap" id="he-result"></div>
+
+</section>
 
 </div>
 
 </div>
-
-</div>
-
 
 <script>
 
