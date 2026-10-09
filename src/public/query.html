@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TRON sTRX Tools</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="assets/common.css" />
+  <script src="assets/common.js"></script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Arial, sans-serif;
@@ -80,6 +83,15 @@
       width: 100%;
       height: 120px;
       font-size: 14px;
+      box-sizing: border-box;
+    }
+    #sqlStatus {
+      margin: 8px 0;
+    }
+    @media (max-width: 640px) {
+      body {
+        margin: 16px;
+      }
     }
   </style>
 </head>
@@ -115,6 +127,7 @@
 
     <div id="msg-top5" style="margin-top:8px;"></div>
 
+    <div class="ui-scroll">
     <table id="tbl-top5" style="display:none">
       <thead>
         <tr>
@@ -128,6 +141,7 @@
       </thead>
       <tbody></tbody>
     </table>
+    </div>
 
     <h3>Raw JSON</h3>
     <pre id="raw-top5" style="display:none"></pre>
@@ -144,11 +158,12 @@
     <textarea id="sqlBox">SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</textarea>
     <br/><br/>
 
-    <button onclick="runQuery()">Run Query</button>
-    <button onclick="downloadCSV()">Download CSV</button>
+    <button id="btn-run-sql">Run Query</button>
+    <button id="btn-csv">Download CSV</button>
 
     <h3>Table Preview</h3>
-    <div id="tableContainer">Run a query to see results…</div>
+    <div id="sqlStatus">Run a query to see results…</div>
+    <div id="tableContainer" class="ui-scroll"></div>
 
     <h3>Raw Result (JSON)</h3>
     <pre id="jsonOutput">{}</pre>
@@ -177,91 +192,67 @@
     const tbodyTop5 = tblTop5.querySelector('tbody');
     const rawTop5 = document.getElementById('raw-top5');
 
-    fTop5.addEventListener('submit', async e => {
+    fTop5.addEventListener('submit', e => {
       e.preventDefault();
-      msgTop5.textContent = 'Loading...';
-      tblTop5.style.display = 'none';
-      rawTop5.style.display = 'none';
-      tbodyTop5.innerHTML = '';
 
       const date = document.getElementById('date').value.trim();
       const lookback = document.getElementById('lookback').value.trim();
+      const hideResult = () => {
+        tblTop5.style.display = 'none';
+        rawTop5.style.display = 'none';
+        tbodyTop5.innerHTML = '';
+      };
 
-      const r = await fetch(`/api/top5?date=${encodeURIComponent(date)}&lookback=${encodeURIComponent(lookback)}`);
-      const j = await r.json();
+      UI.run({ buttons: fTop5.querySelector('button'), status: msgTop5, onError: hideResult }, async () => {
+        const j = await UI.requestJson(`/api/top5?date=${encodeURIComponent(date)}&lookback=${encodeURIComponent(lookback)}`);
+        const esc = UI.escapeHtml;
 
-      if (!r.ok) {
-        msgTop5.textContent = 'Error: ' + (j.error || r.status);
-        return;
-      }
-
-      msgTop5.textContent = `date=${j.date}, lookback=${j.lookback}h, count=${j.count}`;
-      j.data.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row.time_utc}</td>
-          <td>${row.type}</td>
-          <td>
-            <a href="https://tronscan.org/#/transaction/${row.txid}"
-               target="_blank" rel="noreferrer">
-              ${row.txid.slice(0, 12)}…
-            </a>
-          </td>
-          <td>${row.TRX}</td>
-          <td>${row.sTRX}</td>
-          <td>${row.ratio}</td>
-        `;
-        tbodyTop5.appendChild(tr);
+        tbodyTop5.innerHTML = j.data.map(row => `
+          <tr>
+            <td>${esc(row.time_utc)}</td>
+            <td>${esc(row.type)}</td>
+            <td>
+              <a href="https://tronscan.org/#/transaction/${esc(row.txid)}"
+                 target="_blank" rel="noreferrer">
+                ${esc(row.txid.slice(0, 12))}…
+              </a>
+            </td>
+            <td>${esc(row.TRX)}</td>
+            <td>${esc(row.sTRX)}</td>
+            <td>${esc(row.ratio)}</td>
+          </tr>
+        `).join('');
+        tblTop5.style.display = 'table';
+        rawTop5.textContent = JSON.stringify(j, null, 2);
+        rawTop5.style.display = 'block';
+        UI.setStatus(msgTop5, j.count ? 'success' : 'empty', `date=${j.date}, lookback=${j.lookback}h, count=${j.count}`);
       });
-      tblTop5.style.display = 'table';
-      rawTop5.textContent = JSON.stringify(j, null, 2);
-      rawTop5.style.display = 'block';
     });
 
     // -------- Panel 2: SQL Query logic --------
-    async function runQuery() {
-      const sql = document.getElementById("sqlBox").value;
+    const sqlBox = document.getElementById("sqlBox");
+    const sqlStatus = document.getElementById("sqlStatus");
+    const jsonOutput = document.getElementById("jsonOutput");
+    const sqlButtons = [document.getElementById("btn-run-sql"), document.getElementById("btn-csv")];
 
-      const res = await fetch("/api/sql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sql }),
+    document.getElementById("btn-run-sql").addEventListener("click", () => {
+      UI.runSqlInto({
+        sql: sqlBox.value,
+        container: document.getElementById("tableContainer"),
+        status: sqlStatus,
+        buttons: sqlButtons,
+        onResult: data => {
+          jsonOutput.textContent = JSON.stringify(data, null, 2);
+        },
+        onError: err => {
+          jsonOutput.textContent = JSON.stringify({ error: err.message }, null, 2);
+        },
       });
+    });
 
-      const data = await res.json();
-      document.getElementById("jsonOutput").textContent =
-        JSON.stringify(data, null, 2);
-
-      renderTable(data.rows || []);
-    }
-
-    function renderTable(rows) {
-      const container = document.getElementById("tableContainer");
-      if (!rows.length) {
-        container.innerHTML = "<p>No rows returned.</p>";
-        return;
-      }
-
-      let html = "<table><thead><tr>";
-      const keys = Object.keys(rows[0]);
-
-      for (const k of keys) html += `<th>${k}</th>`;
-      html += "</tr></thead><tbody>";
-
-      for (const row of rows) {
-        html += "<tr>";
-        for (const k of keys) html += `<td>${row[k]}</td>`;
-        html += "</tr>";
-      }
-
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
-
-    function downloadCSV() {
-      const sql = document.getElementById("sqlBox").value;
-      window.location = "/api/sql-csv?sql=" + encodeURIComponent(sql);
-    }
+    document.getElementById("btn-csv").addEventListener("click", () => {
+      UI.downloadCsv({ sql: sqlBox.value, status: sqlStatus, buttons: sqlButtons });
+    });
   </script>
 </body>
 </html>

@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MSTR & Sharplink Snapshots Viewer</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="assets/common.css" />
+  <script src="assets/common.js"></script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -125,6 +129,27 @@
       font-weight: 600;
       margin-top: 16px;
       margin-bottom: 4px;
+    }
+
+    .history-table th,
+    .history-table td {
+      width: auto;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        margin: 0;
+        padding: 16px;
+      }
+
+      .section {
+        padding: 12px 14px;
+      }
+
+      th {
+        width: 40%;
+      }
     }
   </style>
 </head>
@@ -287,131 +312,98 @@
       },
     ];
 
+    // ============ 页面元素 ============
+    const refreshBtn = document.getElementById("refresh-btn");
+    const statusEl = document.getElementById("status-text");
+    const mstrEl = document.getElementById("mstr-table");
+    const sharplinkEl = document.getElementById("sharplink-table");
+    const jsonRawEl = document.getElementById("json-raw");
+    const escapeHtml = UI.escapeHtml;
+
+    // ============ 字段表（latest & historical 共用） ============
+    function renderFieldTable(fields, row) {
+      let html =
+        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+      for (const field of fields) {
+        html +=
+          "<tr><th>" +
+          escapeHtml(field.label) +
+          "</th><td>" +
+          escapeHtml(field.fmt(row[field.key])) +
+          "</td></tr>";
+      }
+      html += "</tbody></table>";
+      return html;
+    }
+
     // ============ 最新 snapshot 加载 ============
 
-    async function loadLatestOnly() {
-      const statusEl = document.getElementById("status-text");
-      const mstrEl = document.getElementById("mstr-table");
-      const sharplinkEl = document.getElementById("sharplink-table");
-      const jsonRawEl = document.getElementById("json-raw");
+    function renderLatest(container, fields, obj, emptyText) {
+      container.innerHTML = obj
+        ? renderFieldTable(fields, obj)
+        : '<div class="empty">' + emptyText + "</div>";
+    }
 
-      statusEl.textContent = "Loading latest from DB...";
-      mstrEl.innerHTML = "";
-      sharplinkEl.innerHTML = "";
+    function showLatest(data) {
+      jsonRawEl.textContent = JSON.stringify(data, null, 2);
+      renderLatest(mstrEl, MSTR_FIELDS, data.mstr, "No MSTR snapshot found");
+      renderLatest(
+        sharplinkEl,
+        SHARPLINK_FIELDS,
+        data.sharplink,
+        "No Sharplink snapshot found"
+      );
+    }
 
-      try {
-        const res = await fetch("/api/mstr-sharplink/latest");
-        if (!res.ok) {
-          throw new Error("HTTP " + res.status);
+    function loadLatestOnly() {
+      return UI.run(
+        {
+          buttons: refreshBtn,
+          status: statusEl,
+          loading: "Loading latest from DB...",
+          onError: (err) => {
+            jsonRawEl.textContent =
+              "Error while calling /api/mstr-sharplink/latest:\n" + err.message;
+          },
+        },
+        async () => {
+          const data = await UI.requestJson("/api/mstr-sharplink/latest");
+          showLatest(data);
+          UI.setStatus(statusEl, "success", "Loaded latest at " + UI.timeNow());
         }
-        const data = await res.json();
-
-        jsonRawEl.textContent = JSON.stringify(data, null, 2);
-
-        renderMstrLatest(mstrEl, data.mstr, "No MSTR snapshot found");
-        renderSharplinkLatest(
-          sharplinkEl,
-          data.sharplink,
-          "No Sharplink snapshot found"
-        );
-
-        statusEl.textContent =
-          "Loaded latest at " + new Date().toLocaleTimeString();
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent =
-          "Error: " + (err && err.message ? err.message : err);
-        jsonRawEl.textContent =
-          "Error while calling /api/mstr-sharplink/latest:\n" + String(err);
-      }
+      );
     }
 
-    async function refreshAndInsert() {
-      const statusEl = document.getElementById("status-text");
-      const mstrEl = document.getElementById("mstr-table");
-      const sharplinkEl = document.getElementById("sharplink-table");
-      const jsonRawEl = document.getElementById("json-raw");
+    // Refresh 会抓取数据并写入新 snapshot：请求期间按钮禁用，失败时保留页面上已有的数据
+    function refreshAndInsert() {
+      return UI.run(
+        {
+          buttons: refreshBtn,
+          status: statusEl,
+          loading: "Refreshing: fetching sources and inserting a new snapshot...",
+          onError: (err) => {
+            UI.setStatus(
+              statusEl,
+              "error",
+              "Refresh failed: " + err.message + ". The data below has not been updated."
+            );
+            jsonRawEl.textContent =
+              "Error while calling /api/mstr-sharplink/refresh:\n" + err.message;
+          },
+        },
+        async () => {
+          const data = await UI.requestJson("/api/mstr-sharplink/refresh", {
+            method: "POST",
+          });
+          showLatest(data);
 
-      statusEl.textContent = "Refreshing (insert + fetch)...";
-      mstrEl.innerHTML = "";
-      sharplinkEl.innerHTML = "";
+          const idInfo = data.inserted
+            ? ` (MSTR id ${data.inserted.mstrId}, SBET id ${data.inserted.sharplinkId})`
+            : "";
 
-      try {
-        const res = await fetch("/api/mstr-sharplink/refresh", {
-          method: "POST",
-        });
-
-        if (!res.ok) {
-          throw new Error("HTTP " + res.status);
+          UI.setStatus(statusEl, "success", "Refreshed at " + UI.timeNow() + idInfo);
         }
-
-        const data = await res.json();
-        jsonRawEl.textContent = JSON.stringify(data, null, 2);
-
-        renderMstrLatest(mstrEl, data.mstr, "No MSTR snapshot found");
-        renderSharplinkLatest(
-          sharplinkEl,
-          data.sharplink,
-          "No Sharplink snapshot found"
-        );
-
-        const idInfo = data.inserted
-          ? ` (MSTR id ${data.inserted.mstrId}, SBET id ${data.inserted.sharplinkId})`
-          : "";
-
-        statusEl.textContent =
-          "Refreshed at " + new Date().toLocaleTimeString() + idInfo;
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent =
-          "Error: " + (err && err.message ? err.message : err);
-        jsonRawEl.textContent =
-          "Error while calling /api/mstr-sharplink/refresh:\n" + String(err);
-      }
-    }
-
-    // 最新 MSTR
-    function renderMstrLatest(container, obj, emptyText) {
-      if (!obj) {
-        container.innerHTML = '<div class="empty">' + emptyText + "</div>";
-        return;
-      }
-
-      let html =
-        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
-      for (const field of MSTR_FIELDS) {
-        const value = obj[field.key];
-        html +=
-          "<tr><th>" +
-          escapeHtml(field.label) +
-          "</th><td>" +
-          escapeHtml(field.fmt(value)) +
-          "</td></tr>";
-      }
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
-
-    // 最新 Sharplink
-    function renderSharplinkLatest(container, obj, emptyText) {
-      if (!obj) {
-        container.innerHTML = '<div class="empty">' + emptyText + "</div>";
-        return;
-      }
-
-      let html =
-        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
-      for (const field of SHARPLINK_FIELDS) {
-        const value = obj[field.key];
-        html +=
-          "<tr><th>" +
-          escapeHtml(field.label) +
-          "</th><td>" +
-          escapeHtml(field.fmt(value)) +
-          "</td></tr>";
-      }
-      html += "</tbody></table>";
-      container.innerHTML = html;
+      );
     }
 
     // ============ 历史查询：默认 SQL ============
@@ -467,187 +459,110 @@
 
     // ============ 历史查询：运行 SQL ============
 
-    async function runSqlQuery(sql, targetEl, statusEl, type) {
+    function runSqlQuery(sql, targetEl, sqlStatusEl, button, fields, name) {
       if (!sql.trim()) {
-        statusEl.textContent = "Please enter a SQL query.";
+        UI.setStatus(sqlStatusEl, "error", "Please enter a SQL query.");
         targetEl.innerHTML = "";
         return;
       }
 
-      statusEl.textContent = "Running...";
-      targetEl.innerHTML = "";
-
-      try {
-        const res = await fetch("/api/sql", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      return UI.run(
+        {
+          buttons: button,
+          status: sqlStatusEl,
+          loading: "Running...",
+          onError: (err) => {
+            targetEl.innerHTML =
+              '<div class="empty">Query failed: ' + escapeHtml(err.message) + "</div>";
           },
-          body: JSON.stringify({ sql }),
-        });
-
-        if (!res.ok) {
-          const errJson = await res.json().catch(() => ({}));
-          const msg = errJson.error || `HTTP ${res.status}`;
-          throw new Error(msg);
+        },
+        async () => {
+          const data = await UI.runSql(sql);
+          UI.setStatus(
+            sqlStatusEl,
+            data.rows.length ? "success" : "empty",
+            UI.rowsSummary(data.rows.length)
+          );
+          renderHistory(targetEl, data.rows, data.fields, fields, name);
         }
-
-        const data = await res.json();
-        const rows = data.rows || [];
-        const rowCount = data.rowCount ?? rows.length;
-
-        statusEl.textContent = `Returned ${rowCount} row(s).`;
-
-        if (type === "mstr") {
-          renderMstrQueryResult(targetEl, rows);
-        } else if (type === "sharplink") {
-          renderSharplinkQueryResult(targetEl, rows);
-        } else {
-          renderGenericRows(targetEl, rows);
-        }
-      } catch (e) {
-        console.error(e);
-        statusEl.textContent = "Error: " + (e && e.message ? e.message : e);
-        targetEl.innerHTML =
-          '<div class="empty">Query failed: ' +
-          escapeHtml(e && e.message ? e.message : String(e)) +
-          "</div>";
-      }
+      );
     }
 
-    // 历史查询：MSTR
-    function renderMstrQueryResult(container, rows) {
-      if (!rows || rows.length === 0) {
+    // 一行：标题 + 字段表；多行：每个 snapshot 一行的横向表格
+    function renderHistory(container, rows, resultFields, fields, name) {
+      if (rows.length === 0) {
         container.innerHTML = '<div class="empty">No result found</div>';
         return;
       }
 
-      const row = rows[0];
-      const ts = row.timestamp_utc || "N/A";
-      const hktStr = formatHktFromUtc(ts);
-      const title =
-        hktStr && hktStr.length > 0
-          ? `MSTR snapshot – ${ts} (HKT ${hktStr})`
-          : `MSTR snapshot – ${ts}`;
-
-      let html =
-        `<h2 style="text-align:center;margin-top:8px;margin-bottom:12px;">${escapeHtml(
-          title
-        )}</h2>`;
-
-      html +=
-        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
-
-      for (const field of MSTR_FIELDS) {
-        const value = row[field.key];
-        html +=
-          "<tr><th>" +
-          escapeHtml(field.label) +
-          "</th><td>" +
-          escapeHtml(field.fmt(value)) +
-          "</td></tr>";
+      // 只显示查询返回了的已知字段；一个都没有时（自定义 SQL），直接显示查询返回的列
+      fields = fields.filter((f) => resultFields.includes(f.key));
+      if (fields.length === 0) {
+        fields = resultFields.map((key) => ({ key, label: key, fmt: UI.formatCell }));
       }
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
 
-    // 历史查询：Sharplink
-    function renderSharplinkQueryResult(container, rows) {
-      if (!rows || rows.length === 0) {
-        container.innerHTML = '<div class="empty">No result found</div>';
+      if (rows.length === 1) {
+        const row = rows[0];
+        const ts = row.timestamp_utc || "N/A";
+        const hktStr = formatHktFromUtc(ts);
+        const title =
+          hktStr && hktStr.length > 0
+            ? `${name} snapshot – ${ts} (HKT ${hktStr})`
+            : `${name} snapshot – ${ts}`;
+
+        container.innerHTML =
+          `<h2 style="text-align:center;margin-top:8px;margin-bottom:12px;">${escapeHtml(
+            title
+          )}</h2>` + renderFieldTable(fields, row);
         return;
       }
 
-      const row = rows[0];
-      const ts = row.timestamp_utc || "N/A";
-      const hktStr = formatHktFromUtc(ts);
-      const title =
-        hktStr && hktStr.length > 0
-          ? `Sharplink snapshot – ${ts} (HKT ${hktStr})`
-          : `Sharplink snapshot – ${ts}`;
+      const head = fields
+        .map((f) => "<th>" + escapeHtml(f.label) + "</th>")
+        .join("");
+      const body = rows
+        .map(
+          (row) =>
+            "<tr>" +
+            fields.map((f) => "<td>" + escapeHtml(f.fmt(row[f.key])) + "</td>").join("") +
+            "</tr>"
+        )
+        .join("");
 
-      let html =
-        `<h2 style="text-align:center;margin-top:8px;margin-bottom:12px;">${escapeHtml(
-          title
-        )}</h2>`;
-
-      html +=
-        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
-
-      for (const field of SHARPLINK_FIELDS) {
-        const value = row[field.key];
-        html +=
-          "<tr><th>" +
-          escapeHtml(field.label) +
-          "</th><td>" +
-          escapeHtml(field.fmt(value)) +
-          "</td></tr>";
-      }
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
-
-    function renderGenericRows(container, rows) {
-      if (!rows || rows.length === 0) {
-        container.innerHTML = '<div class="empty">No result found</div>';
-        return;
-      }
-
-      const row = rows[0];
-      let html =
-        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
-      for (const [key, value] of Object.entries(row)) {
-        html +=
-          "<tr><th>" +
-          escapeHtml(key) +
-          "</th><td>" +
-          escapeHtml(formatValue(value)) +
-          "</td></tr>";
-      }
-      html += "</tbody></table>";
-      container.innerHTML = html;
-    }
-
-    // ============ 通用工具 ============
-
-    function escapeHtml(str) {
-      if (str === null || str === undefined) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function formatValue(v) {
-      if (v === null || v === undefined) return "";
-      if (typeof v === "object") return JSON.stringify(v);
-      return String(v);
+      container.innerHTML =
+        '<div class="ui-scroll"><table class="history-table"><thead><tr>' +
+        head +
+        "</tr></thead><tbody>" +
+        body +
+        "</tbody></table></div>";
     }
 
     // ============ 事件绑定 & 初始化 ============
-    document
-      .getElementById("refresh-btn")
-      .addEventListener("click", refreshAndInsert);
+    refreshBtn.addEventListener("click", refreshAndInsert);
 
-    document
-      .getElementById("run-mstr-sql-btn")
-      .addEventListener("click", () => {
-        const sql = document.getElementById("mstr-sql").value;
-        const statusEl = document.getElementById("mstr-sql-status");
-        const resultEl = document.getElementById("mstr-sql-result");
-        runSqlQuery(sql, resultEl, statusEl, "mstr");
-      });
+    const mstrRunBtn = document.getElementById("run-mstr-sql-btn");
+    mstrRunBtn.addEventListener("click", () => {
+      runSqlQuery(
+        document.getElementById("mstr-sql").value,
+        document.getElementById("mstr-sql-result"),
+        document.getElementById("mstr-sql-status"),
+        mstrRunBtn,
+        MSTR_FIELDS,
+        "MSTR"
+      );
+    });
 
-    document
-      .getElementById("run-sharplink-sql-btn")
-      .addEventListener("click", () => {
-        const sql = document.getElementById("sharplink-sql").value;
-        const statusEl = document.getElementById("sharplink-sql-status");
-        const resultEl = document.getElementById("sharplink-sql-result");
-        runSqlQuery(sql, resultEl, statusEl, "sharplink");
-      });
+    const sharplinkRunBtn = document.getElementById("run-sharplink-sql-btn");
+    sharplinkRunBtn.addEventListener("click", () => {
+      runSqlQuery(
+        document.getElementById("sharplink-sql").value,
+        document.getElementById("sharplink-sql-result"),
+        document.getElementById("sharplink-sql-status"),
+        sharplinkRunBtn,
+        SHARPLINK_FIELDS,
+        "Sharplink"
+      );
+    });
 
     initDefaultSqlForQueries();
     loadLatestOnly();
