@@ -8,196 +8,71 @@
   <link rel="stylesheet" href="assets/common.css" />
   <script src="assets/common.js"></script>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-      padding: 24px;
-      background: #f5f5f7;
-      color: #111827;
-    }
-
-    h1 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-
-    .controls {
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    button {
-      padding: 8px 16px;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      background: white;
-      cursor: pointer;
+    .result-title {
+      margin: 0 0 8px;
       font-size: 14px;
-      margin-right: 8px;
-    }
-
-    button:hover {
-      background: #f3f4f6;
-    }
-
-    .status {
-      margin-left: 4px;
-      font-size: 13px;
-      color: #6b7280;
-    }
-
-    .section {
-      margin-top: 24px;
-      margin-bottom: 24px;
-      background: white;
-      border-radius: 8px;
-      padding: 16px 20px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-    }
-
-    .section h2 {
-      margin: 0 0 10px;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 13px;
-    }
-
-    th, td {
-      border: 1px solid #e5e7eb;
-      padding: 6px 8px;
-      text-align: left;
-    }
-
-    th {
-      background: #f9fafb;
-      font-weight: 600;
-      width: 220px;
-    }
-
-    .empty {
-      font-size: 13px;
-      color: #9ca3af;
-      font-style: italic;
-    }
-
-    .json-block {
-      margin-top: 10px;
-      background: #111827;
-      color: #e5e7eb;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      padding: 10px 12px;
-      border-radius: 6px;
-      overflow-x: auto;
-      max-height: 260px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 80px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
-      font-size: 13px;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      resize: vertical;
-      box-sizing: border-box;
-    }
-
-    .query-block {
-      margin-top: 8px;
-      margin-bottom: 24px;
-    }
-
-    .query-actions {
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
-
-    .query-actions .status {
-      margin-left: 8px;
-    }
-
-    .row-title {
-      font-weight: 600;
-      margin-top: 16px;
-      margin-bottom: 4px;
-    }
-
-    .history-table th,
-    .history-table td {
-      width: auto;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 640px) {
-      body {
-        margin: 0;
-        padding: 16px;
-      }
-
-      .section {
-        padding: 12px 14px;
-      }
-
-      th {
-        width: 40%;
-      }
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
-  <h1>MSTR & Sharplink Snapshots</h1>
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">MSTR & Sharplink Snapshots</h1>
+  </header>
 
-  <div class="controls">
-    <button id="refresh-btn">Refresh (insert + fetch)</button>
-    <span class="status" id="status-text">Idle</span>
-  </div>
+  <section class="card">
+    <div class="toolbar">
+      <button id="refresh-btn" class="write">Refresh (insert + fetch)</button>
+      <span class="ui-status" id="status-text" style="margin: 0;">Idle</span>
+    </div>
+    <p class="muted" style="margin: 8px 0 0;">
+      Refresh fetches the latest MSTR and Sharplink data from the sources and inserts a new snapshot into the database.
+    </p>
+  </section>
 
-  <div class="section">
-    <h2>MSTR Snapshot (Latest)</h2>
-    <div id="mstr-table"></div>
-  </div>
+  <div class="grid-2">
+    <section class="card">
+      <h2 class="card-title">MSTR Snapshot (Latest)</h2>
+      <div id="mstr-table"></div>
+    </section>
 
-  <div class="section">
-    <h2>Sharplink Snapshot (Latest)</h2>
-    <div id="sharplink-table"></div>
+    <section class="card">
+      <h2 class="card-title">Sharplink Snapshot (Latest)</h2>
+      <div id="sharplink-table"></div>
+    </section>
   </div>
 
   <!-- ======== 历史查询（SQL） ======== -->
-  <div class="section">
-    <div class="query-block">
-      <h2>MSTR Snapshots (Historical)</h2>
+  <div class="grid-2">
+    <section class="card">
+      <h2 class="card-title">MSTR Snapshots (Historical)</h2>
+      <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
       <textarea id="mstr-sql"></textarea>
-      <div class="query-actions">
-        <button id="run-mstr-sql-btn">Run</button>
-        <span class="status" id="mstr-sql-status"></span>
+      <div class="toolbar">
+        <button id="run-mstr-sql-btn" class="primary">Run</button>
+        <span class="ui-status" id="mstr-sql-status" style="margin: 0;"></span>
       </div>
-      <div id="mstr-sql-result"></div>
-    </div>
+      <div id="mstr-sql-result" style="margin-top: 12px;"></div>
+    </section>
 
-    <div class="query-block">
-      <h2>Sharplink Snapshots (Historical)</h2>
+    <section class="card">
+      <h2 class="card-title">Sharplink Snapshots (Historical)</h2>
+      <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
       <textarea id="sharplink-sql"></textarea>
-      <div class="query-actions">
-        <button id="run-sharplink-sql-btn">Run</button>
-        <span class="status" id="sharplink-sql-status"></span>
+      <div class="toolbar">
+        <button id="run-sharplink-sql-btn" class="primary">Run</button>
+        <span class="ui-status" id="sharplink-sql-status" style="margin: 0;"></span>
       </div>
-      <div id="sharplink-sql-result"></div>
-    </div>
+      <div id="sharplink-sql-result" style="margin-top: 12px;"></div>
+    </section>
   </div>
 
-  <div class="section">
-    <h2>Raw JSON (Debug)</h2>
-    <pre class="json-block" id="json-raw">{}</pre>
-  </div>
+  <details class="card collapsible">
+    <summary>Raw JSON (Debug)</summary>
+    <pre class="json" id="json-raw">{}</pre>
+  </details>
+</div>
 
   <script>
     // ============ 通用格式化函数 ============
@@ -234,26 +109,33 @@
       return "$" + b.toFixed(2) + "B";
     };
 
-    // 把 UTC ISO 字符串转换成 HKT 显示
-    function formatHktFromUtc(utcStr) {
+    // UTC ISO 字符串 → "YYYY-MM-DD HH:mm:ss"，按给定时差（小时）显示
+    function formatWithOffset(utcStr, hours) {
       if (!utcStr) return "";
       const d = new Date(utcStr);
       if (isNaN(d.getTime())) return "";
-      const hkt = new Date(d.getTime() + 8 * 60 * 60 * 1000);
+      const t = new Date(d.getTime() + hours * 60 * 60 * 1000);
       const pad = (n) => String(n).padStart(2, "0");
-      const y = hkt.getUTCFullYear();
-      const m = pad(hkt.getUTCMonth() + 1);
-      const day = pad(hkt.getUTCDate());
-      const hh = pad(hkt.getUTCHours());
-      const mm = pad(hkt.getUTCMinutes());
-      const ss = pad(hkt.getUTCSeconds());
+      const y = t.getUTCFullYear();
+      const m = pad(t.getUTCMonth() + 1);
+      const day = pad(t.getUTCDate());
+      const hh = pad(t.getUTCHours());
+      const mm = pad(t.getUTCMinutes());
+      const ss = pad(t.getUTCSeconds());
       return `${y}-${m}-${day} ${hh}:${mm}:${ss}`;
     }
+
+    // timestamp_utc 显示为 "… UTC · … HKT"
+    const fmtUtcHkt = (v) => {
+      const utc = formatWithOffset(v, 0);
+      if (!utc) return v == null ? "" : String(v);
+      return `${utc} UTC · ${formatWithOffset(v, 8)} HKT`;
+    };
 
     // ============ MSTR 字段配置（latest & historical 共用） ============
     const MSTR_FIELDS = [
       { key: "id", label: "ID", fmt: (v) => v },
-      { key: "timestamp_utc", label: "Timestamp (UTC)", fmt: (v) => v },
+      { key: "timestamp_utc", label: "Timestamp", fmt: fmtUtcHkt },
       { key: "mstr_price", label: "MSTR Price", fmt: fmtUSD2 },
       { key: "market_cap_million", label: "Market Cap ($M)", fmt: fmtUSD_M },
       {
@@ -277,7 +159,7 @@
     // ============ Sharplink 字段配置 ============
     const SHARPLINK_FIELDS = [
       { key: "id", label: "ID", fmt: (v) => v },
-      { key: "timestamp_utc", label: "Timestamp (UTC)", fmt: (v) => v },
+      { key: "timestamp_utc", label: "Timestamp", fmt: fmtUtcHkt },
       { key: "sharplink_last_price", label: "SBET Price", fmt: fmtUSD2 },
       { key: "eth_last_price", label: "ETH Price", fmt: fmtUSD0 },
       {
@@ -321,18 +203,26 @@
     const escapeHtml = UI.escapeHtml;
 
     // ============ 字段表（latest & historical 共用） ============
+
+    // 一个单元格：已配置字段用页面自己的格式；自定义 SQL 的列用通用格式
+    function fieldCell(field, row, numeric) {
+      if (field.generic) return UI.td(field.key, row[field.key]);
+      const cls = numeric && field.key !== "timestamp_utc" ? ' class="num"' : "";
+      return `<td${cls}>${escapeHtml(field.fmt(row[field.key]))}</td>`;
+    }
+
     function renderFieldTable(fields, row) {
       let html =
-        "<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>";
+        '<div class="table-wrap"><table class="kv"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>';
       for (const field of fields) {
         html +=
-          "<tr><th>" +
+          '<tr><th scope="row">' +
           escapeHtml(field.label) +
-          "</th><td>" +
-          escapeHtml(field.fmt(row[field.key])) +
-          "</td></tr>";
+          "</th>" +
+          fieldCell(field, row, false) +
+          "</tr>";
       }
-      html += "</tbody></table>";
+      html += "</tbody></table></div>";
       return html;
     }
 
@@ -498,39 +388,33 @@
       // 只显示查询返回了的已知字段；一个都没有时（自定义 SQL），直接显示查询返回的列
       fields = fields.filter((f) => resultFields.includes(f.key));
       if (fields.length === 0) {
-        fields = resultFields.map((key) => ({ key, label: key, fmt: UI.formatCell }));
+        fields = resultFields.map((key) => ({ key, label: key, generic: true }));
       }
 
       if (rows.length === 1) {
         const row = rows[0];
-        const ts = row.timestamp_utc || "N/A";
-        const hktStr = formatHktFromUtc(ts);
-        const title =
-          hktStr && hktStr.length > 0
-            ? `${name} snapshot – ${ts} (HKT ${hktStr})`
-            : `${name} snapshot – ${ts}`;
+        const title = `${name} snapshot – ${fmtUtcHkt(row.timestamp_utc) || "N/A"}`;
 
         container.innerHTML =
-          `<h2 style="text-align:center;margin-top:8px;margin-bottom:12px;">${escapeHtml(
-            title
-          )}</h2>` + renderFieldTable(fields, row);
+          `<h3 class="result-title">${escapeHtml(title)}</h3>` +
+          renderFieldTable(fields, row);
         return;
       }
 
       const head = fields
-        .map((f) => "<th>" + escapeHtml(f.label) + "</th>")
+        .map(
+          (f) =>
+            `<th${!f.generic && f.key !== "timestamp_utc" ? ' class="num"' : ""}>` +
+            escapeHtml(f.label) +
+            "</th>"
+        )
         .join("");
       const body = rows
-        .map(
-          (row) =>
-            "<tr>" +
-            fields.map((f) => "<td>" + escapeHtml(f.fmt(row[f.key])) + "</td>").join("") +
-            "</tr>"
-        )
+        .map((row) => "<tr>" + fields.map((f) => fieldCell(f, row, true)).join("") + "</tr>")
         .join("");
 
       container.innerHTML =
-        '<div class="ui-scroll"><table class="history-table"><thead><tr>' +
+        '<div class="table-wrap"><table><thead><tr>' +
         head +
         "</tr></thead><tbody>" +
         body +
