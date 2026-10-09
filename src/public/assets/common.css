@@ -1,0 +1,47 @@
+/* Styles for the shared helpers in common.js. */
+
+.ui-status {
+  font-size: 13px;
+  color: #475569;
+}
+
+.ui-status:empty {
+  display: none;
+}
+
+.ui-status.ui-status--loading {
+  color: #1d4ed8;
+}
+
+.ui-status.ui-status--success {
+  color: #166534;
+}
+
+.ui-status.ui-status--error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+/* Wide tables scroll inside this box instead of widening the whole page. */
+.ui-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.vertical-mode .metric-name {
+  width: 40%;
+}
+
+.vertical-mode .metric-value {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button[aria-busy="true"] {
+  cursor: progress;
+}
