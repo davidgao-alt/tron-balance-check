@@ -110,49 +110,16 @@
       });
     });
 
-    // -------- Panel 1: sTRX Top5 logic --------
-    const fTop5 = document.getElementById('form-top5');
-    const msgTop5 = document.getElementById('msg-top5');
-    const wrapTop5 = document.getElementById('tbl-top5-wrap');
-    const tbodyTop5 = document.querySelector('#tbl-top5 tbody');
-    const rawTop5Box = document.getElementById('raw-top5-box');
-    const rawTop5 = document.getElementById('raw-top5');
-
-    fTop5.addEventListener('submit', e => {
-      e.preventDefault();
-
-      const date = document.getElementById('date').value.trim();
-      const lookback = document.getElementById('lookback').value.trim();
-      const hideResult = () => {
-        wrapTop5.style.display = 'none';
-        rawTop5Box.style.display = 'none';
-        tbodyTop5.innerHTML = '';
-      };
-
-      UI.run({ buttons: fTop5.querySelector('button'), status: msgTop5, onError: hideResult }, async () => {
-        const j = await UI.requestJson(`/api/top5?date=${encodeURIComponent(date)}&lookback=${encodeURIComponent(lookback)}`);
-        const esc = UI.escapeHtml;
-
-        tbodyTop5.innerHTML = j.data.map(row => `
-          <tr>
-            <td>${esc(row.time_utc)}</td>
-            <td>${esc(row.type)}</td>
-            <td>
-              <a class="mono" href="https://tronscan.org/#/transaction/${esc(row.txid)}"
-                 title="${esc(row.txid)}" target="_blank" rel="noreferrer">
-                ${esc(row.txid.slice(0, 12))}…
-              </a>
-            </td>
-            ${UI.td('TRX', row.TRX)}
-            ${UI.td('sTRX', row.sTRX)}
-            ${UI.td('ratio', row.ratio)}
-          </tr>
-        `).join('');
-        wrapTop5.style.display = 'block';
-        rawTop5.textContent = JSON.stringify(j, null, 2);
-        rawTop5Box.style.display = 'block';
-        UI.setStatus(msgTop5, j.count ? 'success' : 'empty', `date=${j.date}, lookback=${j.lookback}h, count=${j.count}`);
-      });
+    // -------- Panel 1: sTRX Top5 logic (shared with index.html, see assets/common.js) --------
+    UI.setupTop5({
+      form: document.getElementById('form-top5'),
+      date: document.getElementById('date'),
+      lookback: document.getElementById('lookback'),
+      status: document.getElementById('msg-top5'),
+      tableWrap: document.getElementById('tbl-top5-wrap'),
+      tbody: document.querySelector('#tbl-top5 tbody'),
+      rawBox: document.getElementById('raw-top5-box'),
+      raw: document.getElementById('raw-top5'),
     });
 
     // -------- Panel 2: SQL Query logic --------

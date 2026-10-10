@@ -21,9 +21,9 @@
 
   <h1 class="page-title">TRON SR Dashboard</h1>
 
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('sr')">SR Metrics</div>
-    <div class="tab" onclick="switchTab('he')">HE Vote Snapshot</div>
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab active" role="tab" data-tab="sr" aria-selected="true">SR Metrics</button>
+    <button type="button" class="tab" role="tab" data-tab="he" aria-selected="false">HE Vote Snapshot</button>
   </div>
 
 </header>
@@ -40,32 +40,17 @@
 <div class="toolbar">
   <label class="field">From (HKT) <input type="date" id="sr-from"></label>
   <label class="field">To (HKT) <input type="date" id="sr-to"></label>
-  <button class="primary" onclick="loadSR()">Load</button>
+  <button class="primary" onclick="loadTab('sr')">Load</button>
   <span class="spacer"></span>
-  <button onclick="downloadSR()">Download CSV</button>
+  <button onclick="downloadTab('sr')">Download CSV</button>
 </div>
 
 <details class="collapsible" data-remember="sr-sql" style="margin-top: 14px;">
 <summary>Custom SQL</summary>
 
-<textarea id="sr-sql">
-SELECT
-  id,
-  timestamputc,
-  timestamphkt,
-  name,
-  realtimevotes,
-  brokerage,
-  voterbrokerage,
-  annualizedrate,
-  votespercentage,
-  claimable_trx
-FROM sr_snapshots
-ORDER BY id DESC
-LIMIT 28
-</textarea>
+<textarea id="sr-sql"></textarea>
 
-<button class="primary" onclick="runSR()">Run</button>
+<button class="primary" onclick="runTab('sr')">Run</button>
 
 </details>
 
@@ -94,29 +79,17 @@ LIMIT 28
 <div class="toolbar">
   <label class="field">From (UTC) <input type="date" id="he-from"></label>
   <label class="field">To (UTC) <input type="date" id="he-to"></label>
-  <button class="primary" onclick="loadHE()">Load</button>
+  <button class="primary" onclick="loadTab('he')">Load</button>
   <span class="spacer"></span>
-  <button onclick="downloadHE()">Download CSV</button>
+  <button onclick="downloadTab('he')">Download CSV</button>
 </div>
 
 <details class="collapsible" data-remember="he-sql" style="margin-top: 14px;">
 <summary>Custom SQL</summary>
 
-<textarea id="he-sql">
-SELECT
-  id,
-  snapshot_time_utc,
-  candidate_name,
-  candidate_ranking,
-  he_votes,
-  candidate_total_votes,
-  pct
-FROM he_vote_snapshots
-ORDER BY id DESC
-LIMIT 26
-</textarea>
+<textarea id="he-sql"></textarea>
 
-<button class="primary" onclick="runHE()">Run</button>
+<button class="primary" onclick="runTab('he')">Run</button>
 
 </details>
 
@@ -138,267 +111,154 @@ LIMIT 26
 <script>
 
 /* ======================================================
-   TAB SWITCH
+   TABLES (one config per tab; SQL text is built from it)
    ====================================================== */
 
-function switchTab(tab) {
-
-  document
-    .getElementById("sr-tab")
-    .classList.add("hidden");
-
-  document
-    .getElementById("he-tab")
-    .classList.add("hidden");
-
-
-  document
-    .querySelectorAll(".tab")
-    .forEach(
-      t =>
-        t.classList.remove(
-          "active"
-        )
-    );
-
-
-  if (tab === "sr") {
-
-    document
-      .getElementById("sr-tab")
-      .classList.remove("hidden");
-
-    document
-      .querySelectorAll(".tab")[0]
-      .classList.add("active");
-
-  } else {
-
-    document
-      .getElementById("he-tab")
-      .classList.remove("hidden");
-
-    document
-      .querySelectorAll(".tab")[1]
-      .classList.add("active");
-
+const TABS = {
+  sr: {
+    table: "sr_snapshots",
+    columns: [
+      "id",
+      "timestamputc",
+      "timestamphkt",
+      "name",
+      "realtimevotes",
+      "brokerage",
+      "voterbrokerage",
+      "annualizedrate",
+      "votespercentage",
+      "claimable_trx"
+    ],
+    timeColumn: "timestamphkt",
+    limit: 28
+  },
+  he: {
+    table: "he_vote_snapshots",
+    columns: [
+      "id",
+      "snapshot_time_utc",
+      "candidate_name",
+      "candidate_ranking",
+      "he_votes",
+      "candidate_total_votes",
+      "pct"
+    ],
+    timeColumn: "snapshot_time_utc",
+    limit: 26
   }
+};
 
+const el = (tab, name) => document.getElementById(`${tab}-${name}`);
+
+const selectList = (cfg) => cfg.columns.map(c => "  " + c).join(",\n");
+
+
+// SQL in the Custom SQL box when the page opens.
+function defaultSql(cfg) {
+  return `SELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nORDER BY id DESC\nLIMIT ${cfg.limit}\n`;
+}
+
+
+// SQL written by Load (same text, blank lines included, as before).
+function filteredSql(cfg, from, to) {
+  let sql = `\n\nSELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nWHERE 1=1\n\n`;
+  if (from) sql += `\n\nAND ${cfg.timeColumn} >=\n'${from} 00:00:00'\n\n`;
+  if (to) sql += `\n\nAND ${cfg.timeColumn} <=\n'${to} 23:59:59'\n\n`;
+  return sql + `\n\nORDER BY id DESC\nLIMIT ${cfg.limit}\n\n`;
 }
 
 
 /* ======================================================
-   RUN SQL / CSV DOWNLOAD
+   RUN / CSV / LOAD
    (request, status and table helpers: assets/common.js)
    ====================================================== */
 
-function panel(tab) {
+// SQL the page itself last put in each box; Load asks before replacing anything else.
+const lastSql = {};
 
+// Tabs whose data has been queried at least once.
+const loaded = {};
+
+
+function panel(tab) {
   return {
-    sql: document.getElementById(`${tab}-sql`).value,
-    container: document.getElementById(`${tab}-result`),
-    status: document.getElementById(`${tab}-status`),
+    sql: el(tab, "sql").value,
+    container: el(tab, "result"),
+    status: el(tab, "status"),
     buttons: document.querySelectorAll(`#${tab}-tab button`)
   };
-
 }
 
 
-function runSR() {
-  return UI.runSqlInto(panel("sr"));
+function runTab(tab) {
+  loaded[tab] = true;
+  return UI.runSqlInto(panel(tab));
 }
 
 
-function runHE() {
-  return UI.runSqlInto(panel("he"));
+function downloadTab(tab) {
+  return UI.downloadCsv(panel(tab));
 }
 
 
-function downloadSR() {
-  return UI.downloadCsv(panel("sr"));
-}
+function loadTab(tab) {
+  const from = el(tab, "from").value;
+  const to = el(tab, "to").value;
+  const box = el(tab, "sql");
 
+  if (from && to && from > to) {
+    UI.setStatus(el(tab, "status"), "error", "The From date is later than the To date.");
+    return;
+  }
 
-function downloadHE() {
-  return UI.downloadCsv(panel("he"));
+  if (
+    box.value !== lastSql[tab] &&
+    !confirm("Load will replace the SQL you edited under Custom SQL. Continue?")
+  ) {
+    return;
+  }
+
+  box.value = lastSql[tab] = filteredSql(TABS[tab], from, to);
+  runTab(tab);
 }
 
 
 /* ======================================================
-   SR DATE FILTER
+   TAB SWITCH (current tab kept in the URL: sr.html#he)
    ====================================================== */
 
-function loadSR() {
-
-  const from =
-    document
-      .getElementById(
-        "sr-from"
-      )
-      .value;
-
-
-  const to =
-    document
-      .getElementById(
-        "sr-to"
-      )
-      .value;
-
-
-  let sql = `
-
-SELECT
-  id,
-  timestamputc,
-  timestamphkt,
-  name,
-  realtimevotes,
-  brokerage,
-  voterbrokerage,
-  annualizedrate,
-  votespercentage,
-  claimable_trx
-FROM sr_snapshots
-WHERE 1=1
-
-`;
-
-
-  if (from) {
-
-    sql += `
-
-AND timestamphkt >=
-'${from} 00:00:00'
-
-`;
-
+function switchTab(tab) {
+  for (const name of Object.keys(TABS)) {
+    const button = document.querySelector(`.tab[data-tab="${name}"]`);
+    button.classList.toggle("active", name === tab);
+    button.setAttribute("aria-selected", String(name === tab));
+    el(name, "tab").classList.toggle("hidden", name !== tab);
   }
 
+  history.replaceState(null, "", tab === "sr" ? location.pathname + location.search : "#" + tab);
 
-  if (to) {
-
-    sql += `
-
-AND timestamphkt <=
-'${to} 23:59:59'
-
-`;
-
-  }
-
-
-  sql += `
-
-ORDER BY id DESC
-LIMIT 28
-
-`;
-
-
-  document
-    .getElementById(
-      "sr-sql"
-    )
-    .value =
-      sql;
-
-
-  runSR();
-
+  // HE is only queried once it is opened.
+  if (!loaded[tab]) runTab(tab);
 }
 
-
-/* ======================================================
-   HE DATE FILTER
-   ====================================================== */
-
-function loadHE() {
-
-  const from =
-    document
-      .getElementById(
-        "he-from"
-      )
-      .value;
-
-
-  const to =
-    document
-      .getElementById(
-        "he-to"
-      )
-      .value;
-
-
-  let sql = `
-
-SELECT
-  id,
-  snapshot_time_utc,
-  candidate_name,
-  candidate_ranking,
-  he_votes,
-  candidate_total_votes,
-  pct
-FROM he_vote_snapshots
-WHERE 1=1
-
-`;
-
-
-  if (from) {
-
-    sql += `
-
-AND snapshot_time_utc >=
-'${from} 00:00:00'
-
-`;
-
-  }
-
-
-  if (to) {
-
-    sql += `
-
-AND snapshot_time_utc <=
-'${to} 23:59:59'
-
-`;
-
-  }
-
-
-  sql += `
-
-ORDER BY id DESC
-LIMIT 26
-
-`;
-
-
-  document
-    .getElementById(
-      "he-sql"
-    )
-    .value =
-      sql;
-
-
-  runHE();
-
-}
+const tabFromUrl = () => (location.hash === "#he" ? "he" : "sr");
 
 
 /* ======================================================
    INITIAL LOAD
    ====================================================== */
 
-runSR();
-runHE();
+for (const tab of Object.keys(TABS)) {
+  el(tab, "sql").value = lastSql[tab] = defaultSql(TABS[tab]);
+}
+
+document
+  .querySelectorAll(".tab[data-tab]")
+  .forEach(button => button.addEventListener("click", () => switchTab(button.dataset.tab)));
+
+window.addEventListener("hashchange", () => switchTab(tabFromUrl()));
+
+switchTab(tabFromUrl());
 
 </script>
 
