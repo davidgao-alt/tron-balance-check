@@ -42,32 +42,15 @@
 </div>
 
 <script>
-const f = document.getElementById('q');
-const msg = document.getElementById('msg');
-const tblWrap = document.getElementById('tbl-wrap');
-const tbody = document.querySelector('#tbl tbody');
-const rawBox = document.getElementById('raw-box');
-const raw = document.getElementById('raw');
-const esc = UI.escapeHtml;
-
-f.addEventListener('submit', e=>{
-  e.preventDefault();
-
-  const date = document.getElementById('date').value.trim();
-  const lookback = document.getElementById('lookback').value.trim();
-  const hideResult = () => { tblWrap.style.display='none'; rawBox.style.display='none'; tbody.innerHTML=''; };
-
-  UI.run({ buttons: f.querySelector('button'), status: msg, onError: hideResult }, async () => {
-    const j = await UI.requestJson(`/api/top5?date=${encodeURIComponent(date)}&lookback=${encodeURIComponent(lookback)}`);
-
-    tbody.innerHTML = j.data.map(row=>`<tr><td>${esc(row.time_utc)}</td><td>${esc(row.type)}</td>
-                    <td><a class="mono" href="https://tronscan.org/#/transaction/${esc(row.txid)}" title="${esc(row.txid)}" target="_blank" rel="noreferrer">${esc(row.txid.slice(0,12))}…</a></td>
-                    ${UI.td('TRX', row.TRX)}${UI.td('sTRX', row.sTRX)}${UI.td('ratio', row.ratio)}</tr>`).join('');
-    tblWrap.style.display='block';
-    raw.textContent = JSON.stringify(j, null, 2);
-    rawBox.style.display='block';
-    UI.setStatus(msg, j.count ? 'success' : 'empty', `date=${j.date}, lookback=${j.lookback}h, count=${j.count}`);
-  });
+UI.setupTop5({
+  form: document.getElementById('q'),
+  date: document.getElementById('date'),
+  lookback: document.getElementById('lookback'),
+  status: document.getElementById('msg'),
+  tableWrap: document.getElementById('tbl-wrap'),
+  tbody: document.querySelector('#tbl tbody'),
+  rawBox: document.getElementById('raw-box'),
+  raw: document.getElementById('raw'),
 });
 </script>
 </body>

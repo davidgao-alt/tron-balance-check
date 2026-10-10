@@ -16,13 +16,6 @@
       .replace(/'/g, "&#039;");
   }
 
-  // Display text for one cell value (jsonb columns arrive as objects).
-  function formatCell(value) {
-    if (value === null || value === undefined) return "";
-    if (typeof value === "object") return JSON.stringify(value);
-    return String(value);
-  }
-
   // ---------- display formatting (screen only; CSV export keeps raw values) ----------
 
   const NUMBER_RE = /^-?\d+(?:\.\d+)?$/;
@@ -281,6 +274,47 @@
     );
   }
 
+  // ---------- sTRX Top5 form (index.html and query.html) ----------
+
+  function setupTop5({ form, date, lookback, status, tableWrap, tbody, rawBox, raw }) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const url =
+        `/api/top5?date=${encodeURIComponent(date.value.trim())}` +
+        `&lookback=${encodeURIComponent(lookback.value.trim())}`;
+      const hideResult = () => {
+        tableWrap.style.display = "none";
+        rawBox.style.display = "none";
+        tbody.innerHTML = "";
+      };
+
+      run({ buttons: form.querySelector("button"), status, onError: hideResult }, async () => {
+        const j = await requestJson(url);
+
+        tbody.innerHTML = j.data
+          .map(
+            (row) =>
+              "<tr>" +
+              `<td>${escapeHtml(row.time_utc)}</td>` +
+              `<td>${escapeHtml(row.type)}</td>` +
+              `<td><a class="mono" href="https://tronscan.org/#/transaction/${escapeHtml(row.txid)}"` +
+              ` title="${escapeHtml(row.txid)}" target="_blank" rel="noreferrer">` +
+              `${escapeHtml(row.txid.slice(0, 12))}…</a></td>` +
+              td("TRX", row.TRX) +
+              td("sTRX", row.sTRX) +
+              td("ratio", row.ratio) +
+              "</tr>"
+          )
+          .join("");
+        tableWrap.style.display = "block";
+        raw.textContent = JSON.stringify(j, null, 2);
+        rawBox.style.display = "block";
+        setStatus(status, j.count ? "success" : "empty", `date=${j.date}, lookback=${j.lookback}h, count=${j.count}`);
+      });
+    });
+  }
+
   // ---------- click-to-copy ----------
 
   document.addEventListener("click", (e) => {
@@ -323,9 +357,6 @@
 
   window.UI = {
     escapeHtml,
-    formatCell,
-    formatNumber,
-    cellView,
     td,
     requestJson,
     runSql,
@@ -333,8 +364,8 @@
     rowsSummary,
     timeNow,
     run,
-    renderTable,
     runSqlInto,
     downloadCsv,
+    setupTop5,
   };
 })();
