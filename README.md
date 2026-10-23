@@ -1,6 +1,6 @@
 TRON Blockchain Snapshot Tools
 
-This project contains four internal monitoring tools:
+This project contains five internal monitoring tools:
 
 	1.	sTRX on-chain activity (deposit / withdraw tracking)
 UI: https://troninc-wallet-event-query.onrender.com/query.html
@@ -13,3 +13,6 @@ UI: https://mstr-sharplink-snapshot.onrender.com/mstr-sharplink-view.html
 
     4.	TRON Super Representative metrics monitoring (reward, votes & brokerage tracking)
 UI: https://tronscan-sr-metrics.onrender.com/sr.html 
+
+	5.	Tron Inc. revenue wallet snapshots (TRX, staking, energy / bandwidth, votes, claimable rewards, sTRX)
+UI: https://tronscan-sr-metrics.onrender.com/troninc-revenue.html
