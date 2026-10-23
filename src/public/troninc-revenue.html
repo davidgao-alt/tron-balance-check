@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Tron Inc. Revenue Wallet</title>
+
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="assets/common.css">
+<script src="assets/common.js"></script>
+
+<style>
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
+  gap: 12px;
+}
+
+.kpi {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.kpi-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.kpi-value {
+  margin-top: 2px;
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.kpi-sub {
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-head {
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.card-head .muted {
+  margin-bottom: 0;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+<header class="page-header">
+
+  <h1 class="page-title">TRON SR Dashboard</h1>
+
+  <nav class="tabs" aria-label="Dashboard pages">
+    <a class="tab" href="sr.html">SR Metrics</a>
+    <a class="tab" href="sr.html#he">HE Vote Snapshot</a>
+    <a class="tab active" href="troninc-revenue.html" aria-current="page">Revenue Wallet</a>
+  </nav>
+
+</header>
+
+
+<!-- =====================================================
+     LATEST SNAPSHOT
+     ===================================================== -->
+
+<section class="card" id="latest-card">
+
+<div class="toolbar card-head">
+  <div>
+    <h2 class="card-title">Tron Inc. Revenue Wallet</h2>
+    <p class="muted">
+      <span class="mono copyable" title="Click to copy">TEb4gXicQ39VWN3jbeXygEJJV1McRWg4uZ</span>
+      · <a href="https://tronscan.org/#/address/TEb4gXicQ39VWN3jbeXygEJJV1McRWg4uZ" target="_blank" rel="noreferrer">Tronscan</a>
+      · <span id="latest-time"></span>
+    </p>
+  </div>
+  <span class="spacer"></span>
+  <button onclick="loadLatest()">Refresh</button>
+</div>
+
+<div id="latest-status"></div>
+
+<div class="kpis" id="kpis"></div>
+
+</section>
+
+
+<div class="grid-2">
+
+<section class="card" id="assets-card">
+  <h2 class="card-title">Assets</h2>
+  <p class="muted">Tronscan assets list at the latest snapshot (staked TRX is counted in Total TRX above).</p>
+  <div id="assets-status"></div>
+  <div class="table-wrap" id="assets-result"></div>
+</section>
+
+<section class="card" id="votes-card">
+  <h2 class="card-title">Votes</h2>
+  <p class="muted">SRs this wallet votes for at the latest snapshot.</p>
+  <div id="votes-status"></div>
+  <div class="table-wrap" id="votes-result"></div>
+</section>
+
+</div>
+
+
+<!-- =====================================================
+     HISTORY
+     ===================================================== -->
+
+<div id="history-tab">
+
+<section class="card">
+
+<h2 class="card-title" style="margin-bottom: 12px;">History</h2>
+
+<div class="toolbar">
+  <label class="field">From (HKT) <input type="date" id="history-from"></label>
+  <label class="field">To (HKT) <input type="date" id="history-to"></label>
+  <button class="primary" onclick="loadHistory()">Load</button>
+  <span class="spacer"></span>
+  <button onclick="UI.downloadCsv(panel())">Download CSV</button>
+</div>
+
+<details class="collapsible" data-remember="history-sql" style="margin-top: 14px;">
+<summary>Custom SQL</summary>
+
+<textarea id="history-sql"></textarea>
+
+<button class="primary" onclick="runHistory()">Run</button>
+
+</details>
+
+</section>
+
+
+<section class="card">
+
+<div id="history-status"></div>
+
+<div class="table-wrap" id="history-result"></div>
+
+</section>
+
+</div>
+
+</div>
+
+<script>
+
+const TABLE = "troninc_revenue_snapshots";
+
+const $ = (id) => document.getElementById(id);
+
+const LATEST = `(SELECT * FROM ${TABLE} ORDER BY snapshot_time_utc DESC LIMIT 1) s`;
+
+
+/* ======================================================
+   NUMBER FORMATTING (cards)
+   ====================================================== */
+
+// Cuts a decimal string to at most `digits` decimals (no rounding), then adds separators.
+function amount(value, digits = 6) {
+  if (value === null || value === undefined || value === "") return "–";
+  const [whole, fraction = ""] = String(value).split(".");
+  return UI.formatNumber(fraction ? `${whole}.${fraction.slice(0, digits)}` : whole);
+}
+
+function usd(value) {
+  if (value === null || value === undefined) return "–";
+  return "$" + Number(value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+
+/* ======================================================
+   LATEST SNAPSHOT: cards, assets, votes
+   ====================================================== */
+
+function kpi(label, value, sub) {
+  return (
+    '<div class="kpi">' +
+    `<div class="kpi-label">${UI.escapeHtml(label)}</div>` +
+    `<div class="kpi-value">${UI.escapeHtml(value)}</div>` +
+    (sub ? `<div class="kpi-sub">${UI.escapeHtml(sub)}</div>` : "") +
+    "</div>"
+  );
+}
+
+function renderKpis(r) {
+  $("latest-time").textContent =
+    `Snapshot ${String(r.snapshot_time_hkt).replace("T", " ").replace(/(\.\d+)?Z$/, "")} HKT · id ${r.id}`;
+
+  $("kpis").innerHTML = [
+    kpi("TRX available", amount(r.trx_available)),
+    kpi("TRX staked", amount(r.trx_staked),
+      `Energy ${amount(r.trx_staked_energy)} · Bandwidth ${amount(r.trx_staked_bandwidth)}` +
+      (Number(r.trx_delegated_out) ? ` · delegated out ${amount(r.trx_delegated_out)}` : "")),
+    kpi("TRX unstaking", amount(r.trx_unstaking), `Withdrawable ${amount(r.trx_withdrawable)}`),
+    kpi("Total TRX", amount(r.trx_total), "Available + staked + unstaking"),
+    kpi("Claimable voter/SR rewards", amount(r.claimable_reward_trx) + " TRX"),
+    kpi("sTRX", amount(r.strx_balance)),
+    kpi("Votes", amount(r.votes_used), `TRON Power ${amount(r.vote_power)}`),
+    kpi("Energy", amount(r.energy_available), `available of ${amount(r.energy_limit)}`),
+    kpi("Bandwidth", amount(r.bandwidth_available), `available of ${amount(r.bandwidth_limit)}`),
+    kpi("Total assets (USD)", usd(r.total_assets_usd),
+      r.trx_price_usd === null ? "Tronscan prices unavailable" : `TRX $${Number(r.trx_price_usd).toFixed(4)}`),
+  ].join("");
+}
+
+const ASSETS_SQL = `SELECT
+  a->>'token_abbr' AS token,
+  a->>'token_name' AS token_name,
+  CASE a->>'token_type' WHEN '0' THEN 'TRX' WHEN '10' THEN 'TRC10' WHEN '20' THEN 'TRC20' ELSE a->>'token_type' END AS type,
+  a->>'token_id' AS token_id,
+  a->>'balance' AS balance,
+  a->>'price_usd' AS price_usd,
+  a->>'value_usd' AS value_usd
+FROM ${LATEST}, jsonb_array_elements(s.assets) a
+ORDER BY (a->>'value_usd')::numeric DESC NULLS LAST`;
+
+const VOTES_SQL = `SELECT
+  v->>'sr_name' AS sr_name,
+  v->>'sr_address' AS sr_address,
+  (v->>'votes')::bigint AS votes
+FROM ${LATEST}, jsonb_array_elements(s.votes) v
+ORDER BY (v->>'votes')::bigint DESC`;
+
+// Runs a fixed query into a card; `emptyText` replaces "No results".
+function loadList(name, sql, emptyText) {
+  const status = $(`${name}-status`);
+  return UI.runSqlInto({
+    sql,
+    container: $(`${name}-result`),
+    status,
+    buttons: [],
+    onResult: (data) => {
+      if (!data.rows.length) UI.setStatus(status, "empty", emptyText);
+    }
+  });
+}
+
+async function loadLatest() {
+  const status = $("latest-status");
+  const button = document.querySelector("#latest-card button");
+
+  await UI.run({ buttons: button, status }, async () => {
+    const data = await UI.runSql(
+      `SELECT * FROM ${TABLE} ORDER BY snapshot_time_utc DESC LIMIT 1`
+    );
+
+    if (!data.rows.length) {
+      $("kpis").innerHTML = "";
+      UI.setStatus(status, "empty", "No snapshot yet.");
+      return;
+    }
+
+    renderKpis(data.rows[0]);
+    UI.setStatus(status, "", "");
+  });
+
+  loadList("assets", ASSETS_SQL, "No assets in the latest snapshot (or Tronscan was unavailable).");
+  loadList("votes", VOTES_SQL, "No votes cast at the latest snapshot.");
+}
+
+
+/* ======================================================
+   HISTORY: Load / Run / CSV (same flow as sr.html)
+   ====================================================== */
+
+const HISTORY = {
+  columns: [
+    "id",
+    "snapshot_time_hkt",
+    "trx_available",
+    "trx_staked",
+    "trx_unstaking",
+    "trx_total",
+    "claimable_reward_trx",
+    "strx_balance",
+    "votes_used",
+    "energy_available",
+    "bandwidth_available",
+    "trx_price_usd",
+    "total_assets_usd"
+  ],
+  timeColumn: "snapshot_time_hkt",
+  limit: 48
+};
+
+const selectList = HISTORY.columns.map(c => "  " + c).join(",\n");
+
+function defaultSql() {
+  return `SELECT\n${selectList}\nFROM ${TABLE}\nORDER BY id DESC\nLIMIT ${HISTORY.limit}\n`;
+}
+
+function filteredSql(from, to) {
+  let sql = `SELECT\n${selectList}\nFROM ${TABLE}\nWHERE 1=1\n`;
+  if (from) sql += `AND ${HISTORY.timeColumn} >= '${from} 00:00:00'\n`;
+  if (to) sql += `AND ${HISTORY.timeColumn} <= '${to} 23:59:59'\n`;
+  return sql + `ORDER BY id DESC\nLIMIT ${HISTORY.limit}\n`;
+}
+
+// SQL the page itself last put in the box; Load asks before replacing anything else.
+let lastSql = "";
+
+function panel() {
+  return {
+    sql: $("history-sql").value,
+    container: $("history-result"),
+    status: $("history-status"),
+    buttons: document.querySelectorAll("#history-tab button")
+  };
+}
+
+function runHistory() {
+  return UI.runSqlInto(panel());
+}
+
+function loadHistory() {
+  const from = $("history-from").value;
+  const to = $("history-to").value;
+  const box = $("history-sql");
+
+  if (from && to && from > to) {
+    UI.setStatus($("history-status"), "error", "The From date is later than the To date.");
+    return;
+  }
+
+  if (
+    box.value !== lastSql &&
+    !confirm("Load will replace the SQL you edited under Custom SQL. Continue?")
+  ) {
+    return;
+  }
+
+  box.value = lastSql = filteredSql(from, to);
+  runHistory();
+}
+
+
+/* ======================================================
+   INITIAL LOAD
+   ====================================================== */
+
+$("history-sql").value = lastSql = defaultSql();
+
+loadLatest().then(runHistory);
+
+</script>
+
+</body>
+</html>

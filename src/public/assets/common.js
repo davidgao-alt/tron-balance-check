@@ -357,6 +357,7 @@
 
   window.UI = {
     escapeHtml,
+    formatNumber,
     td,
     requestJson,
     runSql,
