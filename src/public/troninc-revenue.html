@@ -103,23 +103,12 @@
 </section>
 
 
-<div class="grid-2">
-
 <section class="card" id="assets-card">
   <h2 class="card-title">Assets</h2>
   <p class="muted">Tronscan assets list at the latest snapshot (staked TRX is counted in Total TRX above).</p>
   <div id="assets-status"></div>
   <div class="table-wrap" id="assets-result"></div>
 </section>
-
-<section class="card" id="votes-card">
-  <h2 class="card-title">Votes</h2>
-  <p class="muted">SRs this wallet votes for at the latest snapshot.</p>
-  <div id="votes-status"></div>
-  <div class="table-wrap" id="votes-result"></div>
-</section>
-
-</div>
 
 
 <!-- =====================================================
@@ -236,13 +225,6 @@ const ASSETS_SQL = `SELECT
 FROM ${LATEST}, jsonb_array_elements(s.assets) a
 ORDER BY (a->>'value_usd')::numeric DESC NULLS LAST`;
 
-const VOTES_SQL = `SELECT
-  v->>'sr_name' AS sr_name,
-  v->>'sr_address' AS sr_address,
-  (v->>'votes')::bigint AS votes
-FROM ${LATEST}, jsonb_array_elements(s.votes) v
-ORDER BY (v->>'votes')::bigint DESC`;
-
 // Runs a fixed query into a card; `emptyText` replaces "No results".
 function loadList(name, sql, emptyText) {
   const status = $(`${name}-status`);
@@ -277,7 +259,6 @@ async function loadLatest() {
   });
 
   loadList("assets", ASSETS_SQL, "No assets in the latest snapshot (or Tronscan was unavailable).");
-  loadList("votes", VOTES_SQL, "No votes cast at the latest snapshot.");
 }
 
 
