@@ -11,7 +11,7 @@ for (const fail of ['MSTR','SharpLink',null]) {
     process.env.DATABASE_URL='mock';
     pg.Client=class {async connect(){} async end(){ended=true;} async query(sql,values){saved.push(sql.includes('INSERT INTO mstr_snapshots')?'MSTR':'SharpLink'); if(saved.at(-1)==='SharpLink') assert.equal(values[5],123); return {rows:[{id:1}]};}};
     mstr.fetchMstrSnapshot=async()=>{if(fail==='MSTR')throw Error('upstream');return {};};
-    sharp.fetchSharplinkSnapshot=async()=>{if(fail==='SharpLink')throw Error('upstream');return {sharplink:{averageVolume30Day:123,volume:999},eth:{},impact3:{}};};
+    sharp.fetchSharplinkSnapshot=async()=>{if(fail==='SharpLink')throw Error('upstream');return {sharplink:{averageVolume30Day:123.333333,volume:999},eth:{},impact3:{}};};
     try {
       if(fail)await assert.rejects(insertMstrSharplinkToDB(),new RegExp(fail));
       else await insertMstrSharplinkToDB();

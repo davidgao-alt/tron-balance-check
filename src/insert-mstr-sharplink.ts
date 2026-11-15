@@ -101,7 +101,7 @@ export async function insertMstrSharplinkToDB() {
           sharplink.lastPrice,      // sharplink_latest_value
           sharplink.change,         // sharplink_change
           sharplink.changePercent,  // sharplink_change_percent
-          sharplink.averageVolume30Day, // Mean of 30 completed trading sessions
+          sharplink.averageVolume30Day == null ? null : Math.round(sharplink.averageVolume30Day), // bigint shares; mean of 30 completed sessions
 
 
           eth.lastPrice,            // eth_last_price
