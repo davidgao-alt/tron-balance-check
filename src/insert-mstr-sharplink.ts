@@ -17,109 +17,129 @@ export async function insertMstrSharplinkToDB() {
   await client.connect();
 
   try {
-    console.log("Fetching snapshots...");
-    const mstr = await fetchMstrSnapshot();
-    const { sharplink, eth, impact3 } = await fetchSharplinkSnapshot();
+    // Handle each snapshot independently so one upstream outage cannot
+    // prevent the other company's valid snapshot from being saved.
+    async function saveMstr() {
+      const mstr = await fetchMstrSnapshot();
+      console.log("Inserting MSTR snapshot...");
+      const resultMstr = await client.query(
+        `INSERT INTO mstr_snapshots (
+          mstr_price,
+          market_cap_million,
+          enterprise_value_million,
+          debt_million,
+          pref_million,
+          btc_price,
+          btc_holdings,
+          btc_nav_million,
+          btc_nav_number_million,
+          mnav
+        )
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+        RETURNING id`,
+        [
+          mstr.mstrPrice,
+          mstr.marketCap_Million,
+          mstr.enterpriseValue_Million,
+          mstr.debt_Million,
+          mstr.pref_Million,
+          mstr.btcPrice,
+          mstr.btcHoldings,
+          mstr.btcNav_Million,
+          mstr.btcNavNumber_Million,
+          mstr.mnav,
+        ]
+      );
 
-    console.log("Inserting MSTR snapshot...");
-    const resultMstr = await client.query(
-      `INSERT INTO mstr_snapshots (
-        mstr_price,
-        market_cap_million,
-        enterprise_value_million,
-        debt_million,
-        pref_million,
-        btc_price,
-        btc_holdings,
-        btc_nav_million,
-        btc_nav_number_million,
-        mnav
-      )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-      RETURNING id`,
-      [
-        mstr.mstrPrice,
-        mstr.marketCap_Million,
-        mstr.enterpriseValue_Million,
-        mstr.debt_Million,
-        mstr.pref_Million,
-        mstr.btcPrice,
-        mstr.btcHoldings,
-        mstr.btcNav_Million,
-        mstr.btcNavNumber_Million,
-        mstr.mnav,
-      ]
-    );
+      const mstrId = resultMstr.rows[0].id;
+      console.log(`MSTR saved id = ${mstrId}`);
 
-    const mstrId = resultMstr.rows[0].id;
-    console.log(`MSTR saved id = ${mstrId}`);
-
-    console.log("Inserting Sharplink snapshot...");
-
-    let ethDate: Date | null = null;
-    if (eth.timestamp) {
-      const d = new Date(eth.timestamp);
-      if (!isNaN(d.getTime())) ethDate = d;
+      return mstrId;
     }
 
-    const resultSharplink = await client.query(
-      `INSERT INTO sharplink_snapshots (
-        sharplink_last_price,
-        sharplink_latest_date,
-        sharplink_latest_value,
-        sharplink_change,
-        sharplink_change_percent,
-        sharplink_avg_volume_30day,
-        eth_last_price,
-        eth_latest_date,
-        eth_latest_value,
-        eth_change,
-        eth_change_percent,
-        impact3_date,
-        impact3_market_cap,
-        impact3_total_eth_holdings,
-        impact3_eth_nav,
-        impact3_basic_mnav,
-        impact3_fully_diluted_mnav,
-        impact3_enterprise_value
-      )
-      VALUES (
-        $1,$2,$3,$4,$5,$6,
-        $7,$8,$9,$10,$11,
-        $12,$13,$14,$15,$16,$17,$18
-      )
-      RETURNING id`,
-      [
+    async function saveSharplink() {
+      const { sharplink, eth, impact3 } = await fetchSharplinkSnapshot();
+      console.log("Inserting Sharplink snapshot...");
+
+      let ethDate: Date | null = null;
+      if (eth.timestamp) {
+        const d = new Date(eth.timestamp);
+        if (!isNaN(d.getTime())) ethDate = d;
+      }
+
+      const resultSharplink = await client.query(
+        `INSERT INTO sharplink_snapshots (
+          sharplink_last_price,
+          sharplink_latest_date,
+          sharplink_latest_value,
+          sharplink_change,
+          sharplink_change_percent,
+          sharplink_avg_volume_30day,
+          eth_last_price,
+          eth_latest_date,
+          eth_latest_value,
+          eth_change,
+          eth_change_percent,
+          impact3_date,
+          impact3_market_cap,
+          impact3_total_eth_holdings,
+          impact3_eth_nav,
+          impact3_basic_mnav,
+          impact3_fully_diluted_mnav,
+          impact3_enterprise_value
+        )
+        VALUES (
+          $1,$2,$3,$4,$5,$6,
+          $7,$8,$9,$10,$11,
+          $12,$13,$14,$15,$16,$17,$18
+        )
+        RETURNING id`,
+        [
   
-        sharplink.lastPrice,      // sharplink_last_price
-        sharplink.latestDate,     // sharplink_latest_date（你要的 “Data as of ...” 文本）
-        sharplink.lastPrice,      // sharplink_latest_value
-        sharplink.change,         // sharplink_change
-        sharplink.changePercent,  // sharplink_change_percent
-        sharplink.volume ?? null, // sharplink_avg_volume_30day
+          sharplink.lastPrice,      // sharplink_last_price
+          sharplink.latestDate,     // sharplink_latest_date（你要的 “Data as of ...” 文本）
+          sharplink.lastPrice,      // sharplink_latest_value
+          sharplink.change,         // sharplink_change
+          sharplink.changePercent,  // sharplink_change_percent
+          sharplink.averageVolume30Day, // Mean of 30 completed trading sessions
 
 
-        eth.lastPrice,            // eth_last_price
-        ethDate,                  // eth_latest_date
-        eth.lastPrice,            // eth_latest_value
-        eth.change24h,            // eth_change
-        eth.changePercent,        // eth_change_percent
+          eth.lastPrice,            // eth_last_price
+          ethDate,                  // eth_latest_date
+          eth.lastPrice,            // eth_latest_value
+          eth.change24h,            // eth_change
+          eth.changePercent,        // eth_change_percent
 
-        impact3.date,             // impact3_date
-        impact3.marketCap,        // impact3_market_cap
-        impact3.totalEthHoldings, // impact3_total_eth_holdings
-        impact3.ethNav,           // impact3_eth_nav
-        impact3.basicMnav,        // impact3_basic_mnav
-        impact3.fullyDilutedMnav, // impact3_fully_diluted_mnav
-        impact3.enterpriseValue,  // impact3_enterprise_value
-      ]
-    );
+          impact3.date,             // impact3_date
+          impact3.marketCap,        // impact3_market_cap
+          impact3.totalEthHoldings, // impact3_total_eth_holdings
+          impact3.ethNav,           // impact3_eth_nav
+          impact3.basicMnav,        // impact3_basic_mnav
+          impact3.fullyDilutedMnav, // impact3_fully_diluted_mnav
+          impact3.enterpriseValue,  // impact3_enterprise_value
+        ]
+      );
 
-    const sharplinkId = resultSharplink.rows[0].id;
-    console.log(`Sharplink saved id = ${sharplinkId}`);
-    console.log("Done");
+      const sharplinkId = resultSharplink.rows[0].id;
+      console.log(`Sharplink saved id = ${sharplinkId}`);
+      return sharplinkId;
+    }
 
-    return { mstrId, sharplinkId };
+    const results = await Promise.allSettled([saveMstr(), saveSharplink()]);
+    const failures: string[] = [];
+    results.forEach((result, i) => {
+      if (result.status === "rejected") {
+        const label = i === 0 ? "MSTR" : "SharpLink";
+        console.error(`${label} snapshot failed`, result.reason);
+        failures.push(label);
+      }
+    });
+    // Keep the cron failure visible even when the other snapshot was saved.
+    if (failures.length) throw new Error(`Snapshot failures: ${failures.join(", ")}`);
+    return {
+      mstrId: results[0].status === "fulfilled" ? results[0].value : null,
+      sharplinkId: results[1].status === "fulfilled" ? results[1].value : null,
+    };
   } finally {
     await client.end();
   }

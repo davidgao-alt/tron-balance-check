@@ -1,30 +1,5 @@
 // sharplink-fetch.ts
 
-// ====== Nasdaq SBET response types ======
-
-interface SharplinkFromNasdaqRow {
-  symbol: string;
-  assetClass: string;
-  name: string;
-  lastSale: string;
-  change: string;
-  pctChange: string;
-  volume: string;
-  actions: string;
-  url: string;
-}
-
-interface NasdaqResp {
-  data?: {
-    asOf: string | null;
-    headers: Record<string, string>;
-    rows: SharplinkFromNasdaqRow[];
-  };
-  message?: {
-    dataAsOf?: string;
-  };
-}
-
 // SharpLink ETH API response can evolve,
 // so keep this slightly flexible.
 interface EthCoingeckoResp {
@@ -87,87 +62,105 @@ function buildSharplinkHeaders(): HeadersInit {
 
 // ===== fetch with timeout / retry =====
 
-async function fetchWithTimeout(
-  url: string,
-  options: RequestInit = {},
-  timeoutMs = 30_000
-): Promise<Response> {
-  const controller = new AbortController();
+// Decode and validate the body within the timeout and retry boundary.
+class PermanentHttpError extends Error {}
 
-  const timer = setTimeout(() => {
-    controller.abort();
-  }, timeoutMs);
-
-  try {
-    return await fetch(url, {
-      ...options,
-      signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function fetchWithRetry(
+async function fetchJsonWithRetry<T>(
   url: string,
   options: RequestInit,
   label: string,
-  retries = 3
-): Promise<Response> {
+  validate?: (data: T) => void,
+  attempts = 4
+): Promise<T> {
   let lastError: unknown;
-
-  for (let attempt = 1; attempt <= retries; attempt++) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 30_000);
     try {
-      const res = await fetchWithTimeout(
-        url,
-        options,
-        30_000
-      );
-
-      if (res.ok) {
-        return res;
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      if (!res.ok) {
+        void res.body?.cancel().catch(() => {});
+        const message = `${label} HTTP ${res.status}`;
+        if (res.status >= 400 && res.status < 500 &&
+            res.status !== 408 && res.status !== 429) {
+          throw new PermanentHttpError(message);
+        }
+        throw new Error(message);
       }
-
-      lastError = new Error(
-        `${label} HTTP ${res.status}`
-      );
-
-      // Do not bother retrying obvious permanent 4xx errors
-      // except 408 / 429.
-      if (
-        res.status >= 400 &&
-        res.status < 500 &&
-        res.status !== 408 &&
-        res.status !== 429
-      ) {
-        throw lastError;
-      }
+      const data = await res.json() as T;
+      validate?.(data);
+      return data;
     } catch (err) {
+      if (err instanceof PermanentHttpError) throw err;
       lastError = err;
+    } finally {
+      clearTimeout(timer);
     }
-
-    if (attempt < retries) {
-      const delayMs = attempt * 1500;
-
-      console.warn(
-        `${label} attempt ${attempt} failed; retrying in ${delayMs}ms...`
-      );
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, delayMs)
-      );
+    if (attempt < attempts) {
+      const delayMs = 1500 * 2 ** (attempt - 1);
+      console.warn(`${label} attempt ${attempt}/${attempts} failed: ${
+        lastError instanceof Error ? lastError.message : String(lastError)
+      }; retrying in ${delayMs}ms`);
+      await new Promise(resolve => setTimeout(resolve, delayMs));
     }
   }
+  throw new Error(`${label} failed after ${attempts} attempts: ${
+    lastError instanceof Error ? lastError.message : String(lastError)
+  }`);
+}
 
-  throw lastError;
+// Yahoo chartPreviousClose is the close before the requested RANGE, not
+// necessarily yesterday's close. Use the preceding daily bar instead.
+export function parseYahooQuote(payload: any) {
+  const result = payload?.chart?.result?.[0];
+  const meta = result?.meta;
+  const price = meta?.regularMarketPrice;
+  const time = meta?.regularMarketTime;
+  if (payload?.chart?.error || meta?.symbol !== "SBET" || meta?.currency !== "USD" ||
+      typeof price !== "number" || !Number.isFinite(price) || price <= 0 ||
+      typeof time !== "number" || !Number.isFinite(time) || time <= 0) {
+    throw new Error("Yahoo SBET returned no valid USD quote");
+  }
+  const dateKey = (seconds: number) => new Date(seconds * 1000)
+    .toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const quoteDay = dateKey(time);
+  const timestamps = result.timestamp;
+  const bars = result.indicators?.quote?.[0];
+  if (!Array.isArray(timestamps) || !Array.isArray(bars?.close)) {
+    throw new Error("Yahoo SBET daily history missing");
+  }
+  const history = timestamps.map((t: number, i: number) => ({
+    time: t, day: dateKey(t), close: bars.close[i], volume: bars.volume?.[i],
+  })).sort((a: any, b: any) => a.time - b.time);
+  const previous = history.filter((bar: any) => bar.day < quoteDay &&
+    typeof bar.close === "number" && Number.isFinite(bar.close) && bar.close > 0).pop();
+  if (!previous) throw new Error("Yahoo SBET previous session close missing");
+  // Exclude an in-progress session from the 30-session average.
+  const sessionEnd = meta.currentTradingPeriod?.regular?.end;
+  const completed = history.filter((bar: any) =>
+    (bar.day < quoteDay || (bar.day === quoteDay &&
+      typeof sessionEnd === "number" && time >= sessionEnd)) &&
+    typeof bar.volume === "number" && Number.isFinite(bar.volume) && bar.volume >= 0
+  ).slice(-30);
+  const change = price - previous.close;
+  return {
+    lastPrice: price,
+    change: Number(change.toFixed(6)),
+    changePercent: (change / previous.close * 100).toFixed(6),
+    volume: typeof meta.regularMarketVolume === "number" ? meta.regularMarketVolume : null,
+    averageVolume30Day: completed.length === 30
+      ? completed.reduce((sum: number, bar: any) => sum + bar.volume, 0) / 30 : null,
+    latestDate: new Date(time * 1000).toISOString(),
+    source: "yahoo-finance",
+  };
 }
 
 // ===== main =====
 
 export async function fetchSharplinkSnapshot() {
-  // Nasdaq SBET
+  // Yahoo Finance SBET (daily history also supplies previous close and average volume)
   const sbetUrl =
-    "https://api.nasdaq.com/api/quote/watchlist?symbol=sbet%7cstocks&type=Rv";
+    "https://query1.finance.yahoo.com/v8/finance/chart/SBET?interval=1d&range=3mo";
 
   // Current SharpLink dashboard ETH endpoint
   const ethUrl =
@@ -179,17 +172,18 @@ export async function fetchSharplinkSnapshot() {
 
   console.log("Fetching SharpLink snapshot...");
 
-  const [sbetRes, ethRes, impactRes] =
+  const [sbetJson, ethJson, impactData] =
     await Promise.all([
-      fetchWithRetry(
+      fetchJsonWithRetry<any>(
         sbetUrl,
         {
-          headers: buildDefaultHeaders(),
+          headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json, text/plain, */*" },
         },
-        "nasdaq sbet"
+        "yahoo sbet",
+        parseYahooQuote
       ),
 
-      fetchWithRetry(
+      fetchJsonWithRetry<EthCoingeckoResp>(
         ethUrl,
         {
           headers: buildSharplinkHeaders(),
@@ -197,7 +191,7 @@ export async function fetchSharplinkSnapshot() {
         "sharplink eth"
       ),
 
-      fetchWithRetry(
+      fetchJsonWithRetry<any>(
         impactUrl,
         {
           headers: buildSharplinkHeaders(),
@@ -206,37 +200,12 @@ export async function fetchSharplinkSnapshot() {
       ),
     ]);
 
-  // ============================
-  // Nasdaq / SBET
-  // ============================
-
-  const sbetJson =
-    (await sbetRes.json()) as NasdaqResp;
-
-  const row = sbetJson.data?.rows?.[0];
-
-  if (!row) {
-    throw new Error(
-      "Nasdaq SBET rows is empty"
-    );
-  }
-
-  const sharplink = {
-    lastPrice: parseMoney(row.lastSale),
-    change: parseMoney(row.change),
-    changePercent:
-      row.pctChange?.replace("%", "") ?? null,
-    volume: parseMoney(row.volume),
-    latestDate:
-      sbetJson.message?.dataAsOf ?? null,
-  };
+  const sharplink = parseYahooQuote(sbetJson);
 
   // ============================
   // ETH
   // ============================
 
-  const ethJson =
-    (await ethRes.json()) as EthCoingeckoResp;
 
   // Support both the existing SharpLink response shape
   // and standard CoinGecko-style response, just in case.
@@ -313,8 +282,6 @@ export async function fetchSharplinkSnapshot() {
   // SharpLink impact3
   // ============================
 
-  const impactData: any =
-    await impactRes.json();
 
   const totalEthHoldingsArr =
     impactData.total_eth_holdings ?? [];
