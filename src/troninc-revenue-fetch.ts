@@ -59,7 +59,7 @@ async function withRetry<T>(label: string, fn: () => Promise<T>, tries = 4): Pro
   }
 }
 
-async function tronGridPost(path: string, body: Record<string, any>): Promise<any> {
+export async function tronGridPost(path: string, body: Record<string, any>): Promise<any> {
   return withRetry(`TronGrid ${path}`, async () => {
     const res = await axios.post<any>(
       `${TRONGRID_BASE_URL}${path}`,
@@ -73,11 +73,14 @@ async function tronGridPost(path: string, body: Record<string, any>): Promise<an
       }
     );
 
+    if (!res.data || typeof res.data !== "object" || Array.isArray(res.data) || res.data.Error || res.data.error) {
+      throw new Error(`Invalid TronGrid response for ${path}`);
+    }
     return res.data;
   });
 }
 
-async function tronscanGet(path: string, params: Record<string, any>): Promise<any> {
+export async function tronscanGet(path: string, params: Record<string, any>): Promise<any> {
   return withRetry(`Tronscan ${path}`, async () => {
     const res = await axios.get<any>(`${TRONSCAN_BASE_URL}${path}`, {
       params,
@@ -244,11 +247,13 @@ async function fetchSrNames(): Promise<Record<string, string>> {
 // ======================================================
 
 export async function fetchTronIncRevenueSnapshot(address = ADDRESS) {
-  const now = new Date();
-
   const account = await tronGridPost("/wallet/getaccount", { address });
+  return fetchWalletFromAccount(address, account, new Date());
+}
 
-  if (!account?.address) {
+export async function fetchWalletFromAccount(address: string, account: any, now: Date) {
+
+  if (account?.address !== address) {
     throw new Error(`TronGrid returned no account for ${address}: ${JSON.stringify(account)}`);
   }
 
@@ -280,7 +285,7 @@ export async function fetchTronIncRevenueSnapshot(address = ADDRESS) {
     const trxRow = tronscan.assets.find((a: any) => a.token_id === "_");
     const price = Number(trxRow?.price_usd);
 
-    if (Number.isFinite(price)) {
+    if (trxRow?.price_usd != null && Number.isFinite(price)) {
       trxPriceUsd = price;
       totalAssetsUsd =
         Number(sunToTrx(total)) * price +

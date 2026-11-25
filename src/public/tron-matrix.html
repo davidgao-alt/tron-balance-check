@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tron Matrix · TRON SR Dashboard</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="assets/common.css">
+<script src="assets/common.js"></script>
+<style>
+  [hidden] { display:none !important; }
+  .matrix-heading { display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; }
+  .matrix-address { overflow-wrap:anywhere; }
+  .matrix-metrics { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px 15px; margin-bottom:0; }
+  .matrix-metrics dd { margin:0; text-align:right; font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+<main class="page">
+<header class="page-header">
+  <h1 class="page-title">TRON SR Dashboard</h1>
+  <nav class="tabs" aria-label="Dashboard pages">
+    <a class="tab" href="sr.html">SR Metrics</a>
+    <a class="tab" href="sr.html#he">HE Vote Snapshot</a>
+    <a class="tab" href="troninc-revenue.html">Revenue Wallet</a>
+    <a class="tab active" href="tron-matrix.html" aria-current="page">Tron Matrix</a>
+  </nav>
+</header>
+<section class="card matrix-heading">
+  <div>
+    <h2 class="card-title">Tron Matrix</h2>
+    <a class="mono matrix-address" id="address" href="https://tronscan.org/#/address/TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ" target="_blank" rel="noreferrer">TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ</a>
+  </div>
+  <nav class="tabs" aria-label="Tron Matrix views">
+    <a class="tab" id="overview-link" href="#overview">Overview</a>
+    <a class="tab" id="sql-link" href="#sql">SQL</a>
+  </nav>
+</section>
+<section id="overview">
+  <div class="card">
+    <div class="toolbar"><h2 class="card-title">Latest snapshot</h2><span class="spacer"></span><button id="refresh">Refresh</button></div>
+    <div id="latest-status" role="status"></div>
+  </div>
+  <div class="grid-2" id="metrics" hidden>
+    <section class="card"><h2 class="card-title">SR metrics</h2><dl class="matrix-metrics" id="sr-metrics"></dl></section>
+    <section class="card"><h2 class="card-title">Wallet</h2><dl class="matrix-metrics" id="wallet-metrics"></dl></section>
+  </div>
+</section>
+<section class="card" id="sql" hidden>
+  <h2 class="card-title">Snapshot history</h2>
+  <div class="toolbar">
+    <label class="field">From (HKT)<input type="date" id="from"></label>
+    <label class="field">To (HKT)<input type="date" id="to"></label>
+    <button id="load">Load</button>
+  </div>
+  <label class="field">Custom SQL<textarea id="query"></textarea></label>
+  <div class="toolbar"><button class="primary" id="run">Run</button><button id="csv">Download CSV</button></div>
+  <div id="query-status" role="status"></div>
+  <div class="table-wrap" id="results"></div>
+</section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const source = `FROM sr_snapshots
+WHERE address = '${$("address").textContent}' AND account_status IS NOT NULL`;
+const latestOrder = "ORDER BY timestamputc DESC, id DESC";
+const srFields = [
+  ["Status", "account_status"], ["Realtime rank", "realtimeranking"], ["Votes received", "realtimevotes"],
+  ["Vote share (%)", "votespercentage"], ["Commission (%)", "brokerage"], ["Voter share (%)", "voterbrokerage"],
+  ["Blocks produced", "producedtotal"], ["Production efficiency (%)", "producedefficiency"], ["Claimable rewards (TRX)", "claimable_trx"]
+];
+const walletFields = [
+  ["Available TRX", "trxAvailable"], ["Staked TRX", "trxStaked"], ["Unstaking TRX", "trxUnstaking"],
+  ["Total TRX", "trxTotal"], ["sTRX balance", "strxBalance"], ["Votes cast", "votesUsed"],
+  ["Energy available", "energyAvailable"], ["Bandwidth available", "bandwidthAvailable"], ["Total assets (USD)", "totalAssetsUsd"]
+];
+
+function metrics(id, fields, row) {
+  const list = $(id);
+  list.replaceChildren();
+  for (const [label, key] of fields) {
+    const term = document.createElement("dt");
+    const value = document.createElement("dd");
+    term.textContent = label;
+    value.textContent = row?.[key] == null ? "—" : UI.formatNumber(String(row[key]));
+    list.append(term, value);
+  }
+}
+
+function latest() {
+  const status = $("latest-status");
+  return UI.run({status, buttons: $("refresh"), onError: () => { $("metrics").hidden = true; }}, async () => {
+    const columns = srFields.map(([, key]) => key);
+    const wallet = walletFields.map(([, key]) => `wallet_snapshot->>'${key}' AS "${key}"`);
+    const {rows} = await UI.runSql(`SELECT timestamputc, ${[...columns, ...wallet].join(", ")} ${source} ${latestOrder} LIMIT 1`);
+    const row = rows[0];
+    $("metrics").hidden = !row;
+    if (!row) return UI.setStatus(status, "empty", "No Tron Matrix snapshot yet.");
+    metrics("sr-metrics", srFields, row);
+    metrics("wallet-metrics", walletFields, row);
+    const hkt = new Date(row.timestamputc).toLocaleString("en-GB", {timeZone:"Asia/Hong_Kong",hour12:false});
+    UI.setStatus(status, "", `Snapshot ${hkt} HKT`);
+  });
+}
+
+function historySql(from, to) {
+  const lines = [`SELECT timestamputc AT TIME ZONE 'Asia/Hong_Kong' AS snapshot_hkt,
+       account_status, realtimeranking, realtimevotes, producedtotal, claimable_trx,
+       (wallet_snapshot->>'trxAvailable')::numeric AS trx_available,
+       (wallet_snapshot->>'trxStaked')::numeric AS trx_staked,
+       (wallet_snapshot->>'trxTotal')::numeric AS trx_total,
+       (wallet_snapshot->>'totalAssetsUsd')::numeric AS total_assets_usd`, source];
+  if (from) lines.push(`AND timestamputc >= TIMESTAMPTZ '${from} 00:00:00+08'`);
+  if (to) lines.push(`AND timestamputc < TIMESTAMPTZ '${to} 00:00:00+08' + INTERVAL '24 hours'`);
+  return [...lines, latestOrder, "LIMIT 48"].join("\n");
+}
+
+let lastSql = historySql("", "");
+$("query").value = lastSql;
+const panel = () => ({sql: $("query").value, status: $("query-status"), container: $("results"), buttons: $("sql").querySelectorAll("button")});
+$("run").onclick = () => UI.runSqlInto(panel());
+$("csv").onclick = () => UI.downloadCsv(panel());
+$("load").onclick = () => {
+  const from = $("from").value, to = $("to").value;
+  if (from && to && from > to) return UI.setStatus($("query-status"), "error", "From must be on or before To.");
+  if ($("query").value !== lastSql && !confirm("Load will replace your edited SQL. Continue?")) return;
+  $("query").value = lastSql = historySql(from, to);
+  UI.runSqlInto(panel());
+};
+$("refresh").onclick = latest;
+
+let historyLoaded = false;
+function showView() {
+  const view = location.hash === "#sql" ? "sql" : "overview";
+  for (const id of ["overview", "sql"]) {
+    $(id).hidden = id !== view;
+    $(id + "-link").classList.toggle("active", id === view);
+    if (id === view) $(id + "-link").setAttribute("aria-current", "page");
+    else $(id + "-link").removeAttribute("aria-current");
+  }
+  if (view === "overview") latest();
+  else if (!historyLoaded) { historyLoaded = true; UI.runSqlInto(panel()); }
+}
+window.addEventListener("hashchange", showView);
+showView();
+</script>
+</body>
+</html>

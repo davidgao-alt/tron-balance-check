@@ -43,6 +43,8 @@ type WitnessData = {
 // TronGrid
 // ======================================================
 
+const scanHeaders = process.env.TRONSCAN_API_KEY ? { "TRON-PRO-API-KEY": process.env.TRONSCAN_API_KEY } : {};
+
 const TRONGRID_API_KEY =
   process.env.TRONGRID_API_KEY || "";
 
@@ -95,6 +97,7 @@ async function getWitnessDetailSafe(
         await axios.get(
           url,
           {
+            headers: scanHeaders,
             timeout: 30000,
           }
         );
@@ -362,7 +365,7 @@ async function buildRow(
 // main fetch
 // ======================================================
 
-export async function fetchSrSnapshot() {
+export async function fetchSrSnapshot(excludeAddress?: string) {
   try {
     const output = [];
 
@@ -394,6 +397,7 @@ export async function fetchSrSnapshot() {
             limit: 50,
             start: 0,
           },
+          headers: scanHeaders,
           timeout: 30000,
         }
       );
@@ -416,9 +420,9 @@ export async function fetchSrSnapshot() {
     // ==================================================
 
     for (const sr of srList) {
-      if (sr.address === ADDRESS) {
+      if (sr.address === ADDRESS || sr.address === excludeAddress) {
         console.log(
-          `Skipping duplicate tracked address in Top 27: ${sr.name} (${sr.address})`
+          `Skipping separately collected address in Top 27: ${sr.name} (${sr.address})`
         );
 
         continue;
@@ -460,10 +464,7 @@ export async function fetchSrSnapshot() {
 
     return output;
   } catch (err) {
-    console.error(
-      "fetch error:",
-      err
-    );
+    console.error("SR fetch failed:", err instanceof Error ? err.message : "upstream error");
 
     throw err;
   }

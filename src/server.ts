@@ -335,6 +335,7 @@ app.get("/api/sr/latest", async (_req: Request, res: Response) => {
         reward,
         reward - LAG(reward) OVER (ORDER BY id) AS delta
       FROM sr_snapshots
+      WHERE account_status IS NULL OR account_status = 'SR'
       ORDER BY id DESC
       LIMIT 50
     `);

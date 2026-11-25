@@ -25,6 +25,7 @@
     <button type="button" class="tab active" role="tab" data-tab="sr" aria-selected="true">SR Metrics</button>
     <button type="button" class="tab" role="tab" data-tab="he" aria-selected="false">HE Vote Snapshot</button>
     <a class="tab" href="troninc-revenue.html">Revenue Wallet</a>
+    <a class="tab" href="tron-matrix.html">Tron Matrix</a>
   </div>
 
 </header>
@@ -118,6 +119,7 @@
 const TABS = {
   sr: {
     table: "sr_snapshots",
+    predicate: "(account_status IS NULL OR account_status = 'SR')",
     columns: [
       "id",
       "timestamputc",
@@ -156,13 +158,13 @@ const selectList = (cfg) => cfg.columns.map(c => "  " + c).join(",\n");
 
 // SQL in the Custom SQL box when the page opens.
 function defaultSql(cfg) {
-  return `SELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nORDER BY id DESC\nLIMIT ${cfg.limit}\n`;
+  return `SELECT\n${selectList(cfg)}\nFROM ${cfg.table}${cfg.predicate ? "\nWHERE " + cfg.predicate : ""}\nORDER BY id DESC\nLIMIT ${cfg.limit}\n`;
 }
 
 
 // SQL written by Load (same text, blank lines included, as before).
 function filteredSql(cfg, from, to) {
-  let sql = `\n\nSELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nWHERE 1=1\n\n`;
+  let sql = `\n\nSELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nWHERE ${cfg.predicate || "1=1"}\n\n`;
   if (from) sql += `\n\nAND ${cfg.timeColumn} >=\n'${from} 00:00:00'\n\n`;
   if (to) sql += `\n\nAND ${cfg.timeColumn} <=\n'${to} 23:59:59'\n\n`;
   return sql + `\n\nORDER BY id DESC\nLIMIT ${cfg.limit}\n\n`;
