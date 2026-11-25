@@ -64,7 +64,7 @@ export async function insertMstrSharplinkToDB() {
       // Older databases used bigint while the official API now reports
       // fractional ETH. Widen once, preserving historical and future precision.
       // Run inside this branch so an unavailable migration cannot block MSTR.
-      await client.query(`DO $
+      await client.query(`DO $migration$
         BEGIN
           IF EXISTS (
             SELECT 1 FROM information_schema.columns
@@ -78,7 +78,7 @@ export async function insertMstrSharplinkToDB() {
               ALTER COLUMN impact3_total_eth_holdings TYPE numeric
               USING impact3_total_eth_holdings::numeric;
           END IF;
-        END $`);
+        END $migration$`);
 
       let ethDate: Date | null = null;
       if (eth.timestamp) {
