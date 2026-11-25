@@ -8,11 +8,69 @@
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
 <style>
-  [hidden] { display:none !important; }
-  .matrix-heading { display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; }
-  .matrix-address { overflow-wrap:anywhere; }
-  .matrix-metrics { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px 15px; margin-bottom:0; }
-  .matrix-metrics dd { margin:0; text-align:right; font-variant-numeric:tabular-nums; }
+  [hidden] { display: none !important; }
+
+  .account-header, .section-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+  .account-header {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .account-header .muted { margin: 0; overflow-wrap: anywhere; }
+  .section-heading { margin-bottom: 12px; }
+  .section-heading .card-title, .section-heading .ui-status { margin: 0; }
+  #latest-status:not(:empty) { margin-top: 2px; }
+  .collapsible { margin-top: 14px; }
+
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+  }
+  .highlights > div {
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface-muted);
+  }
+  .highlights dt { color: var(--text-muted); font-size: 12px; font-weight: 600; }
+  .highlights dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; }
+  .highlights dd, .metric-list dd { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .metric-list { margin: 8px 0 0; }
+  .metric-list > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+    align-items: baseline;
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .metric-list > div:last-child { border: 0; padding-bottom: 0; }
+  .metric-list dt { color: var(--text-muted); font-size: 13px; }
+  .metric-list dd { margin: 0; text-align: right; font-weight: 600; }
+  .missing { color: var(--text-muted); }
+
+  @media (max-width: 700px) {
+    .highlights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .page-header > .tabs, .history-filters {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .page-header .tab { text-align: center; }
+    .history-filters .field { flex-direction: column; align-items: stretch; gap: 4px; }
+    .history-filters input { width: 100%; min-width: 0; }
+    .history-filters .spacer { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -26,36 +84,59 @@
     <a class="tab active" href="tron-matrix.html" aria-current="page">Tron Matrix</a>
   </nav>
 </header>
-<section class="card matrix-heading">
-  <div>
-    <h2 class="card-title">Tron Matrix</h2>
-    <a class="mono matrix-address" id="address" href="https://tronscan.org/#/address/TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ" target="_blank" rel="noreferrer">TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ</a>
-  </div>
-  <nav class="tabs" aria-label="Tron Matrix views">
-    <a class="tab" id="overview-link" href="#overview">Overview</a>
-    <a class="tab" id="sql-link" href="#sql">SQL</a>
-  </nav>
+<section class="card" aria-labelledby="account-title">
+  <header class="account-header">
+    <div>
+      <h2 class="card-title" id="account-title">Tron Matrix</h2>
+      <p class="muted"><span class="mono" id="address">TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ</span>
+        · <a href="https://tronscan.org/#/address/TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ" target="_blank" rel="noreferrer">Tronscan</a></p>
+    </div>
+    <nav class="tabs" aria-label="Tron Matrix views">
+      <a class="tab" id="overview-link" href="#overview">Overview</a>
+      <a class="tab" id="sql-link" href="#sql">SQL</a>
+    </nav>
+  </header>
+
+  <section data-view="overview">
+    <div class="section-heading">
+      <div>
+        <h3 class="card-title">Latest snapshot</h3>
+        <div id="latest-status" role="status"></div>
+      </div>
+      <button id="refresh">Refresh</button>
+    </div>
+    <dl class="highlights" id="highlights" hidden></dl>
+  </section>
+
+  <section id="history-controls" data-view="sql" hidden>
+    <div class="section-heading"><h3 class="card-title">Snapshot history</h3></div>
+    <div class="toolbar history-filters">
+      <label class="field">From (HKT)<input type="date" id="from"></label>
+      <label class="field">To (HKT)<input type="date" id="to"></label>
+      <button class="primary" id="load">Load</button>
+      <span class="spacer"></span>
+      <button id="csv">Download CSV</button>
+    </div>
+    <details class="collapsible" data-remember="history-sql">
+      <summary>Custom SQL</summary>
+      <textarea id="query" aria-label="Custom SQL" spellcheck="false" rows="10"></textarea>
+      <button class="primary" id="run">Run</button>
+    </details>
+  </section>
 </section>
-<section id="overview">
-  <div class="card">
-    <div class="toolbar"><h2 class="card-title">Latest snapshot</h2><span class="spacer"></span><button id="refresh">Refresh</button></div>
-    <div id="latest-status" role="status"></div>
-  </div>
+
+<div data-view="overview">
   <div class="grid-2" id="metrics" hidden>
-    <section class="card"><h2 class="card-title">SR metrics</h2><dl class="matrix-metrics" id="sr-metrics"></dl></section>
-    <section class="card"><h2 class="card-title">Wallet</h2><dl class="matrix-metrics" id="wallet-metrics"></dl></section>
+    <section class="card"><h2 class="card-title">SR metrics</h2><dl class="metric-list" id="sr-metrics"></dl></section>
+    <section class="card"><h2 class="card-title">Wallet</h2><dl class="metric-list" id="wallet-metrics"></dl></section>
   </div>
-</section>
-<section class="card" id="sql" hidden>
-  <h2 class="card-title">Snapshot history</h2>
-  <div class="toolbar">
-    <label class="field">From (HKT)<input type="date" id="from"></label>
-    <label class="field">To (HKT)<input type="date" id="to"></label>
-    <button id="load">Load</button>
+</div>
+
+<section class="card" data-view="sql" hidden>
+  <div class="section-heading">
+    <h2 class="card-title">Query results</h2>
+    <div id="query-status" role="status"></div>
   </div>
-  <label class="field">Custom SQL<textarea id="query"></textarea></label>
-  <div class="toolbar"><button class="primary" id="run">Run</button><button id="csv">Download CSV</button></div>
-  <div id="query-status" role="status"></div>
   <div class="table-wrap" id="results"></div>
 </section>
 </main>
@@ -65,7 +146,7 @@ const source = `FROM sr_snapshots
 WHERE address = '${$("address").textContent}' AND account_status IS NOT NULL`;
 const latestOrder = "ORDER BY timestamputc DESC, id DESC";
 const srFields = [
-  ["Status", "account_status"], ["Realtime rank", "realtimeranking"], ["Votes received", "realtimevotes"],
+  ["Account status", "account_status"], ["Realtime rank", "realtimeranking"], ["Votes received", "realtimevotes"],
   ["Vote share (%)", "votespercentage"], ["Commission (%)", "brokerage"], ["Voter share (%)", "voterbrokerage"],
   ["Blocks produced", "producedtotal"], ["Production efficiency (%)", "producedefficiency"], ["Claimable rewards (TRX)", "claimable_trx"]
 ];
@@ -75,6 +156,8 @@ const walletFields = [
   ["Energy available", "energyAvailable"], ["Bandwidth available", "bandwidthAvailable"], ["Total assets (USD)", "totalAssetsUsd"]
 ];
 
+const highlightKeys = new Set(["account_status", "realtimeranking", "trxAvailable", "trxTotal"]);
+
 function metrics(id, fields, row) {
   const list = $(id);
   list.replaceChildren();
@@ -82,22 +165,31 @@ function metrics(id, fields, row) {
     const term = document.createElement("dt");
     const value = document.createElement("dd");
     term.textContent = label;
-    value.textContent = row?.[key] == null ? "—" : UI.formatNumber(String(row[key]));
-    list.append(term, value);
+    const raw = row[key];
+    value.classList.toggle("missing", raw == null);
+    value.textContent = raw == null ? "—" : key === "account_status" ? raw : UI.formatNumber(String(raw));
+    const group = document.createElement("div");
+    group.append(term, value);
+    list.append(group);
   }
 }
 
 function latest() {
   const status = $("latest-status");
-  return UI.run({status, buttons: $("refresh"), onError: () => { $("metrics").hidden = true; }}, async () => {
+  const showMetrics = visible => {
+    $("highlights").hidden = !visible;
+    $("metrics").hidden = !visible;
+  };
+  return UI.run({status, buttons: $("refresh"), onError: () => showMetrics(false)}, async () => {
     const columns = srFields.map(([, key]) => key);
     const wallet = walletFields.map(([, key]) => `wallet_snapshot->>'${key}' AS "${key}"`);
     const {rows} = await UI.runSql(`SELECT timestamputc, ${[...columns, ...wallet].join(", ")} ${source} ${latestOrder} LIMIT 1`);
     const row = rows[0];
-    $("metrics").hidden = !row;
+    showMetrics(Boolean(row));
     if (!row) return UI.setStatus(status, "empty", "No Tron Matrix snapshot yet.");
-    metrics("sr-metrics", srFields, row);
-    metrics("wallet-metrics", walletFields, row);
+    metrics("highlights", [...srFields, ...walletFields].filter(([, key]) => highlightKeys.has(key)), row);
+    metrics("sr-metrics", srFields.filter(([, key]) => !highlightKeys.has(key)), row);
+    metrics("wallet-metrics", walletFields.filter(([, key]) => !highlightKeys.has(key)), row);
     const hkt = new Date(row.timestamputc).toLocaleString("en-GB", {timeZone:"Asia/Hong_Kong",hour12:false});
     UI.setStatus(status, "", `Snapshot ${hkt} HKT`);
   });
@@ -117,7 +209,7 @@ function historySql(from, to) {
 
 let lastSql = historySql("", "");
 $("query").value = lastSql;
-const panel = () => ({sql: $("query").value, status: $("query-status"), container: $("results"), buttons: $("sql").querySelectorAll("button")});
+const panel = () => ({sql: $("query").value, status: $("query-status"), container: $("results"), buttons: $("history-controls").querySelectorAll("button")});
 $("run").onclick = () => UI.runSqlInto(panel());
 $("csv").onclick = () => UI.downloadCsv(panel());
 $("load").onclick = () => {
@@ -132,8 +224,10 @@ $("refresh").onclick = latest;
 let historyLoaded = false;
 function showView() {
   const view = location.hash === "#sql" ? "sql" : "overview";
+  for (const panel of document.querySelectorAll("[data-view]")) {
+    panel.hidden = panel.dataset.view !== view;
+  }
   for (const id of ["overview", "sql"]) {
-    $(id).hidden = id !== view;
     $(id + "-link").classList.toggle("active", id === view);
     if (id === view) $(id + "-link").setAttribute("aria-current", "page");
     else $(id + "-link").removeAttribute("aria-current");
