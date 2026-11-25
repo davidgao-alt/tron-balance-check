@@ -25,4 +25,4 @@ All three update every two hours and use Hong Kong time for date filters. Tron M
 # Treasury and token supply
 
 - [MSTR & SharpLink](https://mstr-sharplink-snapshot.onrender.com/mstr-sharplink-view.html) shows hourly share prices, Strategy’s BTC holdings and SharpLink’s ETH holdings. **Refresh** writes a new snapshot. Use **Run** to query existing ones.
-- **USDT** circulating and total supply come from CoinMarketCap. The daily job writes to `cmc_usdt_supply_snapshots`. [Collector](src/insert-cmc-usdt.ts)
+- [CMC USDT supply](https://tronscan-sr-metrics.onrender.com/cmc-usdt.html) shows daily circulating and total supply from CoinMarketCap. Filter snapshots by UTC date, run a custom SQL query or download a CSV.

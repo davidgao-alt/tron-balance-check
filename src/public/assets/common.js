@@ -120,8 +120,8 @@
     }
   }
 
-  async function runSql(sql) {
-    const data = await requestJson("/api/sql", {
+  async function runSql(sql, apiOrigin = "") {
+    const data = await requestJson(apiOrigin + "/api/sql", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sql }),
@@ -225,7 +225,7 @@
   }
 
   // Runs a SQL query and renders the result; on failure the old result is cleared.
-  function runSqlInto({ sql, container, status, buttons, onResult, onError }) {
+  function runSqlInto({ sql, container, status, buttons, onResult, onError, apiOrigin }) {
     if (!sql.trim()) {
       setStatus(status, "error", "Please enter a SQL query.");
       return Promise.resolve();
@@ -241,7 +241,7 @@
         },
       },
       async () => {
-        const data = await runSql(sql);
+        const data = await runSql(sql, apiOrigin);
         renderTable(container, data);
         setStatus(status, data.rows.length ? "success" : "empty", rowsSummary(data.rows.length));
         if (onResult) onResult(data);
@@ -250,7 +250,7 @@
   }
 
   // Downloads /api/sql-csv as a file; errors stay on the page instead of navigating away.
-  function downloadCsv({ sql, status, buttons }) {
+  function downloadCsv({ sql, status, buttons, apiOrigin = "" }) {
     if (!sql.trim()) {
       setStatus(status, "error", "Please enter a SQL query.");
       return Promise.resolve();
@@ -258,7 +258,7 @@
     return run(
       { buttons, status, loading: "Preparing CSV…", errorPrefix: "CSV download failed: " },
       async () => {
-        const res = await request("/api/sql-csv?sql=" + encodeURIComponent(sql));
+        const res = await request(apiOrigin + "/api/sql-csv?sql=" + encodeURIComponent(sql));
         const blob = await res.blob();
         const match = /filename="?([^";]+)"?/.exec(res.headers.get("Content-Disposition") || "");
         const url = URL.createObjectURL(blob);

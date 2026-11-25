@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>USDT supply · CoinMarketCap snapshots</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/common.css">
+  <script src="assets/common.js"></script>
+  <style>
+    [hidden] { display: none !important; }
+    .page { max-width: 1120px; }
+    .section-head { margin-bottom: 12px; }
+    .section-head .card-title, .section-head .ui-status { margin: 0; }
+    .supply { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
+    .supply > div { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; background: var(--surface-muted); }
+    .supply dt { color: var(--text-muted); font-size: 13px; font-weight: 600; }
+    .supply dd { margin: 3px 0 0; font-size: clamp(18px, 2.2vw, 26px); font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    details { margin-top: 14px; }
+    @media (max-width: 600px) {
+      .supply { grid-template-columns: 1fr; }
+      .filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filters .field { flex-direction: column; align-items: stretch; gap: 4px; }
+      .filters input { min-width: 0; width: 100%; }
+      .filters .spacer { display: none; }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+  <header class="page-header"><h1 class="page-title">CoinMarketCap USDT supply</h1></header>
+
+  <section class="card" aria-labelledby="latest-title">
+    <div class="toolbar section-head">
+      <h2 class="card-title" id="latest-title">Latest snapshot</h2>
+      <span class="spacer"></span><button id="refresh">Refresh</button>
+    </div>
+    <p id="latest-status" class="muted" role="status"></p>
+    <dl class="supply" id="supply" hidden>
+      <div><dt>Circulating supply (USDT)</dt><dd id="circulating"></dd></div>
+      <div><dt>Total supply (USDT)</dt><dd id="total"></dd></div>
+    </dl>
+  </section>
+
+  <section class="card" aria-labelledby="history-title" id="history">
+    <h2 class="card-title section-head" id="history-title">Snapshot history</h2>
+    <form class="toolbar filters" id="filters">
+      <label class="field">From (UTC)<input type="date" id="from"></label>
+      <label class="field">To (UTC)<input type="date" id="to"></label>
+      <button class="primary" type="submit">Load</button>
+      <span class="spacer"></span><button type="button" id="csv">Download CSV</button>
+    </form>
+    <details class="collapsible" data-remember="supply-sql">
+      <summary>Custom SQL</summary>
+      <p class="muted">Queries run on the wallet service that stores the daily USDT snapshots.</p>
+      <textarea id="query" aria-label="Custom SQL" spellcheck="false" rows="9"></textarea>
+      <button class="primary" id="run">Run query</button>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="results-title">
+    <div class="toolbar section-head">
+      <h2 class="card-title" id="results-title">Query results</h2>
+      <span class="spacer"></span><div id="query-status" role="status"></div>
+    </div>
+    <div class="table-wrap" id="results"></div>
+  </section>
+</main>
+<script>
+// The CMC collector writes to the database served by the English wallet query API.
+const apiOrigin = "https://troninc-wallet-event-query.onrender.com";
+const $ = id => document.getElementById(id);
+
+function supplySql(from, to, limit) {
+  const lines = [
+    "SELECT id, inserted_at AS snapshot_utc, last_updated AS cmc_updated_utc,",
+    "       circulating_supply, total_supply",
+    "FROM public.cmc_usdt_supply_snapshots",
+    "WHERE cmc_id = 825"
+  ];
+  if (from) lines.push(`  AND inserted_at >= TIMESTAMPTZ '${from} 00:00:00+00'`);
+  if (to) lines.push(`  AND inserted_at < TIMESTAMPTZ '${to} 00:00:00+00' + INTERVAL '24 hours'`);
+  return [...lines, "ORDER BY inserted_at DESC NULLS LAST, id DESC", `LIMIT ${limit}`].join("\n");
+}
+
+function latest() {
+  const status = $("latest-status");
+  return UI.run({ status, buttons: $("refresh"), onError: () => { $("supply").hidden = true; } }, async () => {
+    const { rows } = await UI.runSql(supplySql("", "", 1), apiOrigin);
+    const row = rows[0];
+    $("supply").hidden = !row;
+    if (!row) return UI.setStatus(status, "empty", "No USDT snapshots yet.");
+    for (const [id, key] of [["circulating", "circulating_supply"], ["total", "total_supply"]]) {
+      $(id).textContent = row[key] == null ? "—" : UI.formatNumber(String(row[key]));
+    }
+    const captured = row.snapshot_utc && new Date(row.snapshot_utc).toISOString().slice(0, 19).replace("T", " ");
+    UI.setStatus(status, "", captured ? `Captured ${captured} UTC` : `Snapshot #${row.id}`);
+  });
+}
+
+const query = $("query");
+const status = $("query-status");
+let generatedSql = supplySql("", "", 50);
+query.value = generatedSql;
+
+function panel() {
+  return { apiOrigin, sql: query.value, status, container: $("results"), buttons: $("history").querySelectorAll("button") };
+}
+
+$("filters").onsubmit = event => {
+  event.preventDefault();
+  const from = $("from").value;
+  const to = $("to").value;
+  if (from && to && from > to) return UI.setStatus(status, "error", "From must be on or before To.");
+  if (query.value !== generatedSql && !confirm("Replace your edited SQL with the date-filtered query?")) return;
+  generatedSql = supplySql(from, to, from || to ? 200 : 50);
+  query.value = generatedSql;
+  UI.runSqlInto(panel());
+};
+$("run").onclick = () => UI.runSqlInto(panel());
+$("csv").onclick = () => UI.downloadCsv(panel());
+$("refresh").onclick = latest;
+
+latest();
+UI.runSqlInto(panel());
+</script>
+</body>
+</html>
