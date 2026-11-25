@@ -1,45 +1,19 @@
 // src/fetch-he-votes.ts
 
 import axios from "axios";
+import { TronWeb } from "tronweb";
 
 // ======================================================
 // watched addresses
 // ======================================================
 
-const WATCHED_ADDRESSES = new Set([
-
-  "TUjx6w55Nx9G4GjjRNEB4e7w5BUH3WmJTZ",
-  "TGfWKtSDs96TrX1GwH3xsf5HxZhj1PPydv",
-  "TPqmGMoidNTbMZ8ApgcbPMf7JDyiHi1sv5",
-  "TT7BkPRW4qdGrmDrkVgkZHqtKfHnX6kih9",
-  "TMRPTUNer5c3CJqbi1bvvQuQA3f236fAGB",
-  "TKRVSSF5LicLNBTwcoyxYxNFXmjDw7uHRu",
-  "TS3cmLYjnQYM3rpRRTvCjHqYFx8QYnguan",
-  "TQiXPTvHuqaBW94pqrbgwptkSFXsMLrxnM",
-  "THZovMcKoZaV9zzFTWteQYd2f3NEvnzxAM",
-  "TKgD8Qnx9Zw3DNvG6o83PkufnMbtEXis4T",
-  "TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX",
-  "TZ1SsapyhKNWaVLca6P2qgVzkHTdk6nkXa",
-  "TYh6mgoMNZTCsgpYHBz7gttEfrQmDMABub",
-  "TM3sTVyahiGWYktKg8G6miHpTzRurKDt7b",
-  "TGn1uvntAVntT1pG8o7qoKkbViiYfeg6Gj",
-  "TT2T17KZhoDu47i2E4FWxfG79zdkEWkU9N",
-  "TF2fmSbg5HAD34KPUH7WtWCxxvgXHohzYM",
-  "TWadTqi8aCMDdgPTdoiUuQAJgsBLhue7uE",
-  "TEF9ZVUxhmGGffvkf59e2vdLfAG1QCMb7B",
-  "TCVvHUqZC6uezrxhCgAXqC45XHt35mNJyy",
-  "TXomXpYhRcCCoEyki5Vg8Si1vUFaamFX9t",
-  "TH7vVF9RTMXM9x7ZnPnbNcEph734hpu8cf",
-  "TRSXRWudzfzY4jH7AaMowdMNUXDkHisbcd",
-  "TJykPcjCtdYLAJLUgGTUF5gYEcxpbz58Qc",
-  "TZ63tkpcJobcvwsamPknL6JvAAwPLzmbNy",
-  "TH46mnDEM78hFBh26np3hDLjFy7WxFKSVV",
-  "TE9VGAC7Qce3Lm7emJK4WoM1xp43wT87qD",
-  "TLZXe1w751dcmu2B4t3KhhRca27dJhema4",
-  "TEE5qqdfejWCBKJ6P2eVEQ2AuN3R1tWmfs",
-  "TAMVp6dsw7P3R8zd3PhVowEhVLczRWwPQE",
-  "TUgSgCQL6pMSy9zByn4sgxqrJa95sZExBG"
-]);
+export function readWatchedAddresses(raw = process.env.HE_WATCHED_ADDRESSES): Set<string> {
+  const addresses = (raw ?? "").split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+  if (!addresses.length || addresses.some(address => !address.startsWith("T") || !TronWeb.isAddress(address))) {
+    throw new Error("HE_WATCHED_ADDRESSES must contain valid TRON addresses, one per line");
+  }
+  return new Set(addresses);
+}
 
 // ======================================================
 // sleep helper
@@ -111,6 +85,7 @@ async function getVotes(
 // ======================================================
 
 export async function fetchHeVotes() {
+  const watchedAddresses = readWatchedAddresses();
 
   const srList =
     await getTopSRs();
@@ -162,7 +137,7 @@ export async function fetchHeVotes() {
     const filtered =
       votes.filter(
         (v: any) =>
-          WATCHED_ADDRESSES.has(
+          watchedAddresses.has(
             v.voterAddress
           )
       );

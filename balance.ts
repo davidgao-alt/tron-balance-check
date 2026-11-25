@@ -1,12 +1,15 @@
 // balance.ts
+require("dotenv").config({ quiet: true });
 const TronWeb: any = require("tronweb").TronWeb;
 const tronWeb = new TronWeb({ fullHost: "https://api.trongrid.io" });
 
 function sunToTRX(n: number) { return Number(tronWeb.fromSun(n || 0)); }
 
 (async () => {
-  // your address here
-  const address = "TKRVSSF5LicLNBTwcoyxYxNFXmjDw7uHRu";
+  const address = process.env.BALANCE_ADDRESS?.trim();
+  if (!address || !address.startsWith("T") || !TronWeb.isAddress(address)) {
+    throw new Error("BALANCE_ADDRESS must contain a valid TRON address");
+  }
   const acc = await tronWeb.trx.getAccount(address);
 
   // Available
@@ -36,7 +39,6 @@ function sunToTRX(n: number) { return Number(tronWeb.fromSun(n || 0)); }
   // Sum check
   const total = (available + frozenAll).toFixed(6);
 
-  console.log(`Address: ${address}`);
   console.log(`Available: ${available} TRX`);
 
   // breakdown of frozen
@@ -46,5 +48,7 @@ function sunToTRX(n: number) { return Number(tronWeb.fromSun(n || 0)); }
 
   console.log(`Frozen: ${frozenAll} TRX`);
   console.log(`Total (Available and Frozen): ${total} TRX`);
-})();
-
+})().catch(() => {
+  console.error("Balance lookup failed. Check BALANCE_ADDRESS and the network connection.");
+  process.exitCode = 1;
+});

@@ -92,7 +92,8 @@ async function main() {
 
   } catch (err) {
 
-    console.error(err);
+    console.error("HE vote snapshot failed", err instanceof Error ? err.name : "Error");
+    process.exitCode = 1;
 
   } finally {
 

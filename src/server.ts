@@ -17,11 +17,14 @@ import {
 
 import { insertMstrSharplinkToDB } from "./insert-mstr-sharplink";
 
+import { createPublicPool, runPublicQuery } from "./public-query";
+
 const app = express();
 
 // ----------------- Postgres 连接池 -----------------
 const DB_URL = process.env.DATABASE_URL;
 
+const publicPool = createPublicPool(DB_URL, process.env.PUBLIC_QUERY_PASSWORD);
 let pool: Pool | null = null;
 
 if (DB_URL) {
@@ -78,11 +81,17 @@ function normalizeSelect(raw: string): { ok: boolean; sql: string; error?: strin
   return { ok: true, sql: s };
 }
 
+function publicQueryError(res: Response, e: { code?: string }) {
+  if (e.code === "42501") return res.status(403).json({ error: "Permission denied" });
+  console.error("Public query failed", e.code);
+  return res.status(400).json({ error: "Public query failed" });
+}
+
 // POST /api/sql  —— 返回 JSON，给页面展示用
 app.post("/api/sql", async (req: Request, res: Response) => {
   try {
-    if (!pool) {
-      return res.status(500).json({ error: "DATABASE_URL not configured" });
+    if (!publicPool) {
+      return res.status(503).json({ error: "Public query service is not configured" });
     }
 
     const rawSql = String(req.body.sql || "");
@@ -91,7 +100,7 @@ app.post("/api/sql", async (req: Request, res: Response) => {
       return res.status(400).json({ error: norm.error });
     }
 
-    const r = await pool.query(norm.sql);
+    const r = await runPublicQuery(publicPool, norm.sql);
 
     return res.json({
       rows: r.rows,
@@ -99,8 +108,7 @@ app.post("/api/sql", async (req: Request, res: Response) => {
       fields: r.fields.map((f: any) => f.name),
     });
   } catch (e: any) {
-    console.error("SQL error", e);
-    return res.status(500).json({ error: e.message || "Query failed" });
+    return publicQueryError(res, e);
   }
 });
 
@@ -108,8 +116,8 @@ app.post("/api/sql", async (req: Request, res: Response) => {
 // 前端是 window.location = "/api/sql-csv?sql=..."
 app.get("/api/sql-csv", async (req: Request, res: Response) => {
   try {
-    if (!pool) {
-      return res.status(500).json({ error: "DATABASE_URL not configured" });
+    if (!publicPool) {
+      return res.status(503).json({ error: "Public query service is not configured" });
     }
 
     const rawSql = String(req.query.sql || "");
@@ -118,7 +126,7 @@ app.get("/api/sql-csv", async (req: Request, res: Response) => {
       return res.status(400).json({ error: norm.error });
     }
 
-    const result = await pool.query(norm.sql);
+    const result = await runPublicQuery(publicPool, norm.sql);
     const fields = result.fields.map((f: any) => f.name);
 
     const csvRows: string[] = [];
@@ -139,8 +147,7 @@ app.get("/api/sql-csv", async (req: Request, res: Response) => {
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
     return res.send(csvStr);
   } catch (e: any) {
-    console.error("CSV error", e);
-    return res.status(500).json({ error: e.message || "CSV failed" });
+    return publicQueryError(res, e);
   }
 });
 
