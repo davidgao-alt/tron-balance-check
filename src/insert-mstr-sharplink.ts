@@ -61,6 +61,25 @@ export async function insertMstrSharplinkToDB() {
       const { sharplink, eth, impact3 } = await fetchSharplinkSnapshot();
       console.log("Inserting Sharplink snapshot...");
 
+      // Older databases used bigint while the official API now reports
+      // fractional ETH. Widen once, preserving historical and future precision.
+      // Run inside this branch so an unavailable migration cannot block MSTR.
+      await client.query(`DO $
+        BEGIN
+          IF EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = current_schema()
+              AND table_name = 'sharplink_snapshots'
+              AND column_name = 'impact3_total_eth_holdings'
+              AND data_type = 'bigint'
+          ) THEN
+            PERFORM set_config('lock_timeout', '5s', true);
+            ALTER TABLE sharplink_snapshots
+              ALTER COLUMN impact3_total_eth_holdings TYPE numeric
+              USING impact3_total_eth_holdings::numeric;
+          END IF;
+        END $`);
+
       let ethDate: Date | null = null;
       if (eth.timestamp) {
         const d = new Date(eth.timestamp);
