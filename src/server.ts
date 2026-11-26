@@ -17,7 +17,7 @@ import {
 
 import { insertMstrSharplinkToDB } from "./insert-mstr-sharplink";
 
-import { createPublicPool, runPublicQuery } from "./public-query";
+import { createPublicPool, describePublicQueryError, runPublicQuery } from "./public-query";
 
 const app = express();
 
@@ -81,20 +81,20 @@ function normalizeSelect(raw: string): { ok: boolean; sql: string; error?: strin
   return { ok: true, sql: s };
 }
 
-function publicQueryError(res: Response, e: { code?: string }) {
-  if (e.code === "42501") return res.status(403).json({ error: "Permission denied" });
+function publicQueryError(res: Response, e: { code?: string }, rawSql: string) {
   console.error("Public query failed", e.code);
-  return res.status(400).json({ error: "Public query failed" });
+  const { status, error } = describePublicQueryError(e, rawSql);
+  return res.status(status).json({ error });
 }
 
 // POST /api/sql  —— 返回 JSON，给页面展示用
 app.post("/api/sql", async (req: Request, res: Response) => {
+  const rawSql = String(req.body?.sql || "");
   try {
     if (!publicPool) {
       return res.status(503).json({ error: "Public query service is not configured" });
     }
 
-    const rawSql = String(req.body.sql || "");
     const norm = normalizeSelect(rawSql);
     if (!norm.ok) {
       return res.status(400).json({ error: norm.error });
@@ -108,19 +108,19 @@ app.post("/api/sql", async (req: Request, res: Response) => {
       fields: r.fields.map((f: any) => f.name),
     });
   } catch (e: any) {
-    return publicQueryError(res, e);
+    return publicQueryError(res, e, rawSql);
   }
 });
 
 // GET /api/sql-csv  —— 直接下载 CSV 文件
 // 前端是 window.location = "/api/sql-csv?sql=..."
 app.get("/api/sql-csv", async (req: Request, res: Response) => {
+  const rawSql = String(req.query.sql || "");
   try {
     if (!publicPool) {
       return res.status(503).json({ error: "Public query service is not configured" });
     }
 
-    const rawSql = String(req.query.sql || "");
     const norm = normalizeSelect(rawSql);
     if (!norm.ok) {
       return res.status(400).json({ error: norm.error });
@@ -147,7 +147,7 @@ app.get("/api/sql-csv", async (req: Request, res: Response) => {
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
     return res.send(csvStr);
   } catch (e: any) {
-    return publicQueryError(res, e);
+    return publicQueryError(res, e, rawSql);
   }
 });
 
