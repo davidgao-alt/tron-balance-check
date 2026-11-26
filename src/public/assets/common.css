@@ -1,5 +1,5 @@
-/* Shared look for the dashboard pages (index, query, sr, mstr-sharplink-view)
-   and styles for the helpers in common.js. */
+/* Shared look for every dashboard page and styles for the helpers in common.js
+   (site navigation, KPI tiles, freshness badge, status line, tables). */
 
 :root {
   --bg: #eef2f7;
@@ -13,6 +13,10 @@
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --success: #166534;
+  --warning: #92400e;
+  --warning-bg: #fef3c7;
+  --nav-bg: #0f172a;
+  --nav-text: #cbd5e1;
   --danger: #b91c1c;
   --radius: 12px;
   --radius-sm: 8px;
@@ -26,7 +30,6 @@
 
 body {
   margin: 0;
-  padding: 24px;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
@@ -39,14 +42,278 @@ body {
 .page {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 24px;
 }
 
 .page-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 24px;
   margin-bottom: 16px;
+}
+
+.page-sub {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ---------- site navigation (injected by common.js) ---------- */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--nav-bg);
+  color: var(--nav-text);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), 0 2px 8px rgba(15, 23, 42, 0.18);
+}
+
+.site-nav-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 28px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px 24px;
+}
+
+.site-brand {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+}
+
+.site-nav-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+
+.site-nav-label {
+  margin-right: 6px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.site-nav-link {
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: var(--nav-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.site-nav-link.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.site-nav-link:focus-visible,
+.site-brand:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+.site-nav-toggle {
+  display: none;
+  margin-left: auto;
+  border-color: #334155;
+  background: transparent;
+  color: #fff;
+}
+
+.site-nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 900px) {
+  .site-nav-toggle {
+    display: inline-block;
+  }
+
+  .site-nav-menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding: 6px 0 4px;
+  }
+
+  .site-nav.open .site-nav-menu {
+    display: flex;
+  }
+
+  .site-nav-label {
+    width: 100%;
+    margin: 6px 0 2px;
+  }
+}
+
+/* ---------- card header: title block left, actions right ---------- */
+
+.card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 14px;
+}
+
+.card-head .card-title,
+.card-head .muted,
+.card-head .ui-status {
+  margin-bottom: 0;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- KPI tiles ---------- */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: 12px;
+}
+
+.kpi-grid:empty {
+  display: none;
+}
+
+.kpi {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.kpi-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.kpi-value {
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.kpi-unit {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kpi-sub {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-group-title {
+  margin: 0 0 8px;
+  color: var(--text-head);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ---------- snapshot freshness badge ---------- */
+
+.freshness {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.freshness::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.freshness--stale {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.freshness[hidden] {
+  display: none;
+}
+
+/* ---------- dashboard directory (index.html) ---------- */
+
+.directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 12px;
+}
+
+.directory a {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.directory a:hover {
+  border-color: var(--primary);
+  background: #f8fbff;
+}
+
+.directory strong {
+  display: block;
+  color: var(--primary-hover);
+  font-size: 14px;
+}
+
+.directory span {
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .page-title {
@@ -87,8 +354,9 @@ body {
   margin-bottom: 0;
 }
 
-.hidden {
-  display: none;
+.hidden,
+[hidden] {
+  display: none !important;
 }
 
 /* ---------- tabs (segmented control) ---------- */
@@ -411,8 +679,12 @@ table.kv td {
 /* ---------- narrow screens ---------- */
 
 @media (max-width: 640px) {
-  body {
+  .page {
     padding: 16px;
+  }
+
+  .site-nav-inner {
+    padding: 10px 16px;
   }
 
   .page-title {

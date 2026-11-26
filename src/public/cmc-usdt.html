@@ -3,22 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>USDT supply · CoinMarketCap snapshots</title>
+  <title>USDT Supply · TRON Dashboards</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="assets/common.css">
   <script src="assets/common.js"></script>
   <style>
-    [hidden] { display: none !important; }
-    .page { max-width: 1120px; }
-    .section-head { margin-bottom: 12px; }
-    .section-head .card-title, .section-head .ui-status { margin: 0; }
-    .supply { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
-    .supply > div { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; background: var(--surface-muted); }
-    .supply dt { color: var(--text-muted); font-size: 13px; font-weight: 600; }
-    .supply dd { margin: 3px 0 0; font-size: clamp(18px, 2.2vw, 26px); font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
     details { margin-top: 14px; }
     @media (max-width: 600px) {
-      .supply { grid-template-columns: 1fr; }
       .filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .filters .field { flex-direction: column; align-items: stretch; gap: 4px; }
       .filters input { min-width: 0; width: 100%; }
@@ -28,22 +19,29 @@
 </head>
 <body>
 <main class="page">
-  <header class="page-header"><h1 class="page-title">CoinMarketCap USDT supply</h1></header>
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">USDT Supply</h1>
+      <p class="page-sub">Daily circulating and total supply snapshots from CoinMarketCap.</p>
+    </div>
+  </header>
 
   <section class="card" aria-labelledby="latest-title">
-    <div class="toolbar section-head">
-      <h2 class="card-title" id="latest-title">Latest snapshot</h2>
-      <span class="spacer"></span><button id="refresh">Refresh</button>
+    <div class="card-head">
+      <div>
+        <h2 class="card-title" id="latest-title">Latest snapshot</h2>
+        <p id="latest-status" class="muted" role="status"></p>
+      </div>
+      <div class="card-actions">
+        <span id="latest-fresh" hidden></span>
+        <button id="refresh">Refresh</button>
+      </div>
     </div>
-    <p id="latest-status" class="muted" role="status"></p>
-    <dl class="supply" id="supply" hidden>
-      <div><dt>Circulating supply (USDT)</dt><dd id="circulating"></dd></div>
-      <div><dt>Total supply (USDT)</dt><dd id="total"></dd></div>
-    </dl>
+    <div class="kpi-grid" id="supply" hidden></div>
   </section>
 
   <section class="card" aria-labelledby="history-title" id="history">
-    <h2 class="card-title section-head" id="history-title">Snapshot history</h2>
+    <div class="card-head"><h2 class="card-title" id="history-title">Snapshot history</h2></div>
     <form class="toolbar filters" id="filters">
       <label class="field">From (UTC)<input type="date" id="from"></label>
       <label class="field">To (UTC)<input type="date" id="to"></label>
@@ -59,9 +57,9 @@
   </section>
 
   <section class="card" aria-labelledby="results-title">
-    <div class="toolbar section-head">
+    <div class="card-head">
       <h2 class="card-title" id="results-title">Query results</h2>
-      <span class="spacer"></span><div id="query-status" role="status"></div>
+      <div id="query-status" role="status"></div>
     </div>
     <div class="table-wrap" id="results"></div>
   </section>
@@ -85,16 +83,23 @@ function supplySql(from, to, limit) {
 
 function latest() {
   const status = $("latest-status");
-  return UI.run({ status, buttons: $("refresh"), onError: () => { $("supply").hidden = true; } }, async () => {
+  const hide = () => { $("supply").hidden = true; $("latest-fresh").hidden = true; };
+  return UI.run({ status, buttons: $("refresh"), onError: hide }, async () => {
     const { rows } = await UI.runSql(supplySql("", "", 1), apiOrigin);
     const row = rows[0];
-    $("supply").hidden = !row;
-    if (!row) return UI.setStatus(status, "empty", "No USDT snapshots yet.");
-    for (const [id, key] of [["circulating", "circulating_supply"], ["total", "total_supply"]]) {
-      $(id).textContent = row[key] == null ? "—" : UI.formatNumber(String(row[key]));
+    if (!row) {
+      hide();
+      return UI.setStatus(status, "empty", "No USDT snapshots yet.");
     }
-    const captured = row.snapshot_utc && new Date(row.snapshot_utc).toISOString().slice(0, 19).replace("T", " ");
-    UI.setStatus(status, "", captured ? `Captured ${captured} UTC` : `Snapshot #${row.id}`);
+    const amount = (v) => (v == null ? "—" : UI.formatNumber(String(v)));
+    $("supply").innerHTML =
+      UI.kpi("Circulating supply", amount(row.circulating_supply), "", "USDT") +
+      UI.kpi("Total supply", amount(row.total_supply), "", "USDT");
+    $("supply").hidden = false;
+    const captured = UI.formatHktUtc(row.snapshot_utc);
+    UI.setStatus(status, "", captured ? `Captured ${captured}` : `Snapshot #${row.id}`);
+    // One snapshot a day.
+    UI.setFreshness($("latest-fresh"), row.snapshot_utc, 26);
   });
 }
 

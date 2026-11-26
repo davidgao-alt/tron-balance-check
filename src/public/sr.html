@@ -1,123 +1,87 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>TRON SR Dashboard</title>
-
+<title>SR Metrics · TRON Dashboards</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
 </head>
-
-
 <body>
+<main class="page">
 
-<div class="page">
+  <header class="page-header">
+    <div>
+      <h1 class="page-title" id="page-title">SR Metrics</h1>
+      <p class="page-sub" id="page-sub"></p>
+    </div>
+  </header>
 
-<header class="page-header">
+  <!-- One panel per dataset; the URL hash picks it (sr.html, sr.html#he). -->
+  <div id="sr-tab">
+    <section class="card">
+      <div class="card-head"><h2 class="card-title">Snapshot history</h2></div>
+      <div class="toolbar">
+        <label class="field">From (HKT) <input type="date" id="sr-from"></label>
+        <label class="field">To (HKT) <input type="date" id="sr-to"></label>
+        <button type="button" class="primary" data-action="load">Load</button>
+        <span class="spacer"></span>
+        <button type="button" data-action="csv">Download CSV</button>
+      </div>
+      <details class="collapsible" data-remember="sr-sql" style="margin-top: 14px;">
+        <summary>Custom SQL</summary>
+        <textarea id="sr-sql" aria-label="Custom SQL" spellcheck="false"></textarea>
+        <button type="button" class="primary" data-action="run">Run</button>
+      </details>
+    </section>
 
-  <h1 class="page-title">TRON SR Dashboard</h1>
-
-  <div class="tabs" role="tablist">
-    <button type="button" class="tab active" role="tab" data-tab="sr" aria-selected="true">SR Metrics</button>
-    <button type="button" class="tab" role="tab" data-tab="he" aria-selected="false">HE Vote Snapshot</button>
-    <a class="tab" href="troninc-revenue.html">Revenue Wallet</a>
-    <a class="tab" href="tron-matrix.html">Tron Matrix</a>
+    <section class="card">
+      <div class="card-head">
+        <h2 class="card-title">Query results</h2>
+        <div id="sr-status"></div>
+      </div>
+      <div class="table-wrap" id="sr-result"></div>
+    </section>
   </div>
 
-</header>
+  <div id="he-tab" hidden>
+    <section class="card">
+      <div class="card-head"><h2 class="card-title">Snapshot history</h2></div>
+      <div class="toolbar">
+        <label class="field">From (UTC) <input type="date" id="he-from"></label>
+        <label class="field">To (UTC) <input type="date" id="he-to"></label>
+        <button type="button" class="primary" data-action="load">Load</button>
+        <span class="spacer"></span>
+        <button type="button" data-action="csv">Download CSV</button>
+      </div>
+      <details class="collapsible" data-remember="he-sql" style="margin-top: 14px;">
+        <summary>Custom SQL</summary>
+        <textarea id="he-sql" aria-label="Custom SQL" spellcheck="false"></textarea>
+        <button type="button" class="primary" data-action="run">Run</button>
+      </details>
+    </section>
 
+    <section class="card">
+      <div class="card-head">
+        <h2 class="card-title">Query results</h2>
+        <div id="he-status"></div>
+      </div>
+      <div class="table-wrap" id="he-result"></div>
+    </section>
+  </div>
 
-<!-- =====================================================
-     SR TAB
-     ===================================================== -->
-
-<div id="sr-tab">
-
-<section class="card">
-
-<div class="toolbar">
-  <label class="field">From (HKT) <input type="date" id="sr-from"></label>
-  <label class="field">To (HKT) <input type="date" id="sr-to"></label>
-  <button class="primary" onclick="loadTab('sr')">Load</button>
-  <span class="spacer"></span>
-  <button onclick="downloadTab('sr')">Download CSV</button>
-</div>
-
-<details class="collapsible" data-remember="sr-sql" style="margin-top: 14px;">
-<summary>Custom SQL</summary>
-
-<textarea id="sr-sql"></textarea>
-
-<button class="primary" onclick="runTab('sr')">Run</button>
-
-</details>
-
-</section>
-
-
-<section class="card">
-
-<div id="sr-status"></div>
-
-<div class="table-wrap" id="sr-result"></div>
-
-</section>
-
-</div>
-
-
-<!-- =====================================================
-     HE TAB
-     ===================================================== -->
-
-<div id="he-tab" class="hidden">
-
-<section class="card">
-
-<div class="toolbar">
-  <label class="field">From (UTC) <input type="date" id="he-from"></label>
-  <label class="field">To (UTC) <input type="date" id="he-to"></label>
-  <button class="primary" onclick="loadTab('he')">Load</button>
-  <span class="spacer"></span>
-  <button onclick="downloadTab('he')">Download CSV</button>
-</div>
-
-<details class="collapsible" data-remember="he-sql" style="margin-top: 14px;">
-<summary>Custom SQL</summary>
-
-<textarea id="he-sql"></textarea>
-
-<button class="primary" onclick="runTab('he')">Run</button>
-
-</details>
-
-</section>
-
-
-<section class="card">
-
-<div id="he-status"></div>
-
-<div class="table-wrap" id="he-result"></div>
-
-</section>
-
-</div>
-
-</div>
+</main>
 
 <script>
-
 /* ======================================================
-   TABLES (one config per tab; SQL text is built from it)
+   DATASETS (one config per panel; SQL text is built from it)
    ====================================================== */
 
 const TABS = {
   sr: {
+    title: "SR Metrics",
+    sub: "Votes, vote share, brokerage and claimable rewards by Super Representative. Snapshots every two hours.",
     table: "sr_snapshots",
     predicate: "(account_status IS NULL OR account_status = 'SR')",
     columns: [
@@ -136,6 +100,8 @@ const TABS = {
     limit: 28
   },
   he: {
+    title: "HE Vote Snapshot",
+    sub: "HE votes per candidate and their share of each candidate's total votes.",
     table: "he_vote_snapshots",
     columns: [
       "id",
@@ -155,21 +121,18 @@ const el = (tab, name) => document.getElementById(`${tab}-${name}`);
 
 const selectList = (cfg) => cfg.columns.map(c => "  " + c).join(",\n");
 
-
 // SQL in the Custom SQL box when the page opens.
 function defaultSql(cfg) {
   return `SELECT\n${selectList(cfg)}\nFROM ${cfg.table}${cfg.predicate ? "\nWHERE " + cfg.predicate : ""}\nORDER BY id DESC\nLIMIT ${cfg.limit}\n`;
 }
 
-
-// SQL written by Load (same text, blank lines included, as before).
+// SQL written by Load for the chosen dates.
 function filteredSql(cfg, from, to) {
-  let sql = `\n\nSELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nWHERE ${cfg.predicate || "1=1"}\n\n`;
-  if (from) sql += `\n\nAND ${cfg.timeColumn} >=\n'${from} 00:00:00'\n\n`;
-  if (to) sql += `\n\nAND ${cfg.timeColumn} <=\n'${to} 23:59:59'\n\n`;
-  return sql + `\n\nORDER BY id DESC\nLIMIT ${cfg.limit}\n\n`;
+  let sql = `SELECT\n${selectList(cfg)}\nFROM ${cfg.table}\nWHERE ${cfg.predicate || "1=1"}\n`;
+  if (from) sql += `  AND ${cfg.timeColumn} >= '${from} 00:00:00'\n`;
+  if (to) sql += `  AND ${cfg.timeColumn} <= '${to} 23:59:59'\n`;
+  return sql + `ORDER BY id DESC\nLIMIT ${cfg.limit}\n`;
 }
-
 
 /* ======================================================
    RUN / CSV / LOAD
@@ -179,30 +142,26 @@ function filteredSql(cfg, from, to) {
 // SQL the page itself last put in each box; Load asks before replacing anything else.
 const lastSql = {};
 
-// Tabs whose data has been queried at least once.
+// Panels whose data has been queried at least once.
 const loaded = {};
-
 
 function panel(tab) {
   return {
     sql: el(tab, "sql").value,
     container: el(tab, "result"),
     status: el(tab, "status"),
-    buttons: document.querySelectorAll(`#${tab}-tab button`)
+    buttons: el(tab, "tab").querySelectorAll("button")
   };
 }
-
 
 function runTab(tab) {
   loaded[tab] = true;
   return UI.runSqlInto(panel(tab));
 }
 
-
 function downloadTab(tab) {
   return UI.downloadCsv(panel(tab));
 }
-
 
 function loadTab(tab) {
   const from = el(tab, "from").value;
@@ -214,10 +173,7 @@ function loadTab(tab) {
     return;
   }
 
-  if (
-    box.value !== lastSql[tab] &&
-    !confirm("Load will replace the SQL you edited under Custom SQL. Continue?")
-  ) {
+  if (box.value !== lastSql[tab] && !confirm("Load will replace the SQL you edited under Custom SQL. Continue?")) {
     return;
   }
 
@@ -225,45 +181,34 @@ function loadTab(tab) {
   runTab(tab);
 }
 
-
-/* ======================================================
-   TAB SWITCH (current tab kept in the URL: sr.html#he)
-   ====================================================== */
-
-function switchTab(tab) {
-  for (const name of Object.keys(TABS)) {
-    const button = document.querySelector(`.tab[data-tab="${name}"]`);
-    button.classList.toggle("active", name === tab);
-    button.setAttribute("aria-selected", String(name === tab));
-    el(name, "tab").classList.toggle("hidden", name !== tab);
-  }
-
-  history.replaceState(null, "", tab === "sr" ? location.pathname + location.search : "#" + tab);
-
-  // HE is only queried once it is opened.
-  if (!loaded[tab]) runTab(tab);
-}
-
-const tabFromUrl = () => (location.hash === "#he" ? "he" : "sr");
-
-
-/* ======================================================
-   INITIAL LOAD
-   ====================================================== */
+const ACTIONS = { load: loadTab, run: runTab, csv: downloadTab };
 
 for (const tab of Object.keys(TABS)) {
   el(tab, "sql").value = lastSql[tab] = defaultSql(TABS[tab]);
+  el(tab, "tab").addEventListener("click", (event) => {
+    const button = event.target.closest("button[data-action]");
+    if (button) ACTIONS[button.dataset.action](tab);
+  });
 }
 
-document
-  .querySelectorAll(".tab[data-tab]")
-  .forEach(button => button.addEventListener("click", () => switchTab(button.dataset.tab)));
+/* ======================================================
+   PANEL SWITCH (site navigation links to sr.html and sr.html#he)
+   ====================================================== */
 
-window.addEventListener("hashchange", () => switchTab(tabFromUrl()));
+function showTab() {
+  const tab = location.hash === "#he" ? "he" : "sr";
+  for (const name of Object.keys(TABS)) el(name, "tab").hidden = name !== tab;
 
-switchTab(tabFromUrl());
+  document.getElementById("page-title").textContent = TABS[tab].title;
+  document.getElementById("page-sub").textContent = TABS[tab].sub;
+  document.title = `${TABS[tab].title} · TRON Dashboards`;
 
+  // A panel is only queried once it is opened.
+  if (!loaded[tab]) runTab(tab);
+}
+
+window.addEventListener("hashchange", showTab);
+showTab();
 </script>
-
 </body>
 </html>

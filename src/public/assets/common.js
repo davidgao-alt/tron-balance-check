@@ -24,6 +24,8 @@
   const TIMESTAMP_RE =
     /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}(?::\d{2})?)(?:\.\d+)?(Z|[+-]\d{2}:?\d{2})?$/;
   // TRON address, EVM address, or 64-hex transaction hash.
+  // Columns stored as percentages (e.g. brokerage 10 = 10%).
+  const PERCENT_FIELD_RE = /^(brokerage|voterbrokerage|votespercentage|annualizedrate|pct)$/i;
   const ADDRESS_RE = /^(?:T[1-9A-HJ-NP-Za-km-z]{33}|0x[0-9a-fA-F]{40}|(?:0x)?[0-9a-fA-F]{64})$/;
 
   // "574869710" → "574,869,710"; "0.900000" → "0.9". Never rounds.
@@ -60,7 +62,8 @@
 
     const raw = String(value);
     if (NUMBER_RE.test(raw)) {
-      const text = AS_IS_FIELD_RE.test(field) ? raw : formatNumber(raw);
+      let text = AS_IS_FIELD_RE.test(field) ? raw : formatNumber(raw);
+      if (PERCENT_FIELD_RE.test(field)) text += "%";
       return { text, cls: "num", title: text === raw ? "" : raw };
     }
     const ts = TIMESTAMP_RE.exec(raw);
@@ -327,6 +330,170 @@
     });
   });
 
+  // ---------- snapshot time and freshness ----------
+
+  const pad2 = (n) => String(n).padStart(2, "0");
+
+  // Date → "YYYY-MM-DD HH:mm" in the given UTC offset (hours).
+  function wallClock(date, offsetHours) {
+    const t = new Date(date.getTime() + offsetHours * 3600 * 1000);
+    return (
+      `${t.getUTCFullYear()}-${pad2(t.getUTCMonth() + 1)}-${pad2(t.getUTCDate())} ` +
+      `${pad2(t.getUTCHours())}:${pad2(t.getUTCMinutes())}`
+    );
+  }
+
+  // UTC timestamp → "2026-11-26 20:01 HKT · 12:01 UTC" ("" if not a date).
+  function formatHktUtc(value) {
+    const d = value instanceof Date ? value : new Date(value);
+    if (value == null || isNaN(d.getTime())) return "";
+    return `${wallClock(d, 8)} HKT · ${wallClock(d, 0).slice(11)} UTC`;
+  }
+
+  function ago(ms) {
+    const min = Math.max(0, Math.round(ms / 60000));
+    if (min < 1) return "just now";
+    if (min < 60) return `${min} min ago`;
+    const h = Math.floor(min / 60);
+    if (h < 48) return `${h}h ${min % 60 ? (min % 60) + "m " : ""}ago`;
+    return `${Math.floor(h / 24)} days ago`;
+  }
+
+  // Fills a .freshness badge: "Updated 35 min ago", amber once older than staleHours.
+  function setFreshness(el, value, staleHours) {
+    if (!el) return;
+    const d = new Date(value);
+    if (value == null || isNaN(d.getTime())) {
+      el.hidden = true;
+      return;
+    }
+    const age = Date.now() - d.getTime();
+    const stale = age > staleHours * 3600 * 1000;
+    el.hidden = false;
+    el.classList.add("freshness");
+    el.classList.toggle("freshness--stale", stale);
+    el.textContent = `Updated ${ago(age)}`;
+    el.title =
+      `Snapshot ${formatHktUtc(d)}` +
+      (stale ? `\nOlder than expected (snapshots normally arrive within ${staleHours}h).` : "");
+  }
+
+  // One KPI tile; value may carry a unit shown smaller after it.
+  function kpi(label, value, sub, unit) {
+    return (
+      '<div class="kpi">' +
+      `<div class="kpi-label">${escapeHtml(label)}</div>` +
+      `<div class="kpi-value">${escapeHtml(value)}` +
+      (unit ? ` <span class="kpi-unit">${escapeHtml(unit)}</span>` : "") +
+      "</div>" +
+      (sub ? `<div class="kpi-sub">${escapeHtml(sub)}</div>` : "") +
+      "</div>"
+    );
+  }
+
+  // ---------- site navigation (one bar on every page) ----------
+
+  // The dashboards run on three Render services; pages on another service are linked absolutely
+  // so their /api calls reach the right database.
+  const HOSTS = {
+    sr: "tronscan-sr-metrics.onrender.com",
+    wallet: "troninc-wallet-event-query.onrender.com",
+    mstr: "mstr-sharplink-snapshot.onrender.com",
+  };
+
+  const NAV = [
+    {
+      group: "TRON",
+      items: [
+        { label: "SR Metrics", host: "sr", path: "sr.html" },
+        { label: "HE Votes", host: "sr", path: "sr.html#he" },
+        { label: "Revenue Wallet", host: "sr", path: "troninc-revenue.html" },
+        { label: "Tron Matrix", host: "sr", path: "tron-matrix.html" },
+      ],
+    },
+    {
+      group: "sTRX",
+      items: [
+        { label: "On-chain Activity", host: "wallet", path: "query.html" },
+        { label: "Wallet Snapshots", host: "wallet", path: "query.html#sql" },
+      ],
+    },
+    {
+      group: "Treasury",
+      items: [
+        { label: "MSTR & SharpLink", host: "mstr", path: "mstr-sharplink-view.html" },
+        { label: "USDT Supply", host: "sr", path: "cmc-usdt.html" },
+      ],
+    },
+  ];
+
+  // Relative link on the same service (and on localhost); absolute link to another service.
+  function navHref(item) {
+    const here = location.hostname;
+    const target = HOSTS[item.host];
+    const onRender = Object.values(HOSTS).includes(here);
+    return onRender && here !== target ? `https://${target}/${item.path}` : item.path;
+  }
+
+  function currentFile() {
+    return location.pathname.split("/").pop() || "index.html";
+  }
+
+  // Exact page + hash first (sr.html#he), then the page itself (tron-matrix.html#sql).
+  function activeItem() {
+    const file = currentFile();
+    const all = NAV.flatMap((g) => g.items);
+    return (
+      all.find((i) => i.path === file + location.hash) ||
+      all.find((i) => i.path === file)
+    );
+  }
+
+  function markActive(nav) {
+    const active = activeItem();
+    nav.querySelectorAll("a[data-path]").forEach((a) => {
+      const on = Boolean(active) && a.dataset.path === active.path;
+      a.classList.toggle("active", on);
+      if (on) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  function mountNav() {
+    if (document.querySelector(".site-nav")) return;
+    const groups = NAV.map(
+      (g) =>
+        '<div class="site-nav-group">' +
+        `<span class="site-nav-label">${escapeHtml(g.group)}</span>` +
+        g.items
+          .map(
+            (i) =>
+              `<a class="site-nav-link" data-path="${escapeHtml(i.path)}" href="${escapeHtml(navHref(i))}">` +
+              `${escapeHtml(i.label)}</a>`
+          )
+          .join("") +
+        "</div>"
+    ).join("");
+
+    const nav = document.createElement("header");
+    nav.className = "site-nav";
+    nav.innerHTML =
+      '<div class="site-nav-inner">' +
+      '<a class="site-brand" href="./">TRON Dashboards</a>' +
+      '<button type="button" class="site-nav-toggle" aria-expanded="false" aria-controls="site-nav-menu">Menu</button>' +
+      `<nav class="site-nav-menu" id="site-nav-menu" aria-label="Dashboards">${groups}</nav>` +
+      "</div>";
+    document.body.prepend(nav);
+
+    const toggle = nav.querySelector(".site-nav-toggle");
+    toggle.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+    markActive(nav);
+    window.addEventListener("hashchange", () => markActive(nav));
+  }
+
   // ---------- collapsible sections remember open/closed ----------
 
   // <details data-remember="name"> keeps its state per page in localStorage.
@@ -349,10 +516,15 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", rememberDetails);
-  } else {
+  function onReady() {
+    mountNav();
     rememberDetails();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", onReady);
+  } else {
+    onReady();
   }
 
   window.UI = {
@@ -368,5 +540,10 @@
     runSqlInto,
     downloadCsv,
     setupTop5,
+    kpi,
+    formatHktUtc,
+    setFreshness,
+    NAV,
+    navHref,
   };
 })();

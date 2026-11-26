@@ -1,57 +1,53 @@
 <!doctype html>
-<html lang="zh">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>sTRX Top5 查询</title>
+  <title>TRON Dashboards</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="assets/common.css" />
   <script src="assets/common.js"></script>
 </head>
 <body>
-<div class="page">
+<main class="page">
   <header class="page-header">
-    <h1 class="page-title">sTRX Deposit/Withdraw Top 5（指定日 00:00 UTC 之前）</h1>
+    <div>
+      <h1 class="page-title">TRON Dashboards</h1>
+      <p class="page-sub">Internal monitoring of TRON wallets, Super Representatives, sTRX and treasury snapshots.</p>
+    </div>
   </header>
 
-  <section class="card">
-    <form id="q" class="toolbar">
-      <label class="field">date:
-        <input id="date" placeholder="2025-11-08" required />
-      </label>
-      <label class="field">lookbackHours:
-        <input id="lookback" type="number" min="1" max="168" value="48" />
-      </label>
-      <button type="submit" class="primary">查询</button>
-    </form>
-
-    <div id="msg" style="margin-top: 14px;"></div>
-
-    <div id="tbl-wrap" class="table-wrap" style="display:none">
-      <table id="tbl">
-        <thead><tr><th>time(UTC)</th><th>type</th><th>txid</th><th class="num">TRX</th><th class="num">sTRX</th><th class="num">ratio</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <details id="raw-box" class="collapsible" style="display:none; margin-top: 14px;">
-      <summary>Raw JSON</summary>
-      <pre id="raw" class="json"></pre>
-    </details>
-  </section>
-</div>
+  <div id="directory"></div>
+</main>
 
 <script>
-UI.setupTop5({
-  form: document.getElementById('q'),
-  date: document.getElementById('date'),
-  lookback: document.getElementById('lookback'),
-  status: document.getElementById('msg'),
-  tableWrap: document.getElementById('tbl-wrap'),
-  tbody: document.querySelector('#tbl tbody'),
-  rawBox: document.getElementById('raw-box'),
-  raw: document.getElementById('raw'),
-});
+// One card per dashboard, grouped like the navigation bar (links come from UI.NAV).
+const DESCRIPTIONS = {
+  "sr.html": "Votes, vote share, brokerage and claimable TRX rewards by Super Representative.",
+  "sr.html#he": "HE votes per candidate and their share of each candidate's total votes.",
+  "troninc-revenue.html": "Available and staked TRX, sTRX, rewards, energy and bandwidth of the revenue wallet.",
+  "tron-matrix.html": "Account status, TRX balances, staking, SR rank and votes of the Tron Matrix wallet.",
+  "query.html": "The last five sTRX deposits or withdrawals before 00:00 UTC on a chosen date.",
+  "query.html#sql": "Hourly wallet valuations: read-only SQL queries and CSV export.",
+  "mstr-sharplink-view.html": "Hourly MSTR and SBET prices, BTC / ETH holdings and mNAV.",
+  "cmc-usdt.html": "Daily USDT circulating and total supply from CoinMarketCap.",
+};
+
+document.getElementById("directory").innerHTML = UI.NAV.map(
+  (group) =>
+    '<section class="card">' +
+    `<h2 class="card-title" style="margin-bottom: 12px;">${UI.escapeHtml(group.group)}</h2>` +
+    '<div class="directory">' +
+    group.items
+      .map(
+        (item) =>
+          `<a href="${UI.escapeHtml(UI.navHref(item))}">` +
+          `<strong>${UI.escapeHtml(item.label)}</strong>` +
+          `<span>${UI.escapeHtml(DESCRIPTIONS[item.path] || "")}</span></a>`
+      )
+      .join("") +
+    "</div></section>"
+).join("");
 </script>
 </body>
 </html>

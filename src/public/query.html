@@ -3,40 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TRON sTRX Tools</title>
+  <title>sTRX · TRON Dashboards</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="assets/common.css" />
   <script src="assets/common.js"></script>
-  <style>
-    .panel {
-      display: none;
-    }
-    .panel.active {
-      display: block;
-    }
-  </style>
 </head>
 <body>
-<div class="page">
+<main class="page">
 
   <header class="page-header">
-    <h1 class="page-title">TRON sTRX Tools</h1>
-    <div class="tabs">
-      <button class="tab active" data-target="panel-top5">On-chain sTRX Activity</button>
-      <button class="tab" data-target="panel-sql">Wallet Snapshots (SQL / CSV)</button>
+    <div>
+      <h1 class="page-title" id="page-title">On-chain sTRX Activity</h1>
+      <p class="page-sub" id="page-sub"></p>
     </div>
   </header>
 
+  <!-- The URL hash picks the panel: query.html (activity) or query.html#sql (wallet snapshots). -->
+
   <!-- ============ Panel 1: sTRX Top5 ============ -->
-  <section id="panel-top5" class="panel card active">
-    <h2 class="card-title">On-chain sTRX Deposit / Withdraw (Top 5)</h2>
-    <p class="muted">
-      Query the last 5 Deposit/Withdraw events before <strong>00:00 UTC</strong> of a given date.
-    </p>
+  <section id="panel-top5" class="card">
+    <div class="card-head">
+      <div>
+        <h2 class="card-title">Deposit / Withdraw (top 5)</h2>
+        <p class="muted">The last 5 Deposit/Withdraw events before <strong>00:00 UTC</strong> of the chosen date.</p>
+      </div>
+    </div>
 
     <form id="form-top5" class="toolbar">
       <label class="field">Date (UTC cut-off)
-        <input id="date" placeholder="2025-11-08" required />
+        <input id="date" type="date" required />
       </label>
       <label class="field">Lookback (hours)
         <input id="lookback" type="number" min="1" max="168" value="48" />
@@ -69,14 +64,18 @@
   </section>
 
   <!-- ============ Panel 2: SQL Query + CSV ============ -->
-  <section id="panel-sql" class="panel card">
-    <h2 class="card-title">Wallet Snapshots – SQL Query (Read-Only)</h2>
-    <p class="muted">
-      Only <code>SELECT</code> statements are allowed. Example:
-      <code>SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</code>
-    </p>
+  <section id="panel-sql" class="card" hidden>
+    <div class="card-head">
+      <div>
+        <h2 class="card-title">SQL query (read-only)</h2>
+        <p class="muted">
+          Only <code>SELECT</code> statements are allowed. Example:
+          <code>SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</code>
+        </p>
+      </div>
+    </div>
 
-    <textarea id="sqlBox">SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</textarea>
+    <textarea id="sqlBox" aria-label="SQL" spellcheck="false">SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</textarea>
 
     <div class="toolbar" style="margin-bottom: 14px;">
       <button id="btn-run-sql" class="primary">Run Query</button>
@@ -92,23 +91,35 @@
     </details>
   </section>
 
-</div>
+</main>
 
   <script>
-    // -------- Tabs --------
-    const tabButtons = document.querySelectorAll(".tab");
-    const panels = document.querySelectorAll(".panel");
+    // -------- Panels (site navigation links to query.html and query.html#sql) --------
+    const VIEWS = {
+      top5: {
+        title: "On-chain sTRX Activity",
+        sub: "sTRX deposits and withdrawals read from the chain.",
+      },
+      sql: {
+        title: "Wallet Snapshots",
+        sub: "Hourly wallet valuations from wallet-snapshot-cron: query and export as CSV.",
+      },
+    };
 
-    tabButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const target = btn.getAttribute("data-target");
-        tabButtons.forEach(b => b.classList.remove("active"));
-        panels.forEach(p => p.classList.remove("active"));
+    function showView() {
+      const view = location.hash === "#sql" ? "sql" : "top5";
+      document.getElementById("panel-top5").hidden = view !== "top5";
+      document.getElementById("panel-sql").hidden = view !== "sql";
+      document.getElementById("page-title").textContent = VIEWS[view].title;
+      document.getElementById("page-sub").textContent = VIEWS[view].sub;
+      document.title = `${VIEWS[view].title} · TRON Dashboards`;
+    }
 
-        btn.classList.add("active");
-        document.getElementById(target).classList.add("active");
-      });
-    });
+    window.addEventListener("hashchange", showView);
+    showView();
+
+    // Default cut-off: today (UTC).
+    document.getElementById("date").value = new Date().toISOString().slice(0, 10);
 
     // -------- Panel 1: sTRX Top5 logic (shared with index.html, see assets/common.js) --------
     UI.setupTop5({

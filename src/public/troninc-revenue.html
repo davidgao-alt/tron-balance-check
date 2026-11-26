@@ -1,80 +1,25 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Tron Inc. Revenue Wallet</title>
-
+<title>Revenue Wallet · TRON Dashboards</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
-
-<style>
-
-.kpis {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
-  gap: 12px;
-}
-
-.kpi {
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface-muted);
-}
-
-.kpi-label {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.kpi-value {
-  margin-top: 2px;
-  font-size: 20px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
-}
-
-.kpi-sub {
-  margin-top: 2px;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-
-.card-head {
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-
-.card-head .muted {
-  margin-bottom: 0;
-}
-
-</style>
 </head>
-
-
 <body>
 
-<div class="page">
+<main class="page">
 
 <header class="page-header">
-
-  <h1 class="page-title">TRON SR Dashboard</h1>
-
-  <nav class="tabs" aria-label="Dashboard pages">
-    <a class="tab" href="sr.html">SR Metrics</a>
-    <a class="tab" href="sr.html#he">HE Vote Snapshot</a>
-    <a class="tab active" href="troninc-revenue.html" aria-current="page">Revenue Wallet</a>
-    <a class="tab" href="tron-matrix.html">Tron Matrix</a>
-  </nav>
-
+  <div>
+    <h1 class="page-title">Tron Inc. Revenue Wallet</h1>
+    <p class="page-sub">
+      <span class="mono copyable" title="Click to copy">TEb4gXicQ39VWN3jbeXygEJJV1McRWg4uZ</span>
+      · <a href="https://tronscan.org/#/address/TEb4gXicQ39VWN3jbeXygEJJV1McRWg4uZ" target="_blank" rel="noreferrer">Tronscan</a>
+    </p>
+  </div>
 </header>
 
 
@@ -84,30 +29,32 @@
 
 <section class="card" id="latest-card">
 
-<div class="toolbar card-head">
+<div class="card-head">
   <div>
-    <h2 class="card-title">Tron Inc. Revenue Wallet</h2>
-    <p class="muted">
-      <span class="mono copyable" title="Click to copy">TEb4gXicQ39VWN3jbeXygEJJV1McRWg4uZ</span>
-      · <a href="https://tronscan.org/#/address/TEb4gXicQ39VWN3jbeXygEJJV1McRWg4uZ" target="_blank" rel="noreferrer">Tronscan</a>
-      · <span id="latest-time"></span>
-    </p>
+    <h2 class="card-title">Latest snapshot</h2>
+    <p class="muted" id="latest-time"></p>
   </div>
-  <span class="spacer"></span>
-  <button onclick="loadLatest()">Refresh</button>
+  <div class="card-actions">
+    <span id="latest-fresh" hidden></span>
+    <button type="button" onclick="loadLatest()">Refresh</button>
+  </div>
 </div>
 
 <div id="latest-status"></div>
 
-<div class="kpis" id="kpis"></div>
+<div class="kpi-grid" id="kpis"></div>
 
 </section>
 
 
 <section class="card" id="assets-card">
-  <h2 class="card-title">Assets</h2>
-  <p class="muted">Tronscan assets list at the latest snapshot (staked TRX is counted in Total TRX above).</p>
-  <div id="assets-status"></div>
+  <div class="card-head">
+    <div>
+      <h2 class="card-title">Assets</h2>
+      <p class="muted">Tronscan assets list at the latest snapshot (staked TRX is counted in Total TRX above).</p>
+    </div>
+    <div id="assets-status"></div>
+  </div>
   <div class="table-wrap" id="assets-result"></div>
 </section>
 
@@ -120,7 +67,7 @@
 
 <section class="card">
 
-<h2 class="card-title" style="margin-bottom: 12px;">History</h2>
+<div class="card-head"><h2 class="card-title">Snapshot history</h2></div>
 
 <div class="toolbar">
   <label class="field">From (HKT) <input type="date" id="history-from"></label>
@@ -133,7 +80,7 @@
 <details class="collapsible" data-remember="history-sql" style="margin-top: 14px;">
 <summary>Custom SQL</summary>
 
-<textarea id="history-sql"></textarea>
+<textarea id="history-sql" aria-label="Custom SQL" spellcheck="false"></textarea>
 
 <button class="primary" onclick="runHistory()">Run</button>
 
@@ -144,7 +91,10 @@
 
 <section class="card">
 
-<div id="history-status"></div>
+<div class="card-head">
+  <h2 class="card-title">Query results</h2>
+  <div id="history-status"></div>
+</div>
 
 <div class="table-wrap" id="history-result"></div>
 
@@ -152,7 +102,7 @@
 
 </div>
 
-</div>
+</main>
 
 <script>
 
@@ -184,28 +134,21 @@ function usd(value) {
    LATEST SNAPSHOT: cards, assets, votes
    ====================================================== */
 
-function kpi(label, value, sub) {
-  return (
-    '<div class="kpi">' +
-    `<div class="kpi-label">${UI.escapeHtml(label)}</div>` +
-    `<div class="kpi-value">${UI.escapeHtml(value)}</div>` +
-    (sub ? `<div class="kpi-sub">${UI.escapeHtml(sub)}</div>` : "") +
-    "</div>"
-  );
-}
+const kpi = UI.kpi;
 
 function renderKpis(r) {
-  $("latest-time").textContent =
-    `Snapshot ${String(r.snapshot_time_hkt).replace("T", " ").replace(/(\.\d+)?Z$/, "")} HKT · id ${r.id}`;
+  $("latest-time").textContent = `Snapshot ${UI.formatHktUtc(r.snapshot_time_utc)} · id ${r.id}`;
+  // Snapshots run every two hours.
+  UI.setFreshness($("latest-fresh"), r.snapshot_time_utc, 3);
 
   $("kpis").innerHTML = [
-    kpi("TRX available", amount(r.trx_available)),
+    kpi("TRX available", amount(r.trx_available), "", "TRX"),
     kpi("TRX staked", amount(r.trx_staked),
       `Energy ${amount(r.trx_staked_energy)} · Bandwidth ${amount(r.trx_staked_bandwidth)}` +
-      (Number(r.trx_delegated_out) ? ` · delegated out ${amount(r.trx_delegated_out)}` : "")),
-    kpi("TRX unstaking", amount(r.trx_unstaking), `Withdrawable ${amount(r.trx_withdrawable)}`),
-    kpi("Total TRX", amount(r.trx_total), "Available + staked + unstaking"),
-    kpi("Claimable voter/SR rewards", amount(r.claimable_reward_trx) + " TRX"),
+      (Number(r.trx_delegated_out) ? ` · delegated out ${amount(r.trx_delegated_out)}` : ""), "TRX"),
+    kpi("TRX unstaking", amount(r.trx_unstaking), `Withdrawable ${amount(r.trx_withdrawable)}`, "TRX"),
+    kpi("Total TRX", amount(r.trx_total), "Available + staked + unstaking", "TRX"),
+    kpi("Claimable voter/SR rewards", amount(r.claimable_reward_trx), "", "TRX"),
     kpi("sTRX", amount(r.strx_balance)),
     kpi("Votes", amount(r.votes_used), `TRON Power ${amount(r.vote_power)}`),
     kpi("Energy", amount(r.energy_available), `available of ${amount(r.energy_limit)}`),
@@ -242,7 +185,7 @@ function loadList(name, sql, emptyText) {
 
 async function loadLatest() {
   const status = $("latest-status");
-  const button = document.querySelector("#latest-card button");
+  const button = document.querySelector("#latest-card .card-actions button");
 
   await UI.run({ buttons: button, status }, async () => {
     const data = await UI.runSql(
@@ -251,6 +194,7 @@ async function loadLatest() {
 
     if (!data.rows.length) {
       $("kpis").innerHTML = "";
+      $("latest-fresh").hidden = true;
       UI.setStatus(status, "empty", "No snapshot yet.");
       return;
     }

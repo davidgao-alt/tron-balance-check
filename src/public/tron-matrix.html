@@ -3,46 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tron Matrix · TRON SR Dashboard</title>
+<title>Tron Matrix · TRON Dashboards</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
 <style>
-  [hidden] { display: none !important; }
-
-  .account-header, .section-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px 16px;
-  }
-  .account-header {
-    padding-bottom: 16px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .account-header .muted { margin: 0; overflow-wrap: anywhere; }
-  .section-heading { margin-bottom: 12px; }
-  .section-heading .card-title, .section-heading .ui-status { margin: 0; }
   #latest-status:not(:empty) { margin-top: 2px; }
   .collapsible { margin-top: 14px; }
 
-  .highlights {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    margin: 0;
-  }
-  .highlights > div {
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface-muted);
-  }
-  .highlights dt { color: var(--text-muted); font-size: 12px; font-weight: 600; }
-  .highlights dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; }
-  .highlights dd, .metric-list dd { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
   .metric-list { margin: 8px 0 0; }
   .metric-list > div {
     display: grid;
@@ -54,19 +22,15 @@
   }
   .metric-list > div:last-child { border: 0; padding-bottom: 0; }
   .metric-list dt { color: var(--text-muted); font-size: 13px; }
-  .metric-list dd { margin: 0; text-align: right; font-weight: 600; }
+  .metric-list dd { margin: 0; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
   .missing { color: var(--text-muted); }
 
-  @media (max-width: 700px) {
-    .highlights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
   @media (max-width: 560px) {
-    .page-header > .tabs, .history-filters {
+    .history-filters {
       display: grid;
       width: 100%;
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .page-header .tab { text-align: center; }
     .history-filters .field { flex-direction: column; align-items: stretch; gap: 4px; }
     .history-filters input { width: 100%; min-width: 0; }
     .history-filters .spacer { display: none; }
@@ -76,40 +40,33 @@
 <body>
 <main class="page">
 <header class="page-header">
-  <h1 class="page-title">TRON SR Dashboard</h1>
-  <nav class="tabs" aria-label="Dashboard pages">
-    <a class="tab" href="sr.html">SR Metrics</a>
-    <a class="tab" href="sr.html#he">HE Vote Snapshot</a>
-    <a class="tab" href="troninc-revenue.html">Revenue Wallet</a>
-    <a class="tab active" href="tron-matrix.html" aria-current="page">Tron Matrix</a>
+  <div>
+    <h1 class="page-title">Tron Matrix</h1>
+    <p class="page-sub"><span class="mono copyable" id="address" title="Click to copy">TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ</span>
+      · <a href="https://tronscan.org/#/address/TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ" target="_blank" rel="noreferrer">Tronscan</a></p>
+  </div>
+  <nav class="tabs" aria-label="Tron Matrix views">
+    <a class="tab" id="overview-link" href="#overview">Overview</a>
+    <a class="tab" id="sql-link" href="#sql">History &amp; SQL</a>
   </nav>
 </header>
-<section class="card" aria-labelledby="account-title">
-  <header class="account-header">
+<section class="card" data-view="overview">
+  <div class="card-head">
     <div>
-      <h2 class="card-title" id="account-title">Tron Matrix</h2>
-      <p class="muted"><span class="mono" id="address">TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ</span>
-        · <a href="https://tronscan.org/#/address/TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ" target="_blank" rel="noreferrer">Tronscan</a></p>
+      <h2 class="card-title">Latest snapshot</h2>
+      <div id="latest-status" role="status"></div>
     </div>
-    <nav class="tabs" aria-label="Tron Matrix views">
-      <a class="tab" id="overview-link" href="#overview">Overview</a>
-      <a class="tab" id="sql-link" href="#sql">SQL</a>
-    </nav>
-  </header>
-
-  <section data-view="overview">
-    <div class="section-heading">
-      <div>
-        <h3 class="card-title">Latest snapshot</h3>
-        <div id="latest-status" role="status"></div>
-      </div>
+    <div class="card-actions">
+      <span id="latest-fresh" hidden></span>
       <button id="refresh">Refresh</button>
     </div>
-    <dl class="highlights" id="highlights" hidden></dl>
-  </section>
+  </div>
+  <div class="kpi-grid" id="highlights" hidden></div>
+</section>
 
-  <section id="history-controls" data-view="sql" hidden>
-    <div class="section-heading"><h3 class="card-title">Snapshot history</h3></div>
+<section class="card" data-view="sql" hidden>
+  <section id="history-controls">
+    <div class="card-head"><h2 class="card-title">Snapshot history</h2></div>
     <div class="toolbar history-filters">
       <label class="field">From (HKT)<input type="date" id="from"></label>
       <label class="field">To (HKT)<input type="date" id="to"></label>
@@ -133,7 +90,7 @@
 </div>
 
 <section class="card" data-view="sql" hidden>
-  <div class="section-heading">
+  <div class="card-head">
     <h2 class="card-title">Query results</h2>
     <div id="query-status" role="status"></div>
   </div>
@@ -178,6 +135,7 @@ function latest() {
   const status = $("latest-status");
   const showMetrics = visible => {
     $("highlights").hidden = !visible;
+    if (!visible) $("latest-fresh").hidden = true;
     $("metrics").hidden = !visible;
   };
   return UI.run({status, buttons: $("refresh"), onError: () => showMetrics(false)}, async () => {
@@ -187,11 +145,15 @@ function latest() {
     const row = rows[0];
     showMetrics(Boolean(row));
     if (!row) return UI.setStatus(status, "empty", "No Tron Matrix snapshot yet.");
-    metrics("highlights", [...srFields, ...walletFields].filter(([, key]) => highlightKeys.has(key)), row);
+    $("highlights").innerHTML = [...srFields, ...walletFields]
+      .filter(([, key]) => highlightKeys.has(key))
+      .map(([label, key]) => UI.kpi(label, row[key] == null ? "—" : key === "account_status" ? row[key] : UI.formatNumber(String(row[key]))))
+      .join("");
     metrics("sr-metrics", srFields.filter(([, key]) => !highlightKeys.has(key)), row);
     metrics("wallet-metrics", walletFields.filter(([, key]) => !highlightKeys.has(key)), row);
-    const hkt = new Date(row.timestamputc).toLocaleString("en-GB", {timeZone:"Asia/Hong_Kong",hour12:false});
-    UI.setStatus(status, "", `Snapshot ${hkt} HKT`);
+    UI.setStatus(status, "", `Snapshot ${UI.formatHktUtc(row.timestamputc)}`);
+    // Snapshots run every two hours.
+    UI.setFreshness($("latest-fresh"), row.timestamputc, 3);
   });
 }
 

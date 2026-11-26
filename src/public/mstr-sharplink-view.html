@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MSTR & Sharplink Snapshots Viewer</title>
+  <title>MSTR &amp; SharpLink · TRON Dashboards</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="assets/common.css" />
   <script src="assets/common.js"></script>
@@ -13,42 +13,66 @@
       font-size: 14px;
       font-weight: 700;
     }
+    .all-fields {
+      margin-top: 14px;
+    }
   </style>
 </head>
 <body>
-<div class="page">
+<main class="page">
   <header class="page-header">
-    <h1 class="page-title">MSTR & Sharplink Snapshots</h1>
+    <div>
+      <h1 class="page-title">MSTR &amp; SharpLink</h1>
+      <p class="page-sub">Hourly share prices, Strategy's BTC holdings and SharpLink's ETH holdings.</p>
+    </div>
+    <div class="card-actions">
+      <span id="latest-fresh" hidden></span>
+      <button id="refresh-btn" class="write" title="Fetches the latest data from the sources and inserts a new snapshot into the database">Refresh (insert + fetch)</button>
+    </div>
   </header>
 
-  <section class="card">
-    <div class="toolbar">
-      <button id="refresh-btn" class="write">Refresh (insert + fetch)</button>
-      <span class="ui-status" id="status-text" style="margin: 0;">Idle</span>
-    </div>
-    <p class="muted" style="margin: 8px 0 0;">
-      Refresh fetches the latest MSTR and Sharplink data from the sources and inserts a new snapshot into the database.
-    </p>
-  </section>
+  <div id="status-text" class="ui-status"></div>
 
   <div class="grid-2">
     <section class="card">
-      <h2 class="card-title">MSTR Snapshot (Latest)</h2>
-      <div id="mstr-table"></div>
+      <div class="card-head">
+        <div>
+          <h2 class="card-title">MSTR · latest</h2>
+          <p class="muted" id="mstr-time"></p>
+        </div>
+      </div>
+      <div class="kpi-grid" id="mstr-kpis"></div>
+      <details class="collapsible all-fields" data-remember="mstr-fields">
+        <summary>All fields</summary>
+        <div id="mstr-table"></div>
+      </details>
     </section>
 
     <section class="card">
-      <h2 class="card-title">Sharplink Snapshot (Latest)</h2>
-      <div id="sharplink-table"></div>
+      <div class="card-head">
+        <div>
+          <h2 class="card-title">SharpLink · latest</h2>
+          <p class="muted" id="sharplink-time"></p>
+        </div>
+      </div>
+      <div class="kpi-grid" id="sharplink-kpis"></div>
+      <details class="collapsible all-fields" data-remember="sharplink-fields">
+        <summary>All fields</summary>
+        <div id="sharplink-table"></div>
+      </details>
     </section>
   </div>
 
-  <!-- ======== 历史查询（SQL） ======== -->
+  <!-- ======== Snapshot history (SQL) ======== -->
   <div class="grid-2">
     <section class="card">
-      <h2 class="card-title">MSTR Snapshots (Historical)</h2>
-      <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
-      <textarea id="mstr-sql"></textarea>
+      <div class="card-head">
+        <div>
+          <h2 class="card-title">MSTR snapshot history</h2>
+          <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
+        </div>
+      </div>
+      <textarea id="mstr-sql" aria-label="MSTR SQL" spellcheck="false"></textarea>
       <div class="toolbar">
         <button id="run-mstr-sql-btn" class="primary">Run</button>
         <span class="ui-status" id="mstr-sql-status" style="margin: 0;"></span>
@@ -57,9 +81,13 @@
     </section>
 
     <section class="card">
-      <h2 class="card-title">Sharplink Snapshots (Historical)</h2>
-      <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
-      <textarea id="sharplink-sql"></textarea>
+      <div class="card-head">
+        <div>
+          <h2 class="card-title">SharpLink snapshot history</h2>
+          <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
+        </div>
+      </div>
+      <textarea id="sharplink-sql" aria-label="SharpLink SQL" spellcheck="false"></textarea>
       <div class="toolbar">
         <button id="run-sharplink-sql-btn" class="primary">Run</button>
         <span class="ui-status" id="sharplink-sql-status" style="margin: 0;"></span>
@@ -69,13 +97,13 @@
   </div>
 
   <details class="card collapsible">
-    <summary>Raw JSON (Debug)</summary>
+    <summary>Raw JSON (debug)</summary>
     <pre class="json" id="json-raw">{}</pre>
   </details>
-</div>
+</main>
 
   <script>
-    // ============ 通用格式化函数 ============
+    // ============ Value formatting ============
     const fmtUSD2 = (v) =>
       v == null
         ? ""
@@ -109,7 +137,7 @@
       return "$" + b.toFixed(2) + "B";
     };
 
-    // UTC ISO 字符串 → "YYYY-MM-DD HH:mm:ss"，按给定时差（小时）显示
+    // UTC ISO string → "YYYY-MM-DD HH:mm:ss" shifted by the given offset (hours)
     function formatWithOffset(utcStr, hours) {
       if (!utcStr) return "";
       const d = new Date(utcStr);
@@ -125,14 +153,14 @@
       return `${y}-${m}-${day} ${hh}:${mm}:${ss}`;
     }
 
-    // timestamp_utc 显示为 "… UTC · … HKT"
+    // timestamp_utc shown as "… UTC · … HKT"
     const fmtUtcHkt = (v) => {
       const utc = formatWithOffset(v, 0);
       if (!utc) return v == null ? "" : String(v);
       return `${utc} UTC · ${formatWithOffset(v, 8)} HKT`;
     };
 
-    // ============ MSTR 字段配置（latest & historical 共用） ============
+    // ============ MSTR fields (shared by latest and history) ============
     const MSTR_FIELDS = [
       { key: "id", label: "ID", fmt: (v) => v },
       { key: "timestamp_utc", label: "Timestamp", fmt: fmtUtcHkt },
@@ -156,7 +184,7 @@
       { key: "mnav", label: "mNAV", fmt: fmtMnav },
     ];
 
-    // ============ Sharplink 字段配置 ============
+    // ============ SharpLink fields ============
     const SHARPLINK_FIELDS = [
       { key: "id", label: "ID", fmt: (v) => v },
       { key: "timestamp_utc", label: "Timestamp", fmt: fmtUtcHkt },
@@ -194,17 +222,18 @@
       },
     ];
 
-    // ============ 页面元素 ============
+    // ============ Page elements ============
     const refreshBtn = document.getElementById("refresh-btn");
     const statusEl = document.getElementById("status-text");
     const mstrEl = document.getElementById("mstr-table");
     const sharplinkEl = document.getElementById("sharplink-table");
     const jsonRawEl = document.getElementById("json-raw");
+    const freshEl = document.getElementById("latest-fresh");
     const escapeHtml = UI.escapeHtml;
 
-    // ============ 字段表（latest & historical 共用） ============
+    // ============ Field/value tables (shared by latest and history) ============
 
-    // 一个单元格：已配置字段用页面自己的格式；自定义 SQL 的列用通用格式
+    // One cell: configured fields use this page's formats; other custom SQL columns use the shared format
     function fieldCell(field, row, numeric) {
       if (field.generic) return UI.td(field.key, row[field.key]);
       const cls = numeric && field.key !== "timestamp_utc" ? ' class="num"' : "";
@@ -226,7 +255,7 @@
       return html;
     }
 
-    // ============ 最新 snapshot 加载 ============
+    // ============ Latest snapshot ============
 
     function renderLatest(container, fields, obj, emptyText) {
       container.innerHTML = obj
@@ -234,14 +263,44 @@
         : '<div class="empty">' + emptyText + "</div>";
     }
 
+    // Headline numbers per company; every field stays under "All fields".
+    const fmtMillionAsBillion = (v) => (v == null ? "" : fmtUsdBillion(Number(v) * 1e6));
+    const MSTR_KPIS = [
+      ["MSTR price", "mstr_price", fmtUSD2],
+      ["mNAV", "mnav", fmtMnavWithX],
+      ["BTC holdings", "btc_holdings", fmtBTC],
+      ["BTC NAV", "btc_nav_million", fmtMillionAsBillion],
+    ];
+    const SHARPLINK_KPIS = [
+      ["SBET price", "sharplink_last_price", fmtUSD2],
+      ["Basic mNAV", "impact3_basic_mnav", fmtMnavWithX],
+      ["ETH holdings", "impact3_total_eth_holdings", fmtNumber0],
+      ["ETH NAV", "impact3_eth_nav", fmtUsdBillion],
+    ];
+
+    function renderKpis(name, kpis, row) {
+      document.getElementById(`${name}-kpis`).innerHTML = row
+        ? kpis.map(([label, key, fmt]) => UI.kpi(label, fmt(row[key]) || "—")).join("")
+        : "";
+      document.getElementById(`${name}-time`).textContent = row
+        ? `Snapshot ${UI.formatHktUtc(row.timestamp_utc)} · id ${row.id}`
+        : "";
+    }
+
     function showLatest(data) {
       jsonRawEl.textContent = JSON.stringify(data, null, 2);
+      renderKpis("mstr", MSTR_KPIS, data.mstr);
+      renderKpis("sharplink", SHARPLINK_KPIS, data.sharplink);
+      // Hourly snapshots; the badge follows the older of the two.
+      const times = [data.mstr, data.sharplink].filter(Boolean).map((r) => new Date(r.timestamp_utc));
+      if (times.length) UI.setFreshness(freshEl, new Date(Math.min(...times)), 2);
+      else freshEl.hidden = true;
       renderLatest(mstrEl, MSTR_FIELDS, data.mstr, "No MSTR snapshot found");
       renderLatest(
         sharplinkEl,
         SHARPLINK_FIELDS,
         data.sharplink,
-        "No Sharplink snapshot found"
+        "No SharpLink snapshot found"
       );
     }
 
@@ -259,13 +318,16 @@
         async () => {
           const data = await UI.requestJson("/api/mstr-sharplink/latest");
           showLatest(data);
-          UI.setStatus(statusEl, "success", "Loaded latest at " + UI.timeNow());
+          UI.setStatus(statusEl, "", "");
         }
       );
     }
 
-    // Refresh 会抓取数据并写入新 snapshot：请求期间按钮禁用，失败时保留页面上已有的数据
+    // Refresh fetches the sources and inserts a new snapshot: the button is disabled meanwhile, and on failure the data on the page is kept
     function refreshAndInsert() {
+      if (!confirm("Refresh fetches MSTR and SharpLink data from the sources and inserts a new snapshot into the database. Continue?")) {
+        return;
+      }
       return UI.run(
         {
           buttons: refreshBtn,
@@ -296,14 +358,14 @@
       );
     }
 
-    // ============ 历史查询：默认 SQL ============
+    // ============ History: default SQL ============
 
     function getTodayHkt0730WindowUtcIso() {
-      // 现在时间（UTC）
+      // Current time (UTC)
       const now = new Date();
       const utcMs = now.getTime();
 
-      // 转成 HKT（UTC+8）来取“今天”的日期
+      // Shift to HKT (UTC+8) to get today's date there
       const hktMs = utcMs + 8 * 60 * 60 * 1000;
       const hktNow = new Date(hktMs);
 
@@ -347,7 +409,7 @@
         `LIMIT 1;`;
     }
 
-    // ============ 历史查询：运行 SQL ============
+    // ============ History: run SQL ============
 
     function runSqlQuery(sql, targetEl, sqlStatusEl, button, fields, name) {
       if (!sql.trim()) {
@@ -378,14 +440,14 @@
       );
     }
 
-    // 一行：标题 + 字段表；多行：每个 snapshot 一行的横向表格
+    // One row: title + field table; several rows: one table row per snapshot
     function renderHistory(container, rows, resultFields, fields, name) {
       if (rows.length === 0) {
         container.innerHTML = '<div class="empty">No result found</div>';
         return;
       }
 
-      // 只显示查询返回了的已知字段；一个都没有时（自定义 SQL），直接显示查询返回的列
+      // Show only the known fields the query returned; if none (custom SQL), show the returned columns as they are
       fields = fields.filter((f) => resultFields.includes(f.key));
       if (fields.length === 0) {
         fields = resultFields.map((key) => ({ key, label: key, generic: true }));
@@ -421,7 +483,7 @@
         "</tbody></table></div>";
     }
 
-    // ============ 事件绑定 & 初始化 ============
+    // ============ Events and start-up ============
     refreshBtn.addEventListener("click", refreshAndInsert);
 
     const mstrRunBtn = document.getElementById("run-mstr-sql-btn");
@@ -444,7 +506,7 @@
         document.getElementById("sharplink-sql-status"),
         sharplinkRunBtn,
         SHARPLINK_FIELDS,
-        "Sharplink"
+        "SharpLink"
       );
     });
 
