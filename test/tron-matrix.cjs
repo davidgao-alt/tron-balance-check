@@ -1,11 +1,15 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { Pool } = require('pg');
+const { TronWeb } = require('tronweb');
 const chain = require('../dist/troninc-revenue-fetch');
 const matrix = require('../dist/tron-matrix-fetch');
 const sr = require('../dist/tronscan-sr-fetch');
 const { runSrSnapshots } = require('../dist/insert-tronscan-sr');
 const address = matrix.MATRIX_ADDRESS;
+const otherHex = '41' + '01'.repeat(20);
+const otherAddress = TronWeb.address.fromHex(otherHex);
+const matrixHex = TronWeb.address.toHex(address);
 
 test('new address is recorded before activation without inventing balances', async t => {
   t.mock.method(chain, 'tronGridPost', async path => {
@@ -18,11 +22,17 @@ test('new address is recorded before activation without inventing balances', asy
   assert.equal(row.realTimeVotes, undefined);
 });
 
-for (const phase of ['Activated', 'Candidate', 'SR']) {
-  test('collects wallet and applicable witness fields for ' + phase, async t => {
+for (const [phase, other, target] of [
+  ['Activated', otherHex],
+  ['Candidate', otherHex, matrixHex],
+  ['SR', otherHex, matrixHex.toUpperCase()],
+  ['Candidate', otherHex, address],
+  ['SR', otherAddress, address],
+]) {
+  test(`collects ${phase} wallet and witness fields (${other}, ${target ?? 'unlisted'})`, async t => {
     const registered = phase !== 'Activated';
-    const witnesses = [{ address: 'T-other', isJobs: true }];
-    if (registered) witnesses.push({ address, isJobs: phase === 'SR', totalProduced: 27 });
+    const witnesses = [{ address: other, isJobs: true }];
+    if (registered) witnesses.push({ address: target, isJobs: phase === 'SR', totalProduced: 27 });
     t.mock.method(chain, 'tronGridPost', async path =>
       path === '/wallet/getaccount' ? {address} : {witnesses});
     t.mock.method(chain, 'fetchWalletFromAccount', async walletAddress => {
@@ -49,6 +59,22 @@ for (const phase of ['Activated', 'Candidate', 'SR']) {
 test('upstream error cannot produce an unactivated snapshot', async t => {
   t.mock.method(chain, 'tronGridPost', async () => { throw Error('HTTP 429'); });
   await assert.rejects(matrix.fetchMatrixSnapshot(), /HTTP 429/);
+});
+
+test('an invalid or incomplete witness list cannot classify Matrix as activated', async t => {
+  let witnesses;
+  t.mock.method(chain, 'tronGridPost', async path =>
+    path.endsWith('getaccount') ? {address} : {witnesses});
+  t.mock.method(chain, 'fetchWalletFromAccount', async () => ({}));
+  for (witnesses of [
+    [],
+    [{address: otherHex}],
+    [{address: otherHex, isJobs: true}, {address: '41bad'}],
+    [{address: otherHex, isJobs: true}, {address: 'T-invalid'}],
+    [{address: otherHex, isJobs: true}, null],
+  ]) {
+    await assert.rejects(matrix.fetchMatrixSnapshot(), /Invalid TronGrid witness list/);
+  }
 });
 
 test('cron writes wallet and SR in one row, and excludes the saved address from the Top 27 pass', async t => {
@@ -87,7 +113,7 @@ test('a Matrix outage still allows the regular SR collection to write and report
 
 test('unindexed candidates keep wallet and on-chain block data; provider errors are distinguishable', async t => {
   t.mock.method(chain, 'tronGridPost', async path => path.endsWith('getaccount')
-    ? {address} : {witnesses:[{address:'T-other',isJobs:true},{address,totalProduced:7}]});
+    ? {address} : {witnesses:[{address:otherAddress,isJobs:true},{address,totalProduced:7}]});
   t.mock.method(chain, 'fetchWalletFromAccount', async () => ({
     trxAvailable:'0', claimableRewardTrx:'0', rawJson:{trongrid:{reward:{}}}
   }));

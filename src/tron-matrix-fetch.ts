@@ -1,3 +1,4 @@
+import { TronWeb } from "tronweb";
 import { fetchWalletFromAccount, tronGridPost, tronscanGet } from "./troninc-revenue-fetch";
 
 export const MATRIX_ADDRESS = "TAQpHTD8ick22uvMVLSPvsTZzK4CqCYkwQ";
@@ -19,11 +20,13 @@ export async function fetchMatrixSnapshot() {
   }
   const walletSnapshot = await fetchWalletFromAccount(address, account, now);
   const { witnesses } = await tronGridPost("/wallet/listwitnesses", {});
-  if (!Array.isArray(witnesses) || !witnesses.some(w => w.isJobs === true) ||
-      witnesses.some(w => typeof w.address !== "string" || !w.address.startsWith("T"))) {
+  if (!Array.isArray(witnesses) || !witnesses.some(w => w?.isJobs === true) ||
+      witnesses.some(w => !TronWeb.isAddress(w?.address))) {
     throw new Error("Invalid TronGrid witness list");
   }
-  const witness = witnesses.find(w => w.address === address);
+  // listwitnesses can return hex even when the request sets visible: true.
+  const matrixHex = TronWeb.address.toHex(address);
+  const witness = witnesses.find(w => TronWeb.address.toHex(w.address) === matrixHex);
   if (!witness && account.is_witness) throw new Error("Witness registration pending confirmation");
   const wallet = {
     ...base,
