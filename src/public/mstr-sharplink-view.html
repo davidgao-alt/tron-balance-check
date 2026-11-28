@@ -7,6 +7,7 @@
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="assets/common.css" />
   <script src="assets/common.js"></script>
+  <script defer src="assets/sql-schema.js"></script>
   <style>
     .result-title {
       margin: 0 0 8px;
@@ -72,7 +73,7 @@
           <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
         </div>
       </div>
-      <textarea id="mstr-sql" aria-label="MSTR SQL" spellcheck="false"></textarea>
+      <textarea id="mstr-sql" aria-label="MSTR SQL" spellcheck="false" data-schema-tables="mstr_snapshots"></textarea>
       <div class="toolbar">
         <button id="run-mstr-sql-btn" class="primary">Run</button>
         <span class="ui-status" id="mstr-sql-status" style="margin: 0;"></span>
@@ -87,7 +88,7 @@
           <p class="muted">Default query: the first snapshot in today's 07:30–08:00 HKT window.</p>
         </div>
       </div>
-      <textarea id="sharplink-sql" aria-label="SharpLink SQL" spellcheck="false"></textarea>
+      <textarea id="sharplink-sql" aria-label="SharpLink SQL" spellcheck="false" data-schema-tables="sharplink_snapshots"></textarea>
       <div class="toolbar">
         <button id="run-sharplink-sql-btn" class="primary">Run</button>
         <span class="ui-status" id="sharplink-sql-status" style="margin: 0;"></span>

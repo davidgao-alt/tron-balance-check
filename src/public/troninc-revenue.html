@@ -7,6 +7,7 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
+<script defer src="assets/sql-schema.js"></script>
 </head>
 <body>
 
@@ -80,7 +81,7 @@
 <details class="collapsible" data-remember="history-sql" style="margin-top: 14px;">
 <summary>Custom SQL</summary>
 
-<textarea id="history-sql" aria-label="Custom SQL" spellcheck="false"></textarea>
+<textarea id="history-sql" aria-label="Custom SQL" spellcheck="false" data-schema-tables="troninc_revenue_snapshots"></textarea>
 
 <button class="primary" onclick="runHistory()">Run</button>
 

@@ -7,8 +7,9 @@
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="assets/common.css">
   <script src="assets/common.js"></script>
+  <script defer src="assets/sql-schema.js"></script>
   <style>
-    details { margin-top: 14px; }
+    details.collapsible { margin-top: 14px; }
     @media (max-width: 600px) {
       .filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .filters .field { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -51,7 +52,8 @@
     <details class="collapsible" data-remember="supply-sql">
       <summary>Custom SQL</summary>
       <p class="muted">Queries run on the wallet service that stores the daily USDT snapshots.</p>
-      <textarea id="query" aria-label="Custom SQL" spellcheck="false" rows="9"></textarea>
+      <textarea id="query" aria-label="Custom SQL" spellcheck="false" rows="9" data-schema-tables="cmc_usdt_supply_snapshots"
+        data-query-origin="https://troninc-wallet-event-query.onrender.com"></textarea>
       <button class="primary" id="run">Run query</button>
     </details>
   </section>
@@ -65,8 +67,6 @@
   </section>
 </main>
 <script>
-// The CMC collector writes to the database served by the English wallet query API.
-const apiOrigin = "https://troninc-wallet-event-query.onrender.com";
 const $ = id => document.getElementById(id);
 
 function supplySql(from, to, limit) {
@@ -104,6 +104,7 @@ function latest() {
 }
 
 const query = $("query");
+const apiOrigin = query.dataset.queryOrigin;
 const status = $("query-status");
 let generatedSql = supplySql("", "", 50);
 query.value = generatedSql;

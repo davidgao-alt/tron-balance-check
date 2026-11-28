@@ -7,6 +7,7 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
+<script defer src="assets/sql-schema.js"></script>
 </head>
 <body>
 <main class="page">
@@ -31,7 +32,7 @@
       </div>
       <details class="collapsible" data-remember="sr-sql" style="margin-top: 14px;">
         <summary>Custom SQL</summary>
-        <textarea id="sr-sql" aria-label="Custom SQL" spellcheck="false"></textarea>
+        <textarea id="sr-sql" aria-label="Custom SQL" spellcheck="false" data-schema-tables="sr_snapshots"></textarea>
         <button type="button" class="primary" data-action="run">Run</button>
       </details>
     </section>
@@ -57,7 +58,7 @@
       </div>
       <details class="collapsible" data-remember="he-sql" style="margin-top: 14px;">
         <summary>Custom SQL</summary>
-        <textarea id="he-sql" aria-label="Custom SQL" spellcheck="false"></textarea>
+        <textarea id="he-sql" aria-label="Custom SQL" spellcheck="false" data-schema-tables="he_vote_snapshots"></textarea>
         <button type="button" class="primary" data-action="run">Run</button>
       </details>
     </section>

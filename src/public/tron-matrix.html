@@ -7,6 +7,7 @@
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="assets/common.css">
 <script src="assets/common.js"></script>
+<script defer src="assets/sql-schema.js"></script>
 <style>
   #latest-status:not(:empty) { margin-top: 2px; }
   .collapsible { margin-top: 14px; }
@@ -76,7 +77,7 @@
     </div>
     <details class="collapsible" data-remember="history-sql">
       <summary>Custom SQL</summary>
-      <textarea id="query" aria-label="Custom SQL" spellcheck="false" rows="10"></textarea>
+      <textarea id="query" aria-label="Custom SQL" spellcheck="false" rows="10" data-schema-tables="sr_snapshots"></textarea>
       <button class="primary" id="run">Run</button>
     </details>
   </section>

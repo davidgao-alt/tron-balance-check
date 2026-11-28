@@ -7,6 +7,7 @@
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="assets/common.css" />
   <script src="assets/common.js"></script>
+  <script defer src="assets/sql-schema.js"></script>
 </head>
 <body>
 <main class="page">
@@ -75,7 +76,8 @@
       </div>
     </div>
 
-    <textarea id="sqlBox" aria-label="SQL" spellcheck="false">SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</textarea>
+    <textarea id="sqlBox" aria-label="SQL" spellcheck="false" data-schema-tables="wallet_snapshots wallet_tokens"
+      data-schema-join="wallet_tokens.snapshot_id = wallet_snapshots.id">SELECT * FROM wallet_snapshots ORDER BY captured_at DESC LIMIT 5;</textarea>
 
     <div class="toolbar" style="margin-bottom: 14px;">
       <button id="btn-run-sql" class="primary">Run Query</button>

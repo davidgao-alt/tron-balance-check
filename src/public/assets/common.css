@@ -511,6 +511,148 @@ details.collapsible[open] > summary {
   margin-bottom: 10px;
 }
 
+/* ---------- SQL editor and schema reference ---------- */
+
+.sql-workspace {
+  container: sql-workspace / inline-size;
+  margin-bottom: 12px;
+}
+
+.sql-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px 12px;
+}
+
+.sql-layout > textarea {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.sql-schema {
+  min-width: 0;
+}
+
+.sql-schema > summary {
+  width: fit-content;
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--text-head);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sql-schema > summary:hover {
+  color: var(--primary-hover);
+}
+
+.sql-schema[open] {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.sql-schema[open] > summary {
+  width: 100%;
+  padding: 5px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.schema-body {
+  max-height: min(45vh, 20rem);
+  padding: 10px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+
+.schema-body:focus-visible,
+.sql-schema[open] > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.schema-status,
+.schema-join {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.schema-status:empty {
+  display: none;
+}
+
+.schema-join + .schema-table,
+.schema-table + .schema-table {
+  margin-top: 12px;
+}
+
+.schema-table h3 {
+  margin: 0 0 4px;
+  color: var(--text-head);
+  font: 600 13px/1.4 var(--mono);
+}
+
+.schema-table table {
+  table-layout: fixed;
+  font-size: inherit;
+}
+
+.schema-table thead th:first-child {
+  width: 60%;
+}
+
+.schema-table th,
+.schema-table td {
+  padding: 4px 6px;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.schema-table tbody th {
+  background: transparent;
+  color: var(--text);
+  font-weight: 400;
+}
+
+.schema-body code {
+  font-family: var(--mono);
+}
+
+/* Match the editor height so the following Run button stays within reach. */
+@container sql-workspace (min-width: 46rem) {
+  .sql-layout:has(> .sql-schema[open]) {
+    grid-template-columns: minmax(0, 1fr) clamp(17rem, 33%, 28rem);
+  }
+
+  .sql-schema[open] {
+    grid-column: 2;
+    grid-row: 1;
+    contain: size;
+    overflow: auto;
+  }
+
+  .sql-schema[open] > summary {
+    position: sticky;
+    top: 0;
+  }
+
+  .sql-schema[open] .schema-body {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .sql-schema[open] + textarea {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
 pre.json {
   max-height: 360px;
   margin: 0;
